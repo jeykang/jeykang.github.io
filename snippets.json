@@ -1,12 +1,6 @@
 [
-  "#include <bits/stdc++.h>",
-  "int main(){ std::ios::sync_with_stdio(false); std::cin.tie(nullptr); }",
-  "for epoch in range(10):",
-  "    loss = train_one_epoch(model, loader, optim)",
-  "docker run --rm -it -v $PWD:/work alpine:latest sh",
-  "def forward(self, x): return self.net(x)",
-  "SELECT id, name FROM users WHERE active = TRUE;",
-  "kubectl get pods -A",
-  "git commit -m \"Initial commit\"",
-  "printf(\"Hello, world!\\n\");"
+  "def hello(name):",
+  "    return f\"Hello, {name}!\"",
+  "if __name__ == '__main__':",
+  "    print('Ready.')"
 ]
