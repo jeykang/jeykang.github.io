@@ -18,23 +18,29 @@ def write_text(path, text):
 
 def render_markdown(md_text: str) -> str:
     """
-    Convert Markdown to HTML. Requires 'markdown' package in the workflow.
-    Falls back to preformatted text if the package is not available.
+    Convert Markdown to HTML with proper nested list handling.
+    Requires 'markdown' package (pip install markdown).
     """
     try:
         import markdown
+        extensions = [
+            "extra",       # tables, fenced_code, footnotes, etc.
+            "sane_lists",  # predictable list behavior (GitHub-like)
+            "toc",
+        ]
+        extension_configs = {
+            "toc": {"permalink": False}
+        }
         return markdown.markdown(
             md_text,
-            extensions=[
-                "extra",          # includes tables, fenced_code, etc.
-                "sane_lists",
-                "toc"
-            ],
-            output_format="xhtml"
+            extensions=extensions,
+            extension_configs=extension_configs,
+            output_format="html5"
         )
     except Exception:
-        # Fallback: show raw Markdown as preformatted text (no external deps)
+        # Fallback: show raw Markdown as preformatted text
         return "<pre>" + html.escape(md_text) + "</pre>"
+
 
 def build_cv_html(theme: dict, site_title: str) -> None:
     if not CV_MD.exists():
