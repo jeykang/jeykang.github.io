@@ -1,0 +1,59 @@
+name: Harvest code files for background typing
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "23 */4 * * *"   # every 4 hours; adjust as desired
+
+permissions:
+  contents: write
+
+concurrency:
+  group: harvest-code-files
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run harvester
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USERNAME: your-github-username   # <<< set this to your user/org
+          EXTENSIONS: py,js,ts,tsx,jsx,c,cpp,h,hpp,sh,rs,go,java,kt,md,txt,html,css,yaml,yml,toml,ini,json
+          MAX_REPOS: "8"
+          NUM_FILES: "16"
+          INCLUDE_FORKS: "false"
+          EXCLUDE_DIRS: ".git,node_modules,dist,build,venv,.venv,site-packages,__pycache__,.next,out,coverage,.cache"
+          MAX_BYTES_PER_FILE: "65536"
+          REPO_ALLOWLIST: ""
+          REPO_BLOCKLIST: ""
+        run: |
+          python scripts/harvest_files.py
+
+      - name: Commit & push if changed
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          changed="false"
+          git add code_manifest.json code_samples/
+          git diff --cached --quiet || changed="true"
+          if [ "$changed" = "true" ]; then
+            git commit -m "chore(typing-src): refresh code_samples [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
