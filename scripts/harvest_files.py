@@ -33,7 +33,7 @@ SESSION.headers.update(API_HEADERS)
 USERNAME         = os.getenv("GH_USERNAME", "").strip()
 EXTENSIONS       = [e.strip().lower() for e in os.getenv(
                      "EXTENSIONS",
-                     "py,js,ts,tsx,jsx,c,cpp,h,hpp,sh,rs,go,java,kt,md,txt,html,css,yaml,yml,toml,ini,json"
+                     "py,js,ts,tsx,jsx,c,cpp,h,hpp,sh,rs,go,java,kt"
                    ).split(",") if e.strip()]
 MAX_REPOS        = int(os.getenv("MAX_REPOS", "8"))
 NUM_FILES        = int(os.getenv("NUM_FILES", "16"))
