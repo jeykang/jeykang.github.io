@@ -45,15 +45,23 @@ jobs:
           python scripts/harvest_files.py
 
       - name: Commit & push if changed
+        shell: bash
         run: |
-          set -e
+          set -euo pipefail
+      
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          changed="false"
-          git add code_manifest.json code_samples/
-          git diff --cached --quiet || changed="true"
-          if [ "$changed" = "true" ]; then
+      
+          # Stage only the files we intend to modify
+          git add code_manifest.json code_samples/ || true
+      
+          # If there are staged changes, commit and push
+          if ! git diff --staged --quiet; then
             git commit -m "chore(typing-src): refresh code_samples [skip ci]"
+            # In case the branch advanced since checkout (rare, but safe):
+            git pull --rebase || true
             git push
           else
             echo "No changes to commit."
+          fi
+
