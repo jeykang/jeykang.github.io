@@ -18,28 +18,49 @@ def write_text(path, text):
 
 def render_markdown(md_text: str) -> str:
     """
-    Convert Markdown to HTML with proper nested list handling.
-    Requires 'markdown' package (pip install markdown).
+    Render Markdown to HTML with GitHub-Flavored Markdown (GFM) semantics,
+    so nested lists behave like on github.com even with 2-space indents.
     """
+    # 1) Fast path: GitHub's cmark-gfm
+    try:
+        import cmarkgfm
+        # 'unsafe' allows raw HTML in md if you use it; set to False to sanitize
+        return cmarkgfm.github_flavored_markdown_to_html(md_text)
+    except Exception:
+        pass
+
+    # 2) CommonMark parser with GFM-ish plugins
+    try:
+        from markdown_it import MarkdownIt
+        from mdit_py_plugins.tasklists import tasklists
+        from mdit_py_plugins.footnote import footnote
+        from mdit_py_plugins.deflist import deflist
+        from mdit_py_plugins.anchors import anchors
+
+        md = (
+            MarkdownIt("commonmark")
+            .use(tasklists, enabled=True)
+            .use(footnote)
+            .use(deflist)
+            .use(anchors, permalink=False)
+        )
+        return md.render(md_text)
+    except Exception:
+        pass
+
+    # 3) Fallback: Python-Markdown (may require 4-space indents for nested lists)
     try:
         import markdown
-        extensions = [
-            "extra",       # tables, fenced_code, footnotes, etc.
-            "sane_lists",  # predictable list behavior (GitHub-like)
-            "toc",
-        ]
-        extension_configs = {
-            "toc": {"permalink": False}
-        }
         return markdown.markdown(
             md_text,
-            extensions=extensions,
-            extension_configs=extension_configs,
-            output_format="html5"
+            extensions=["extra", "sane_lists", "toc"],
+            extension_configs={"toc": {"permalink": False}},
+            output_format="html5",
         )
     except Exception:
-        # Fallback: show raw Markdown as preformatted text
+        import html
         return "<pre>" + html.escape(md_text) + "</pre>"
+
 
 
 def build_cv_html(theme: dict, site_title: str) -> None:
