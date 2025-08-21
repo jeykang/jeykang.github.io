@@ -27,7 +27,11 @@ jobs:
           python-version: "3.x"
 
       - name: Install build deps
-        run: pip install markdown
+        run: |
+          pip install cmarkgfm
+          pip install markdown-it-py mdit-py-plugins
+          # (Optional) keep Python-Markdown as a fallback
+          pip install markdown
 
       - name: Build site
         run: |
