@@ -3,7 +3,12 @@
   "tagline": "AI Researcher",
   "about": "Hello! I'm a graduate student doing my MS/Ph.D at the Gwangju Institute of Science and Technology (GIST). I specialize in neural networks involving computer vision & point cloud manipulation, with interests in Gaussian splatting & digital twins.",
   "avatar": "",
-  "accent": "#2563eb",
+  "theme": {
+    "bg": "#0f1115",
+    "fg": "#d1d5db",
+    "muted": "#9ca3af",
+    "accent": "#60a5fa"
+  },
   "links": [
     {
       "label": "CV (PDF)",
@@ -21,5 +26,29 @@
       "label": "Email",
       "url": "mailto:jey.kang@smartx.kr"
     }
-  ]
+  ],
+  "github": {
+    "username": "jeykang",
+    "maxRepos": 5,
+    "filesPerRepo": 2,
+    "includeForks": false,
+    "extensions": [
+      "py",
+      "js",
+      "ts",
+      "tsx",
+      "jsx",
+      "c",
+      "cpp",
+      "h",
+      "hpp",
+      "sh",
+      "rs",
+      "go",
+      "java",
+      "kt",
+      "html",
+      "css",
+    ]
+  }
 }
