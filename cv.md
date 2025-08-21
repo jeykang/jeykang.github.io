@@ -51,7 +51,6 @@
 ## Academic Interests
 
 * **Neural Gaussian splatting for data augmentation**
-  
 * **Digital twin-based synthetic data generation**
 
 ---
