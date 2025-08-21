@@ -29,6 +29,14 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Clean previous samples
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p code_samples
+          rm -rf code_samples/*
+      
+
       - name: Run harvester
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
