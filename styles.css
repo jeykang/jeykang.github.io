@@ -1,21 +1,22 @@
-/* Dark GitHub Pages Starter with Monospace "Live Typing" Overlay */
 :root{
-  --bg: #0f1115;         /* dark grey background */
-  --fg: #d1d5db;         /* light grey text */
-  --muted: #9ca3af;      /* muted grey */
-  --accent: #60a5fa;     /* soft blue accent */
+  --bg: #0f1115;
+  --fg: #d1d5db;
+  --muted: #9ca3af;
+  --accent: #60a5fa;
   --panel: rgba(255,255,255,0.04);
   --panel-border: rgba(255,255,255,0.08);
   --radius: 22px;
   --maxw: 860px;
 }
+
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body{
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Noto Sans CJK KR", "Noto Sans KR", Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple SD Gothic Neo", sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Noto Sans KR",
+               Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple SD Gothic Neo", sans-serif;
   overflow-x: hidden;
 }
 
@@ -79,7 +80,6 @@ body{
   margin-top: 12px;
   font-size: clamp(15px, 1.6vw, 17px);
   line-height: 1.7;
-  color: var(--fg);
 }
 .links{
   margin-top: 18px;
@@ -115,7 +115,7 @@ a.btn .dot{
 /* Footer */
 .footer{ margin-top: 22px; color: var(--muted); }
 
-/* Accessibility: reduce motion */
+/* Reduce motion */
 @media (prefers-reduced-motion: reduce){
   .code-overlay { opacity: 0.12; }
 }
