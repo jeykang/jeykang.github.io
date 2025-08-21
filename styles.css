@@ -119,3 +119,26 @@ a.btn .dot{
 @media (prefers-reduced-motion: reduce){
   .code-overlay { opacity: 0.12; }
 }
+
+/* --- Markdown prose lists (CV page) --- */
+.prose ul,
+.prose ol {
+  margin: 0 0 1em 1.5em;   /* left indent + spacing */
+  padding-left: 1.25em;    /* additional indent for bullets/numbers */
+}
+
+.prose li { margin: 0.25em 0; }
+
+/* Unordered lists: disc -> circle -> square */
+.prose ul { list-style: disc; }
+.prose ul ul { list-style: circle; margin-left: 1.25em; }
+.prose ul ul ul { list-style: square; margin-left: 1.25em; }
+
+/* Ordered lists: decimal -> lower-alpha -> lower-roman */
+.prose ol { list-style: decimal; }
+.prose ol ol { list-style: lower-alpha; margin-left: 1.25em; }
+.prose ol ol ol { list-style: lower-roman; margin-left: 1.25em; }
+
+/* Space between a list item and its nested list */
+.prose li > ul,
+.prose li > ol { margin-top: 0.35em; }
