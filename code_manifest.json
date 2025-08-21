@@ -1,12 +1,178 @@
 {
-  "generated_at": "1970-01-01T00:00:00Z",
+  "generated_at": "2025-08-21T06:46:21Z",
   "source": {
-    "user": "",
-    "max_repos": 0,
-    "num_files": 0,
+    "user": "jeykang",
+    "max_repos": 8,
+    "num_files": 16,
     "include_forks": false,
-    "extensions": [],
-    "exclude_dirs": []
+    "extensions": [
+      "py",
+      "js",
+      "ts",
+      "tsx",
+      "jsx",
+      "c",
+      "cpp",
+      "h",
+      "hpp",
+      "sh",
+      "rs",
+      "go",
+      "java",
+      "kt",
+      "md",
+      "txt",
+      "html",
+      "css",
+      "yaml",
+      "yml",
+      "toml",
+      "ini",
+      "json"
+    ],
+    "exclude_dirs": [
+      ".git",
+      "node_modules",
+      "dist",
+      "build",
+      "venv",
+      ".venv",
+      "site-packages",
+      "__pycache__",
+      ".next",
+      "out",
+      "coverage",
+      ".cache"
+    ]
   },
-  "files": []
+  "files": [
+    {
+      "file": "code_samples/jeykang.github.io-old___includes__scripts__bootstrap.html",
+      "repo": "jeykang.github.io-old",
+      "owner": "jeykang",
+      "path": "_includes/scripts/bootstrap.html",
+      "branch": "master",
+      "bytes": 396
+    },
+    {
+      "file": "code_samples/CSE214__hw8__doc__constant-values.html",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw8/doc/constant-values.html",
+      "branch": "master",
+      "bytes": 5673
+    },
+    {
+      "file": "code_samples/CSE214__hw8__RBTreeQueue.java",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw8/RBTreeQueue.java",
+      "branch": "master",
+      "bytes": 995
+    },
+    {
+      "file": "code_samples/CSE214__hw9__Entry.java",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw9/Entry.java",
+      "branch": "master",
+      "bytes": 141
+    },
+    {
+      "file": "code_samples/jeykang.github.io-old___includes__scripts__analytics.html",
+      "repo": "jeykang.github.io-old",
+      "owner": "jeykang",
+      "path": "_includes/scripts/analytics.html",
+      "branch": "master",
+      "bytes": 853
+    },
+    {
+      "file": "code_samples/PA3__models__base_model.py",
+      "repo": "PA3",
+      "owner": "jeykang",
+      "path": "models/base_model.py",
+      "branch": "master",
+      "bytes": 10388
+    },
+    {
+      "file": "code_samples/CSE214__hw7__App.java",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw7/App.java",
+      "branch": "master",
+      "bytes": 541
+    },
+    {
+      "file": "code_samples/sentence-summarization__catonamat.txt",
+      "repo": "sentence-summarization",
+      "owner": "jeykang",
+      "path": "catonamat.txt",
+      "branch": "master",
+      "bytes": 98
+    },
+    {
+      "file": "code_samples/CSE214__hw8__Path.java",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw8/Path.java",
+      "branch": "master",
+      "bytes": 3768
+    },
+    {
+      "file": "code_samples/CSE216__Assignment3__PopulationDataProcessing__interaction.py",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "Assignment3/PopulationDataProcessing/interaction.py",
+      "branch": "master",
+      "bytes": 3525
+    },
+    {
+      "file": "code_samples/jeykang.github.io-old__docker-local.yml",
+      "repo": "jeykang.github.io-old",
+      "owner": "jeykang",
+      "path": "docker-local.yml",
+      "branch": "master",
+      "bytes": 343
+    },
+    {
+      "file": "code_samples/CSE214__hw2__PolyDbl.java",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw2/PolyDbl.java",
+      "branch": "master",
+      "bytes": 3548
+    },
+    {
+      "file": "code_samples/jeykang.github.io-old___data__coauthors.yml",
+      "repo": "jeykang.github.io-old",
+      "owner": "jeykang",
+      "path": "_data/coauthors.yml",
+      "branch": "master",
+      "bytes": 979
+    },
+    {
+      "file": "code_samples/CSE216__PopulationDataProcessing__src__edu__sunyk__cse216__interaction__userinterface.java",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "PopulationDataProcessing/src/edu/sunyk/cse216/interaction/userinterface.java",
+      "branch": "master",
+      "bytes": 7954
+    },
+    {
+      "file": "code_samples/CSE214__hw8__HeapQueue.java",
+      "repo": "CSE214",
+      "owner": "jeykang",
+      "path": "hw8/HeapQueue.java",
+      "branch": "master",
+      "bytes": 660
+    },
+    {
+      "file": "code_samples/CSE216__Recitation4__src__recitation4__Ball.java",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "Recitation4/src/recitation4/Ball.java",
+      "branch": "master",
+      "bytes": 809
+    }
+  ]
 }
