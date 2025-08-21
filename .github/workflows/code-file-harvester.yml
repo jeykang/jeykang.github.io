@@ -32,7 +32,7 @@ jobs:
       - name: Run harvester
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_USERNAME: your-github-username   # <<< set this to your user/org
+          GH_USERNAME: jeykang   # <<< set this to your user/org
           EXTENSIONS: py,js,ts,tsx,jsx,c,cpp,h,hpp,sh,rs,go,java,kt,md,txt,html,css,yaml,yml,toml,ini,json
           MAX_REPOS: "8"
           NUM_FILES: "16"
