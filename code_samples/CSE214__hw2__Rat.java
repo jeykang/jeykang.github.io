@@ -1,4 +1,4 @@
-package src.test;
+ 
 
 //Rational number
 public class Rat implements Field, Modulo, Ordered {
@@ -66,5 +66,8 @@ public class Rat implements Field, Modulo, Ordered {
     }
     public int getDenum() {
         return d;
+    }
+    public String toString(){
+        return new String(n+"/"+d);
     }
 }
