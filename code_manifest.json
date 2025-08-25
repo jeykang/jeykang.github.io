@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-08-24T20:36:17Z",
+  "generated_at": "2025-08-25T02:19:59Z",
   "source": {
     "user": "jeykang",
     "max_repos": 8,
@@ -47,20 +47,20 @@
   },
   "files": [
     {
-      "file": "code_samples/CSE216__Assignment-2__msg6.txt",
-      "repo": "CSE216",
+      "file": "code_samples/gcnnpcr__GCNNPCR_python__emdloss_new.py",
+      "repo": "gcnnpcr",
       "owner": "jeykang",
-      "path": "Assignment 2/msg6.txt",
-      "branch": "master",
-      "bytes": 106
+      "path": "GCNNPCR_python/emdloss_new.py",
+      "branch": "main",
+      "bytes": 5065
     },
     {
-      "file": "code_samples/CSE216__Recitation6__Recitation6__src__recitation6__CollectorsExample.java",
-      "repo": "CSE216",
+      "file": "code_samples/fs-indexer__api__requirements.txt",
+      "repo": "fs-indexer",
       "owner": "jeykang",
-      "path": "Recitation6/Recitation6/src/recitation6/CollectorsExample.java",
-      "branch": "master",
-      "bytes": 2225
+      "path": "api/requirements.txt",
+      "branch": "main",
+      "bytes": 115
     },
     {
       "file": "code_samples/CSE216__Recitation5__Vector.py",
@@ -71,100 +71,108 @@
       "bytes": 303
     },
     {
-      "file": "code_samples/gcnnpcr__config__extension.toml",
+      "file": "code_samples/CSE216__Rec3__Recitation4__src__recitation4__Ball.java",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "Rec3/Recitation4/src/recitation4/Ball.java",
+      "branch": "master",
+      "bytes": 809
+    },
+    {
+      "file": "code_samples/CSE216__Rec3__Recitation4__src__recitation4__VehicleProcessor.java",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "Rec3/Recitation4/src/recitation4/VehicleProcessor.java",
+      "branch": "master",
+      "bytes": 1580
+    },
+    {
+      "file": "code_samples/PA3__data__preprocess_iharmony4.py",
+      "repo": "PA3",
+      "owner": "jeykang",
+      "path": "data/preprocess_iharmony4.py",
+      "branch": "master",
+      "bytes": 3855
+    },
+    {
+      "file": "code_samples/PA3__data__transform.py",
+      "repo": "PA3",
+      "owner": "jeykang",
+      "path": "data/transform.py",
+      "branch": "master",
+      "bytes": 2718
+    },
+    {
+      "file": "code_samples/CSE216__Recitation6__src__recitation6__CollectorsExample.java",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "Recitation6/src/recitation6/CollectorsExample.java",
+      "branch": "master",
+      "bytes": 2225
+    },
+    {
+      "file": "code_samples/jeykang.github.io__site.template.html",
+      "repo": "jeykang.github.io",
+      "owner": "jeykang",
+      "path": "site.template.html",
+      "branch": "main",
+      "bytes": 1480
+    },
+    {
+      "file": "code_samples/sentence-summarization__essay_sentence1.txt",
+      "repo": "sentence-summarization",
+      "owner": "jeykang",
+      "path": "essay_sentence1.txt",
+      "branch": "master",
+      "bytes": 632
+    },
+    {
+      "file": "code_samples/CSE216__Assignment-2__assignment2-files__email__msg1.txt",
+      "repo": "CSE216",
+      "owner": "jeykang",
+      "path": "Assignment 2/assignment2-files/email/msg1.txt",
+      "branch": "master",
+      "bytes": 391
+    },
+    {
+      "file": "code_samples/sentence-summarization__hillary_garbagemix.txt",
+      "repo": "sentence-summarization",
+      "owner": "jeykang",
+      "path": "hillary_garbagemix.txt",
+      "branch": "master",
+      "bytes": 797
+    },
+    {
+      "file": "code_samples/jeykang.github.io__typing.js",
+      "repo": "jeykang.github.io",
+      "owner": "jeykang",
+      "path": "typing.js",
+      "branch": "main",
+      "bytes": 3342
+    },
+    {
+      "file": "code_samples/gcnnpcr__GCNNPCR_python__global_variables.py",
       "repo": "gcnnpcr",
       "owner": "jeykang",
-      "path": "config/extension.toml",
+      "path": "GCNNPCR_python/global_variables.py",
       "branch": "main",
-      "bytes": 434
+      "bytes": 495
     },
     {
-      "file": "code_samples/CSE216__Recitation5__Point.py",
-      "repo": "CSE216",
-      "owner": "jeykang",
-      "path": "Recitation5/Point.py",
-      "branch": "master",
-      "bytes": 308
-    },
-    {
-      "file": "code_samples/CSE216__Assignment-2__queueimpl.py",
-      "repo": "CSE216",
-      "owner": "jeykang",
-      "path": "Assignment 2/queueimpl.py",
-      "branch": "master",
-      "bytes": 783
-    },
-    {
-      "file": "code_samples/sentence-summarization__merge_test.py",
+      "file": "code_samples/sentence-summarization__prepositions.txt",
       "repo": "sentence-summarization",
       "owner": "jeykang",
-      "path": "merge_test.py",
+      "path": "prepositions.txt",
       "branch": "master",
-      "bytes": 1777
+      "bytes": 1081
     },
     {
-      "file": "code_samples/CSE216__Assignment3__PopulationDataProcessing__interaction.py",
-      "repo": "CSE216",
+      "file": "code_samples/PA3__checkpoints__no_RAIN_only_IN__no_RAIN_only_IN__train_opt.txt",
+      "repo": "PA3",
       "owner": "jeykang",
-      "path": "Assignment3/PopulationDataProcessing/interaction.py",
+      "path": "checkpoints/no_RAIN_only_IN/no_RAIN_only_IN/train_opt.txt",
       "branch": "master",
-      "bytes": 3525
-    },
-    {
-      "file": "code_samples/sentence-summarization__bolton_majoritygarbage_mix.txt",
-      "repo": "sentence-summarization",
-      "owner": "jeykang",
-      "path": "bolton_majoritygarbage_mix.txt",
-      "branch": "master",
-      "bytes": 1860
-    },
-    {
-      "file": "code_samples/fs-indexer__cron__config.ini",
-      "repo": "fs-indexer",
-      "owner": "jeykang",
-      "path": "cron/config.ini",
-      "branch": "main",
-      "bytes": 211
-    },
-    {
-      "file": "code_samples/jeykang.github.io__code_samples__pipx-runner__README.md",
-      "repo": "jeykang.github.io",
-      "owner": "jeykang",
-      "path": "code_samples/pipx-runner__README.md",
-      "branch": "main",
-      "bytes": 1270
-    },
-    {
-      "file": "code_samples/CSE216__Assignment-2__good.txt",
-      "repo": "CSE216",
-      "owner": "jeykang",
-      "path": "Assignment 2/good.txt",
-      "branch": "master",
-      "bytes": 65536
-    },
-    {
-      "file": "code_samples/CSE216__Recitation6__Examples__Example1__src__example1__Example1.java",
-      "repo": "CSE216",
-      "owner": "jeykang",
-      "path": "Recitation6/Examples/Example1/src/example1/Example1.java",
-      "branch": "master",
-      "bytes": 1641
-    },
-    {
-      "file": "code_samples/CSE216__PopulationDataProcessing2__src__edu__sunyk__cse216__statistics__statistics.java",
-      "repo": "CSE216",
-      "owner": "jeykang",
-      "path": "PopulationDataProcessing2/src/edu/sunyk/cse216/statistics/statistics.java",
-      "branch": "master",
-      "bytes": 3337
-    },
-    {
-      "file": "code_samples/jeykang.github.io__code_samples__sentence-summarization__essay_paragraph1.txt",
-      "repo": "jeykang.github.io",
-      "owner": "jeykang",
-      "path": "code_samples/sentence-summarization__essay_paragraph1.txt",
-      "branch": "main",
-      "bytes": 2829
+      "bytes": 3890
     }
   ]
 }
