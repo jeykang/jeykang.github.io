@@ -1,13 +1,13 @@
-# SK-ResNeXt
+# Inception v3
 
-**SK ResNeXt** is a variant of a [ResNeXt](https://www.paperswithcode.com/method/resnext) that employs a [Selective Kernel](https://paperswithcode.com/method/selective-kernel) unit. In general, all the large kernel convolutions in the original bottleneck blocks in ResNext are replaced by the proposed [SK convolutions](https://paperswithcode.com/method/selective-kernel-convolution), enabling the network to choose appropriate receptive field sizes in an adaptive manner.
+**Inception v3** is a convolutional neural network architecture from the Inception family that makes several improvements including using [Label Smoothing](https://paperswithcode.com/method/label-smoothing), Factorized 7 x 7 convolutions, and the use of an [auxiliary classifer](https://paperswithcode.com/method/auxiliary-classifier) to propagate label information lower down the network (along with the use of batch normalization for layers in the sidehead). The key building block is an [Inception Module](https://paperswithcode.com/method/inception-v3-module).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('skresnext50_32x4d', pretrained=True)
+model = timm.create_model('inception_v3', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `skresnext50_32x4d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `inception_v3`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('skresnext50_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('inception_v3', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,60 +72,75 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{li2019selective,
-      title={Selective Kernel Networks}, 
-      author={Xiang Li and Wenhai Wang and Xiaolin Hu and Jian Yang},
-      year={2019},
-      eprint={1903.06586},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/SzegedyVISW15,
+  author    = {Christian Szegedy and
+               Vincent Vanhoucke and
+               Sergey Ioffe and
+               Jonathon Shlens and
+               Zbigniew Wojna},
+  title     = {Rethinking the Inception Architecture for Computer Vision},
+  journal   = {CoRR},
+  volume    = {abs/1512.00567},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1512.00567},
+  archivePrefix = {arXiv},
+  eprint    = {1512.00567},
+  timestamp = {Mon, 13 Aug 2018 16:49:07 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/SzegedyVISW15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: SKResNeXt
+- Name: Inception v3
   Paper:
-    Title: Selective Kernel Networks
-    URL: https://paperswithcode.com/paper/selective-kernel-networks
+    Title: Rethinking the Inception Architecture for Computer Vision
+    URL: https://paperswithcode.com/paper/rethinking-the-inception-architecture-for
 Models:
-- Name: skresnext50_32x4d
-  In Collection: SKResNeXt
+- Name: inception_v3
+  In Collection: Inception v3
   Metadata:
-    FLOPs: 5739845824
-    Parameters: 27480000
-    File Size: 110340975
+    FLOPs: 7352418880
+    Parameters: 23830000
+    File Size: 108857766
     Architecture:
+    - 1x1 Convolution
+    - Auxiliary Classifier
+    - Average Pooling
+    - Average Pooling
+    - Batch Normalization
     - Convolution
     - Dense Connections
-    - Global Average Pooling
-    - Grouped Convolution
+    - Dropout
+    - Inception-v3 Module
     - Max Pooling
-    - Residual Connection
-    - Selective Kernel
+    - ReLU
     - Softmax
     Tasks:
     - Image Classification
+    Training Techniques:
+    - Gradient Clipping
+    - Label Smoothing
+    - RMSProp
+    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: skresnext50_32x4d
-    LR: 0.1
-    Epochs: 100
-    Layers: 50
+    Training Resources: 50x NVIDIA Kepler GPUs
+    ID: inception_v3
+    LR: 0.045
+    Dropout: 0.2
     Crop Pct: '0.875'
     Momentum: 0.9
-    Batch Size: 256
-    Image Size: '224'
-    Weight Decay: 0.0001
+    Image Size: '299'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L210
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnext50_ra-f40e40bf.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L442
+  Weights: https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 80.15%
-      Top 5 Accuracy: 94.64%
+      Top 1 Accuracy: 77.46%
+      Top 5 Accuracy: 93.48%
 -->
