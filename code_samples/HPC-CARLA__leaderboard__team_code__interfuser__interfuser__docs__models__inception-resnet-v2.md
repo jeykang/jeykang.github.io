@@ -1,13 +1,13 @@
-# SK-ResNeXt
+# Inception ResNet v2
 
-**SK ResNeXt** is a variant of a [ResNeXt](https://www.paperswithcode.com/method/resnext) that employs a [Selective Kernel](https://paperswithcode.com/method/selective-kernel) unit. In general, all the large kernel convolutions in the original bottleneck blocks in ResNext are replaced by the proposed [SK convolutions](https://paperswithcode.com/method/selective-kernel-convolution), enabling the network to choose appropriate receptive field sizes in an adaptive manner.
+**Inception-ResNet-v2** is a convolutional neural architecture that builds on the Inception family of architectures but incorporates [residual connections](https://paperswithcode.com/method/residual-connection) (replacing the filter concatenation stage of the Inception architecture).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('skresnext50_32x4d', pretrained=True)
+model = timm.create_model('inception_resnet_v2', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `skresnext50_32x4d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `inception_resnet_v2`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('skresnext50_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('inception_resnet_v2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,11 +72,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{li2019selective,
-      title={Selective Kernel Networks}, 
-      author={Xiang Li and Wenhai Wang and Xiaolin Hu and Jian Yang},
-      year={2019},
-      eprint={1903.06586},
+@misc{szegedy2016inceptionv4,
+      title={Inception-v4, Inception-ResNet and the Impact of Residual Connections on Learning}, 
+      author={Christian Szegedy and Sergey Ioffe and Vincent Vanhoucke and Alex Alemi},
+      year={2016},
+      eprint={1602.07261},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -85,47 +85,49 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: SKResNeXt
+- Name: Inception ResNet v2
   Paper:
-    Title: Selective Kernel Networks
-    URL: https://paperswithcode.com/paper/selective-kernel-networks
+    Title: Inception-v4, Inception-ResNet and the Impact of Residual Connections on
+      Learning
+    URL: https://paperswithcode.com/paper/inception-v4-inception-resnet-and-the-impact
 Models:
-- Name: skresnext50_32x4d
-  In Collection: SKResNeXt
+- Name: inception_resnet_v2
+  In Collection: Inception ResNet v2
   Metadata:
-    FLOPs: 5739845824
-    Parameters: 27480000
-    File Size: 110340975
+    FLOPs: 16959133120
+    Parameters: 55850000
+    File Size: 223774238
     Architecture:
-    - Convolution
-    - Dense Connections
-    - Global Average Pooling
-    - Grouped Convolution
-    - Max Pooling
-    - Residual Connection
-    - Selective Kernel
+    - Average Pooling
+    - Dropout
+    - Inception-ResNet-v2 Reduction-B
+    - Inception-ResNet-v2-A
+    - Inception-ResNet-v2-B
+    - Inception-ResNet-v2-C
+    - Reduction-A
     - Softmax
     Tasks:
     - Image Classification
+    Training Techniques:
+    - Label Smoothing
+    - RMSProp
+    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: skresnext50_32x4d
-    LR: 0.1
-    Epochs: 100
-    Layers: 50
-    Crop Pct: '0.875'
+    Training Resources: 20x NVIDIA Kepler GPUs
+    ID: inception_resnet_v2
+    LR: 0.045
+    Dropout: 0.2
+    Crop Pct: '0.897'
     Momentum: 0.9
-    Batch Size: 256
-    Image Size: '224'
-    Weight Decay: 0.0001
+    Image Size: '299'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L210
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnext50_ra-f40e40bf.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_resnet_v2.py#L343
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/inception_resnet_v2-940b1cd6.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 80.15%
-      Top 5 Accuracy: 94.64%
+      Top 1 Accuracy: 0.95%
+      Top 5 Accuracy: 17.29%
 -->

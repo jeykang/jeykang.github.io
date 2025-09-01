@@ -1,13 +1,15 @@
-# SE-ResNeXt
+# (Gluon) ResNeXt
 
-**SE ResNeXt** is a variant of a [ResNext](https://www.paperswithcode.com/method/resneXt) that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
+A **ResNeXt** repeats a [building block](https://paperswithcode.com/method/resnext-block) that aggregates a set of transformations with the same topology. Compared to a [ResNet](https://paperswithcode.com/method/resnet), it exposes a new dimension,  *cardinality* (the size of the set of transformations) $C$, as an essential factor in addition to the dimensions of depth and width. 
+
+The weights from this model were ported from [Gluon](https://cv.gluon.ai/model_zoo/classification.html).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('seresnext26d_32x4d', pretrained=True)
+model = timm.create_model('gluon_resnext101_32x4d', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `seresnext26d_32x4d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `gluon_resnext101_32x4d`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('seresnext26d_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('gluon_resnext101_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,30 +74,39 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{hu2019squeezeandexcitation,
-      title={Squeeze-and-Excitation Networks}, 
-      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
-      year={2019},
-      eprint={1709.01507},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/XieGDTH16,
+  author    = {Saining Xie and
+               Ross B. Girshick and
+               Piotr Doll{\'{a}}r and
+               Zhuowen Tu and
+               Kaiming He},
+  title     = {Aggregated Residual Transformations for Deep Neural Networks},
+  journal   = {CoRR},
+  volume    = {abs/1611.05431},
+  year      = {2016},
+  url       = {http://arxiv.org/abs/1611.05431},
+  archivePrefix = {arXiv},
+  eprint    = {1611.05431},
+  timestamp = {Mon, 13 Aug 2018 16:45:58 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/XieGDTH16.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: SEResNeXt
+- Name: Gloun ResNeXt
   Paper:
-    Title: Squeeze-and-Excitation Networks
-    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
+    Title: Aggregated Residual Transformations for Deep Neural Networks
+    URL: https://paperswithcode.com/paper/aggregated-residual-transformations-for-deep
 Models:
-- Name: seresnext26d_32x4d
-  In Collection: SEResNeXt
+- Name: gluon_resnext101_32x4d
+  In Collection: Gloun ResNeXt
   Metadata:
-    FLOPs: 3507053024
-    Parameters: 16810000
-    File Size: 67425193
+    FLOPs: 10298145792
+    Parameters: 44180000
+    File Size: 177367414
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -107,40 +118,28 @@ Models:
     - ResNeXt Block
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - Label Smoothing
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x NVIDIA Titan X GPUs
-    ID: seresnext26d_32x4d
-    LR: 0.6
-    Epochs: 100
-    Layers: 26
-    Dropout: 0.2
+    ID: gluon_resnext101_32x4d
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1234
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext26d_32x4d-80fa48a3.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_resnet.py#L193
+  Weights: https://github.com/rwightman/pytorch-pretrained-gluonresnet/releases/download/v0.1/gluon_resnext101_32x4d-b253c8c4.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 77.59%
-      Top 5 Accuracy: 93.61%
-- Name: seresnext26t_32x4d
-  In Collection: SEResNeXt
+      Top 1 Accuracy: 80.33%
+      Top 5 Accuracy: 94.91%
+- Name: gluon_resnext101_64x4d
+  In Collection: Gloun ResNeXt
   Metadata:
-    FLOPs: 3466436448
-    Parameters: 16820000
-    File Size: 67414838
+    FLOPs: 19954172928
+    Parameters: 83460000
+    File Size: 334737852
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -152,40 +151,28 @@ Models:
     - ResNeXt Block
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - Label Smoothing
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x NVIDIA Titan X GPUs
-    ID: seresnext26t_32x4d
-    LR: 0.6
-    Epochs: 100
-    Layers: 26
-    Dropout: 0.2
+    ID: gluon_resnext101_64x4d
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1246
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext26tn_32x4d-569cb627.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_resnet.py#L201
+  Weights: https://github.com/rwightman/pytorch-pretrained-gluonresnet/releases/download/v0.1/gluon_resnext101_64x4d-f9a8e184.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 77.99%
-      Top 5 Accuracy: 93.73%
-- Name: seresnext50_32x4d
-  In Collection: SEResNeXt
+      Top 1 Accuracy: 80.63%
+      Top 5 Accuracy: 95.0%
+- Name: gluon_resnext50_32x4d
+  In Collection: Gloun ResNeXt
   Metadata:
-    FLOPs: 5475179184
-    Parameters: 27560000
-    File Size: 110569859
+    FLOPs: 5472648192
+    Parameters: 25030000
+    File Size: 100441719
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -197,32 +184,20 @@ Models:
     - ResNeXt Block
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - Label Smoothing
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x NVIDIA Titan X GPUs
-    ID: seresnext50_32x4d
-    LR: 0.6
-    Epochs: 100
-    Layers: 50
-    Dropout: 0.2
+    ID: gluon_resnext50_32x4d
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1267
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext50_32x4d_racm-a304a460.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_resnet.py#L185
+  Weights: https://github.com/rwightman/pytorch-pretrained-gluonresnet/releases/download/v0.1/gluon_resnext50_32x4d-e6a097c1.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 81.27%
-      Top 5 Accuracy: 95.62%
+      Top 1 Accuracy: 79.35%
+      Top 5 Accuracy: 94.42%
 -->
