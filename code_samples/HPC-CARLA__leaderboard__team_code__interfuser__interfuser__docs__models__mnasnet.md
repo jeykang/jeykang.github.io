@@ -1,13 +1,13 @@
-# MobileNet v3
+# MnasNet
 
-**MobileNetV3** is a convolutional neural network that is designed for mobile phone CPUs. The network design includes the use of a [hard swish activation](https://paperswithcode.com/method/hard-swish) and [squeeze-and-excitation](https://paperswithcode.com/method/squeeze-and-excitation-block) modules in the [MBConv blocks](https://paperswithcode.com/method/inverted-residual-block).
+**MnasNet** is a type of convolutional neural network optimized for mobile devices that is discovered through mobile neural architecture search, which explicitly incorporates model latency into the main objective so that the search can identify a model that achieves a good trade-off between accuracy and latency. The main building block is an [inverted residual block](https://paperswithcode.com/method/inverted-residual-block) (from [MobileNetV2](https://paperswithcode.com/method/mobilenetv2)).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('mobilenetv3_large_100', pretrained=True)
+model = timm.create_model('mnasnet_100', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `mobilenetv3_large_100`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `mnasnet_100`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('mobilenetv3_large_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('mnasnet_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,60 +72,42 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/abs-1905-02244,
-  author    = {Andrew Howard and
-               Mark Sandler and
-               Grace Chu and
-               Liang{-}Chieh Chen and
-               Bo Chen and
-               Mingxing Tan and
-               Weijun Wang and
-               Yukun Zhu and
-               Ruoming Pang and
-               Vijay Vasudevan and
-               Quoc V. Le and
-               Hartwig Adam},
-  title     = {Searching for MobileNetV3},
-  journal   = {CoRR},
-  volume    = {abs/1905.02244},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1905.02244},
-  archivePrefix = {arXiv},
-  eprint    = {1905.02244},
-  timestamp = {Tue, 12 Jan 2021 15:30:06 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1905-02244.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@misc{tan2019mnasnet,
+      title={MnasNet: Platform-Aware Neural Architecture Search for Mobile}, 
+      author={Mingxing Tan and Bo Chen and Ruoming Pang and Vijay Vasudevan and Mark Sandler and Andrew Howard and Quoc V. Le},
+      year={2019},
+      eprint={1807.11626},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: MobileNet V3
+- Name: MNASNet
   Paper:
-    Title: Searching for MobileNetV3
-    URL: https://paperswithcode.com/paper/searching-for-mobilenetv3
+    Title: 'MnasNet: Platform-Aware Neural Architecture Search for Mobile'
+    URL: https://paperswithcode.com/paper/mnasnet-platform-aware-neural-architecture
 Models:
-- Name: mobilenetv3_large_100
-  In Collection: MobileNet V3
+- Name: mnasnet_100
+  In Collection: MNASNet
   Metadata:
-    FLOPs: 287193752
-    Parameters: 5480000
-    File Size: 22076443
+    FLOPs: 416415488
+    Parameters: 4380000
+    File Size: 17731774
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Dense Connections
     - Depthwise Separable Convolution
     - Dropout
     - Global Average Pooling
-    - Hard Swish
     - Inverted Residual Block
+    - Max Pooling
     - ReLU
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
@@ -133,67 +115,56 @@ Models:
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 4x4 TPU Pod
-    ID: mobilenetv3_large_100
-    LR: 0.1
-    Dropout: 0.8
+    ID: mnasnet_100
+    Layers: 100
+    Dropout: 0.2
     Crop Pct: '0.875'
     Momentum: 0.9
-    Batch Size: 4096
+    Batch Size: 4000
     Image Size: '224'
-    Weight Decay: 1.0e-05
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/mobilenetv3.py#L363
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth
+    RMSProp Decay: 0.9
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L894
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_b1-74cb7081.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.77%
-      Top 5 Accuracy: 92.54%
-- Name: mobilenetv3_rw
-  In Collection: MobileNet V3
+      Top 1 Accuracy: 74.67%
+      Top 5 Accuracy: 92.1%
+- Name: semnasnet_100
+  In Collection: MNASNet
   Metadata:
-    FLOPs: 287190638
-    Parameters: 5480000
-    File Size: 22064048
+    FLOPs: 414570766
+    Parameters: 3890000
+    File Size: 15731489
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Dense Connections
     - Depthwise Separable Convolution
     - Dropout
     - Global Average Pooling
-    - Hard Swish
     - Inverted Residual Block
+    - Max Pooling
     - ReLU
     - Residual Connection
     - Softmax
     - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - RMSProp
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 4x4 TPU Pod
-    ID: mobilenetv3_rw
-    LR: 0.1
-    Dropout: 0.8
+    ID: semnasnet_100
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 4096
     Image Size: '224'
-    Weight Decay: 1.0e-05
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/mobilenetv3.py#L384
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_100-35495452.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L928
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_a1-d9418771.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.62%
-      Top 5 Accuracy: 92.71%
+      Top 1 Accuracy: 75.45%
+      Top 5 Accuracy: 92.61%
 -->
