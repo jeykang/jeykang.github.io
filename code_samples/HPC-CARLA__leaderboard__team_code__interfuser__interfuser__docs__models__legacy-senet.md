@@ -1,13 +1,15 @@
-# Res2NeXt
+# (Legacy) SENet
 
-**Res2NeXt** is an image model that employs a variation on [ResNeXt](https://paperswithcode.com/method/resnext) bottleneck residual blocks. The motivation is to be able to represent features at multiple scales. This is achieved through a novel building block for CNNs that constructs hierarchical residual-like connections within one single residual block. This represents multi-scale features at a granular level and increases the range of receptive fields for each network layer.
+A **SENet** is a convolutional neural network architecture that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
+
+The weights from this model were ported from Gluon.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('res2next50', pretrained=True)
+model = timm.create_model('legacy_senet154', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `res2next50`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `legacy_senet154`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('res2next50', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('legacy_senet154', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,65 +74,62 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{Gao_2021,
-   title={Res2Net: A New Multi-Scale Backbone Architecture},
-   volume={43},
-   ISSN={1939-3539},
-   url={http://dx.doi.org/10.1109/TPAMI.2019.2938758},
-   DOI={10.1109/tpami.2019.2938758},
-   number={2},
-   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
-   publisher={Institute of Electrical and Electronics Engineers (IEEE)},
-   author={Gao, Shang-Hua and Cheng, Ming-Ming and Zhao, Kai and Zhang, Xin-Yu and Yang, Ming-Hsuan and Torr, Philip},
-   year={2021},
-   month={Feb},
-   pages={652–662}
+@misc{hu2019squeezeandexcitation,
+      title={Squeeze-and-Excitation Networks}, 
+      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
+      year={2019},
+      eprint={1709.01507},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: Res2NeXt
+- Name: Legacy SENet
   Paper:
-    Title: 'Res2Net: A New Multi-scale Backbone Architecture'
-    URL: https://paperswithcode.com/paper/res2net-a-new-multi-scale-backbone
+    Title: Squeeze-and-Excitation Networks
+    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
 Models:
-- Name: res2next50
-  In Collection: Res2NeXt
+- Name: legacy_senet154
+  In Collection: Legacy SENet
   Metadata:
-    FLOPs: 5396798208
-    Parameters: 24670000
-    File Size: 99019592
+    FLOPs: 26659556016
+    Parameters: 115090000
+    File Size: 461488402
     Architecture:
-    - Batch Normalization
     - Convolution
+    - Dense Connections
     - Global Average Pooling
-    - ReLU
-    - Res2NeXt Block
+    - Max Pooling
+    - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
+    - Label Smoothing
     - SGD with Momentum
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 4x Titan Xp GPUs
-    ID: res2next50
-    LR: 0.1
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_senet154
+    LR: 0.6
     Epochs: 100
+    Layers: 154
+    Dropout: 0.2
     Crop Pct: '0.875'
     Momentum: 0.9
-    Batch Size: 256
+    Batch Size: 1024
     Image Size: '224'
-    Weight Decay: 0.0001
     Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/res2net.py#L207
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-res2net/res2next50_4s-6ef7e7bf.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L440
+  Weights: http://data.lip6.fr/cadene/pretrainedmodels/senet154-c7b49a05.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 78.24%
-      Top 5 Accuracy: 93.91%
+      Top 1 Accuracy: 81.33%
+      Top 5 Accuracy: 95.51%
 -->
