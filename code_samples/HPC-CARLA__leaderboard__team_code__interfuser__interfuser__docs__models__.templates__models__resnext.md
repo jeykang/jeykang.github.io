@@ -1,8 +1,6 @@
-# (Gluon) ResNeXt
+# ResNeXt
 
 A **ResNeXt** repeats a [building block](https://paperswithcode.com/method/resnext-block) that aggregates a set of transformations with the same topology. Compared to a [ResNet](https://paperswithcode.com/method/resnet), it exposes a new dimension,  *cardinality* (the size of the set of transformations) $C$, as an essential factor in addition to the dimensions of depth and width. 
-
-The weights from this model were ported from [Gluon](https://cv.gluon.ai/model_zoo/classification.html).
 
 {% include 'code_snippets.md' %}
 
@@ -35,17 +33,17 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: Gloun ResNeXt
+- Name: ResNeXt
   Paper:
     Title: Aggregated Residual Transformations for Deep Neural Networks
     URL: https://paperswithcode.com/paper/aggregated-residual-transformations-for-deep
 Models:
-- Name: gluon_resnext101_32x4d
-  In Collection: Gloun ResNeXt
+- Name: resnext101_32x8d
+  In Collection: ResNeXt
   Metadata:
-    FLOPs: 10298145792
-    Parameters: 44180000
-    File Size: 177367414
+    FLOPs: 21180417024
+    Parameters: 88790000
+    File Size: 356082095
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -61,57 +59,24 @@ Models:
     - Image Classification
     Training Data:
     - ImageNet
-    ID: gluon_resnext101_32x4d
+    ID: resnext101_32x8d
     Crop Pct: '0.875'
     Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_resnet.py#L193
-  Weights: https://github.com/rwightman/pytorch-pretrained-gluonresnet/releases/download/v0.1/gluon_resnext101_32x4d-b253c8c4.pth
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/resnet.py#L877
+  Weights: https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 80.33%
-      Top 5 Accuracy: 94.91%
-- Name: gluon_resnext101_64x4d
-  In Collection: Gloun ResNeXt
-  Metadata:
-    FLOPs: 19954172928
-    Parameters: 83460000
-    File Size: 334737852
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Grouped Convolution
-    - Max Pooling
-    - ReLU
-    - ResNeXt Block
-    - Residual Connection
-    - Softmax
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: gluon_resnext101_64x4d
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_resnet.py#L201
-  Weights: https://github.com/rwightman/pytorch-pretrained-gluonresnet/releases/download/v0.1/gluon_resnext101_64x4d-f9a8e184.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 80.63%
-      Top 5 Accuracy: 95.0%
-- Name: gluon_resnext50_32x4d
-  In Collection: Gloun ResNeXt
+      Top 1 Accuracy: 79.3%
+      Top 5 Accuracy: 94.53%
+- Name: resnext50_32x4d
+  In Collection: ResNeXt
   Metadata:
     FLOPs: 5472648192
     Parameters: 25030000
-    File Size: 100441719
+    File Size: 100435887
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -127,16 +92,92 @@ Models:
     - Image Classification
     Training Data:
     - ImageNet
-    ID: gluon_resnext50_32x4d
+    ID: resnext50_32x4d
     Crop Pct: '0.875'
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_resnet.py#L185
-  Weights: https://github.com/rwightman/pytorch-pretrained-gluonresnet/releases/download/v0.1/gluon_resnext50_32x4d-e6a097c1.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/resnet.py#L851
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnext50_32x4d_ra-d733960d.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 79.35%
-      Top 5 Accuracy: 94.42%
+      Top 1 Accuracy: 79.79%
+      Top 5 Accuracy: 94.61%
+- Name: resnext50d_32x4d
+  In Collection: ResNeXt
+  Metadata:
+    FLOPs: 5781119488
+    Parameters: 25050000
+    File Size: 100515304
+    Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
+    - Convolution
+    - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    Tasks:
+    - Image Classification
+    Training Data:
+    - ImageNet
+    ID: resnext50d_32x4d
+    Crop Pct: '0.875'
+    Image Size: '224'
+    Interpolation: bicubic
+  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/resnet.py#L869
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnext50d_32x4d-103e99f8.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 79.67%
+      Top 5 Accuracy: 94.87%
+- Name: tv_resnext50_32x4d
+  In Collection: ResNeXt
+  Metadata:
+    FLOPs: 5472648192
+    Parameters: 25030000
+    File Size: 100441675
+    Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
+    - Convolution
+    - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    Tasks:
+    - Image Classification
+    Training Techniques:
+    - SGD with Momentum
+    - Weight Decay
+    Training Data:
+    - ImageNet
+    ID: tv_resnext50_32x4d
+    LR: 0.1
+    Epochs: 90
+    Crop Pct: '0.875'
+    LR Gamma: 0.1
+    Momentum: 0.9
+    Batch Size: 32
+    Image Size: '224'
+    LR Step Size: 30
+    Weight Decay: 0.0001
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L842
+  Weights: https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 77.61%
+      Top 5 Accuracy: 93.68%
 -->
