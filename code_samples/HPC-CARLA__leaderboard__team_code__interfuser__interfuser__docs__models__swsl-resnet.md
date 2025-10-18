@@ -1,13 +1,17 @@
-# MobileNet v3
+# SWSL ResNet
 
-**MobileNetV3** is a convolutional neural network that is designed for mobile phone CPUs. The network design includes the use of a [hard swish activation](https://paperswithcode.com/method/hard-swish) and [squeeze-and-excitation](https://paperswithcode.com/method/squeeze-and-excitation-block) modules in the [MBConv blocks](https://paperswithcode.com/method/inverted-residual-block).
+**Residual Networks**, or **ResNets**, learn residual functions with reference to the layer inputs, instead of learning unreferenced functions. Instead of hoping each few stacked layers directly fit a desired underlying mapping, residual nets let these layers fit a residual mapping. They stack [residual blocks](https://paperswithcode.com/method/residual-block) ontop of each other to form network: e.g. a ResNet-50 has fifty layers using these blocks. 
+
+The models in this collection utilise semi-weakly supervised learning to improve the performance of the model. The approach brings important gains to standard architectures for image, video and fine-grained classification. 
+
+Please note the CC-BY-NC 4.0 license on theses weights, non-commercial use only.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('mobilenetv3_large_100', pretrained=True)
+model = timm.create_model('swsl_resnet18', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +57,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `mobilenetv3_large_100`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `swsl_resnet18`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('mobilenetv3_large_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('swsl_resnet18', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,28 +76,21 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/abs-1905-02244,
-  author    = {Andrew Howard and
-               Mark Sandler and
-               Grace Chu and
-               Liang{-}Chieh Chen and
-               Bo Chen and
-               Mingxing Tan and
-               Weijun Wang and
-               Yukun Zhu and
-               Ruoming Pang and
-               Vijay Vasudevan and
-               Quoc V. Le and
-               Hartwig Adam},
-  title     = {Searching for MobileNetV3},
+@article{DBLP:journals/corr/abs-1905-00546,
+  author    = {I. Zeki Yalniz and
+               Herv{\'{e}} J{\'{e}}gou and
+               Kan Chen and
+               Manohar Paluri and
+               Dhruv Mahajan},
+  title     = {Billion-scale semi-supervised learning for image classification},
   journal   = {CoRR},
-  volume    = {abs/1905.02244},
+  volume    = {abs/1905.00546},
   year      = {2019},
-  url       = {http://arxiv.org/abs/1905.02244},
+  url       = {http://arxiv.org/abs/1905.00546},
   archivePrefix = {arXiv},
-  eprint    = {1905.02244},
-  timestamp = {Tue, 12 Jan 2021 15:30:06 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1905-02244.bib},
+  eprint    = {1905.00546},
+  timestamp = {Mon, 28 Sep 2020 08:19:37 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-1905-00546.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
@@ -101,99 +98,95 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: MobileNet V3
+- Name: SWSL ResNet
   Paper:
-    Title: Searching for MobileNetV3
-    URL: https://paperswithcode.com/paper/searching-for-mobilenetv3
+    Title: Billion-scale semi-supervised learning for image classification
+    URL: https://paperswithcode.com/paper/billion-scale-semi-supervised-learning-for
 Models:
-- Name: mobilenetv3_large_100
-  In Collection: MobileNet V3
+- Name: swsl_resnet18
+  In Collection: SWSL ResNet
   Metadata:
-    FLOPs: 287193752
-    Parameters: 5480000
-    File Size: 22076443
+    FLOPs: 2337073152
+    Parameters: 11690000
+    File Size: 46811375
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
+    - Bottleneck Residual Block
     - Convolution
-    - Dense Connections
-    - Depthwise Separable Convolution
-    - Dropout
     - Global Average Pooling
-    - Hard Swish
-    - Inverted Residual Block
+    - Max Pooling
     - ReLU
+    - Residual Block
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
-    - RMSProp
+    - SGD with Momentum
     - Weight Decay
     Training Data:
+    - IG-1B-Targeted
     - ImageNet
-    Training Resources: 4x4 TPU Pod
-    ID: mobilenetv3_large_100
-    LR: 0.1
-    Dropout: 0.8
+    Training Resources: 64x GPUs
+    ID: swsl_resnet18
+    LR: 0.0015
+    Epochs: 30
+    Layers: 18
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 4096
+    Batch Size: 1536
     Image Size: '224'
-    Weight Decay: 1.0e-05
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/mobilenetv3.py#L363
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth
+    Weight Decay: 0.0001
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L954
+  Weights: https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnet18-118f1556.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.77%
-      Top 5 Accuracy: 92.54%
-- Name: mobilenetv3_rw
-  In Collection: MobileNet V3
+      Top 1 Accuracy: 73.28%
+      Top 5 Accuracy: 91.76%
+- Name: swsl_resnet50
+  In Collection: SWSL ResNet
   Metadata:
-    FLOPs: 287190638
-    Parameters: 5480000
-    File Size: 22064048
+    FLOPs: 5282531328
+    Parameters: 25560000
+    File Size: 102480594
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
+    - Bottleneck Residual Block
     - Convolution
-    - Dense Connections
-    - Depthwise Separable Convolution
-    - Dropout
     - Global Average Pooling
-    - Hard Swish
-    - Inverted Residual Block
+    - Max Pooling
     - ReLU
+    - Residual Block
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
-    - RMSProp
+    - SGD with Momentum
     - Weight Decay
     Training Data:
+    - IG-1B-Targeted
     - ImageNet
-    Training Resources: 4x4 TPU Pod
-    ID: mobilenetv3_rw
-    LR: 0.1
-    Dropout: 0.8
+    Training Resources: 64x GPUs
+    ID: swsl_resnet50
+    LR: 0.0015
+    Epochs: 30
+    Layers: 50
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 4096
+    Batch Size: 1536
     Image Size: '224'
-    Weight Decay: 1.0e-05
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/mobilenetv3.py#L384
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_100-35495452.pth
+    Weight Decay: 0.0001
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L965
+  Weights: https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnet50-16a12f1b.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.62%
-      Top 5 Accuracy: 92.71%
+      Top 1 Accuracy: 81.14%
+      Top 5 Accuracy: 95.97%
 -->
