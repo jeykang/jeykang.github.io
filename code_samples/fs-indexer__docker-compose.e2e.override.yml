@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  # For E2E we don't want the stack to be blocked by health status.
+  # Your e2e script waits on /health externally anyway.
+  meilisearch:
+    # Option A: disable healthcheck entirely for E2E
+    healthcheck: null
+    # (If you prefer to keep it, leave this out. The key piece is depends_on below.)
+
+  bootstrap:
+    depends_on:
+      meilisearch:
+        condition: service_started   # instead of service_healthy
+
+  search-api:
+    depends_on:
+      meilisearch:
+        condition: service_started   # instead of service_healthy
+      bootstrap:
+        condition: service_completed_successfully
+
+  indexer:
+    depends_on:
+      meilisearch:
+        condition: service_started   # instead of service_healthy
+      bootstrap:
+        condition: service_completed_successfully
