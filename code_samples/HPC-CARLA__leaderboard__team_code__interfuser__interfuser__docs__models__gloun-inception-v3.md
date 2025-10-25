@@ -1,13 +1,15 @@
-# NASNet
+# (Gluon) Inception v3
 
-**NASNet** is a type of convolutional neural network discovered through neural architecture search. The building blocks consist of normal and reduction cells.
+**Inception v3** is a convolutional neural network architecture from the Inception family that makes several improvements including using [Label Smoothing](https://paperswithcode.com/method/label-smoothing), Factorized 7 x 7 convolutions, and the use of an [auxiliary classifer](https://paperswithcode.com/method/auxiliary-classifier) to propagate label information lower down the network (along with the use of batch normalization for layers in the sidehead). The key building block is an [Inception Module](https://paperswithcode.com/method/inception-v3-module).
+
+The weights from this model were ported from [Gluon](https://cv.gluon.ai/model_zoo/classification.html).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('nasnetalarge', pretrained=True)
+model = timm.create_model('gluon_inception_v3', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `nasnetalarge`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `gluon_inception_v3`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('nasnetalarge', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('gluon_inception_v3', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,60 +74,66 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{zoph2018learning,
-      title={Learning Transferable Architectures for Scalable Image Recognition}, 
-      author={Barret Zoph and Vijay Vasudevan and Jonathon Shlens and Quoc V. Le},
-      year={2018},
-      eprint={1707.07012},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/SzegedyVISW15,
+  author    = {Christian Szegedy and
+               Vincent Vanhoucke and
+               Sergey Ioffe and
+               Jonathon Shlens and
+               Zbigniew Wojna},
+  title     = {Rethinking the Inception Architecture for Computer Vision},
+  journal   = {CoRR},
+  volume    = {abs/1512.00567},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1512.00567},
+  archivePrefix = {arXiv},
+  eprint    = {1512.00567},
+  timestamp = {Mon, 13 Aug 2018 16:49:07 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/SzegedyVISW15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: NASNet
+- Name: Gloun Inception v3
   Paper:
-    Title: Learning Transferable Architectures for Scalable Image Recognition
-    URL: https://paperswithcode.com/paper/learning-transferable-architectures-for
+    Title: Rethinking the Inception Architecture for Computer Vision
+    URL: https://paperswithcode.com/paper/rethinking-the-inception-architecture-for
 Models:
-- Name: nasnetalarge
-  In Collection: NASNet
+- Name: gluon_inception_v3
+  In Collection: Gloun Inception v3
   Metadata:
-    FLOPs: 30242402862
-    Parameters: 88750000
-    File Size: 356056626
+    FLOPs: 7352418880
+    Parameters: 23830000
+    File Size: 95567055
     Architecture:
+    - 1x1 Convolution
+    - Auxiliary Classifier
+    - Average Pooling
     - Average Pooling
     - Batch Normalization
     - Convolution
-    - Depthwise Separable Convolution
+    - Dense Connections
     - Dropout
+    - Inception-v3 Module
+    - Max Pooling
     - ReLU
+    - Softmax
     Tasks:
     - Image Classification
-    Training Techniques:
-    - Label Smoothing
-    - RMSProp
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 50x Tesla K40 GPUs
-    ID: nasnetalarge
-    Dropout: 0.5
-    Crop Pct: '0.911'
-    Momentum: 0.9
-    Image Size: '331'
+    ID: gluon_inception_v3
+    Crop Pct: '0.875'
+    Image Size: '299'
     Interpolation: bicubic
-    Label Smoothing: 0.1
-    RMSProp $\epsilon$: 1.0
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/nasnet.py#L562
-  Weights: http://data.lip6.fr/cadene/pretrainedmodels/nasnetalarge-a1897284.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L464
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/gluon_inception_v3-9f746940.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 82.63%
-      Top 5 Accuracy: 96.05%
+      Top 1 Accuracy: 78.8%
+      Top 5 Accuracy: 94.38%
 -->
