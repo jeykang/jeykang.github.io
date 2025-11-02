@@ -1,13 +1,17 @@
-# Wide ResNet
+# # Ensemble Adversarial Inception ResNet v2
 
-**Wide Residual Networks** are a variant on [ResNets](https://paperswithcode.com/method/resnet) where we decrease depth and increase the width of residual networks. This is achieved through the use of [wide residual blocks](https://paperswithcode.com/method/wide-residual-block).
+**Inception-ResNet-v2** is a convolutional neural architecture that builds on the Inception family of architectures but incorporates [residual connections](https://paperswithcode.com/method/residual-connection) (replacing the filter concatenation stage of the Inception architecture).
+
+This particular model was trained for study of adversarial examples (adversarial training).
+
+The weights from this model were ported from [Tensorflow/Models](https://github.com/tensorflow/models).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('wide_resnet101_2', pretrained=True)
+model = timm.create_model('ens_adv_inception_resnet_v2', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +57,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `wide_resnet101_2`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `ens_adv_inception_resnet_v2`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('wide_resnet101_2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('ens_adv_inception_resnet_v2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,18 +76,39 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/ZagoruykoK16,
-  author    = {Sergey Zagoruyko and
-               Nikos Komodakis},
-  title     = {Wide Residual Networks},
+@article{DBLP:journals/corr/abs-1804-00097,
+  author    = {Alexey Kurakin and
+               Ian J. Goodfellow and
+               Samy Bengio and
+               Yinpeng Dong and
+               Fangzhou Liao and
+               Ming Liang and
+               Tianyu Pang and
+               Jun Zhu and
+               Xiaolin Hu and
+               Cihang Xie and
+               Jianyu Wang and
+               Zhishuai Zhang and
+               Zhou Ren and
+               Alan L. Yuille and
+               Sangxia Huang and
+               Yao Zhao and
+               Yuzhe Zhao and
+               Zhonglin Han and
+               Junjiajia Long and
+               Yerkebulan Berdibekov and
+               Takuya Akiba and
+               Seiya Tokui and
+               Motoki Abe},
+  title     = {Adversarial Attacks and Defences Competition},
   journal   = {CoRR},
-  volume    = {abs/1605.07146},
-  year      = {2016},
-  url       = {http://arxiv.org/abs/1605.07146},
+  volume    = {abs/1804.00097},
+  year      = {2018},
+  url       = {http://arxiv.org/abs/1804.00097},
   archivePrefix = {arXiv},
-  eprint    = {1605.07146},
-  timestamp = {Mon, 13 Aug 2018 16:46:42 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/ZagoruykoK16.bib},
+  eprint    = {1804.00097},
+  timestamp = {Thu, 31 Oct 2019 16:31:22 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-1804-00097.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
@@ -91,73 +116,44 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: Wide ResNet
+- Name: Ensemble Adversarial
   Paper:
-    Title: Wide Residual Networks
-    URL: https://paperswithcode.com/paper/wide-residual-networks
+    Title: Adversarial Attacks and Defences Competition
+    URL: https://paperswithcode.com/paper/adversarial-attacks-and-defences-competition
 Models:
-- Name: wide_resnet101_2
-  In Collection: Wide ResNet
+- Name: ens_adv_inception_resnet_v2
+  In Collection: Ensemble Adversarial
   Metadata:
-    FLOPs: 29304929280
-    Parameters: 126890000
-    File Size: 254695146
+    FLOPs: 16959133120
+    Parameters: 55850000
+    File Size: 223774238
     Architecture:
     - 1x1 Convolution
+    - Auxiliary Classifier
+    - Average Pooling
+    - Average Pooling
     - Batch Normalization
     - Convolution
-    - Global Average Pooling
+    - Dense Connections
+    - Dropout
+    - Inception-v3 Module
     - Max Pooling
     - ReLU
-    - Residual Connection
     - Softmax
-    - Wide Residual Block
     Tasks:
     - Image Classification
     Training Data:
     - ImageNet
-    ID: wide_resnet101_2
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L802
-  Weights: https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 78.85%
-      Top 5 Accuracy: 94.28%
-- Name: wide_resnet50_2
-  In Collection: Wide ResNet
-  Metadata:
-    FLOPs: 14688058368
-    Parameters: 68880000
-    File Size: 275853271
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Max Pooling
-    - ReLU
-    - Residual Connection
-    - Softmax
-    - Wide Residual Block
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: wide_resnet50_2
-    Crop Pct: '0.875'
-    Image Size: '224'
+    ID: ens_adv_inception_resnet_v2
+    Crop Pct: '0.897'
+    Image Size: '299'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L790
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/wide_resnet50_racm-8234f177.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_resnet_v2.py#L351
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/ens_adv_inception_resnet_v2-2592a550.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 81.45%
-      Top 5 Accuracy: 95.52%
+      Top 1 Accuracy: 1.0%
+      Top 5 Accuracy: 17.32%
 -->
