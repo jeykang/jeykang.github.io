@@ -1,13 +1,13 @@
-# Inception v3
+# CSP-ResNet
 
-**Inception v3** is a convolutional neural network architecture from the Inception family that makes several improvements including using [Label Smoothing](https://paperswithcode.com/method/label-smoothing), Factorized 7 x 7 convolutions, and the use of an [auxiliary classifer](https://paperswithcode.com/method/auxiliary-classifier) to propagate label information lower down the network (along with the use of batch normalization for layers in the sidehead). The key building block is an [Inception Module](https://paperswithcode.com/method/inception-v3-module).
+**CSPResNet** is a convolutional neural network where we apply the Cross Stage Partial Network (CSPNet) approach to [ResNet](https://paperswithcode.com/method/resnet). The CSPNet partitions the feature map of the base layer into two parts and then merges them through a cross-stage hierarchy. The use of a split and merge strategy allows for more gradient flow through the network.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('inception_v3', pretrained=True)
+model = timm.create_model('cspresnet50', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `inception_v3`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `cspresnet50`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('inception_v3', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('cspresnet50', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,75 +72,66 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/SzegedyVISW15,
-  author    = {Christian Szegedy and
-               Vincent Vanhoucke and
-               Sergey Ioffe and
-               Jonathon Shlens and
-               Zbigniew Wojna},
-  title     = {Rethinking the Inception Architecture for Computer Vision},
-  journal   = {CoRR},
-  volume    = {abs/1512.00567},
-  year      = {2015},
-  url       = {http://arxiv.org/abs/1512.00567},
-  archivePrefix = {arXiv},
-  eprint    = {1512.00567},
-  timestamp = {Mon, 13 Aug 2018 16:49:07 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/SzegedyVISW15.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@misc{wang2019cspnet,
+      title={CSPNet: A New Backbone that can Enhance Learning Capability of CNN}, 
+      author={Chien-Yao Wang and Hong-Yuan Mark Liao and I-Hau Yeh and Yueh-Hua Wu and Ping-Yang Chen and Jun-Wei Hsieh},
+      year={2019},
+      eprint={1911.11929},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: Inception v3
+- Name: CSP ResNet
   Paper:
-    Title: Rethinking the Inception Architecture for Computer Vision
-    URL: https://paperswithcode.com/paper/rethinking-the-inception-architecture-for
+    Title: 'CSPNet: A New Backbone that can Enhance Learning Capability of CNN'
+    URL: https://paperswithcode.com/paper/cspnet-a-new-backbone-that-can-enhance
 Models:
-- Name: inception_v3
-  In Collection: Inception v3
+- Name: cspresnet50
+  In Collection: CSP ResNet
   Metadata:
-    FLOPs: 7352418880
-    Parameters: 23830000
-    File Size: 108857766
+    FLOPs: 5924992000
+    Parameters: 21620000
+    File Size: 86679303
     Architecture:
     - 1x1 Convolution
-    - Auxiliary Classifier
-    - Average Pooling
-    - Average Pooling
     - Batch Normalization
+    - Bottleneck Residual Block
     - Convolution
-    - Dense Connections
-    - Dropout
-    - Inception-v3 Module
+    - Global Average Pooling
     - Max Pooling
     - ReLU
+    - Residual Block
+    - Residual Connection
     - Softmax
     Tasks:
     - Image Classification
     Training Techniques:
-    - Gradient Clipping
     - Label Smoothing
-    - RMSProp
+    - Polynomial Learning Rate Decay
+    - SGD with Momentum
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 50x NVIDIA Kepler GPUs
-    ID: inception_v3
-    LR: 0.045
-    Dropout: 0.2
-    Crop Pct: '0.875'
+    ID: cspresnet50
+    LR: 0.1
+    Layers: 50
+    Crop Pct: '0.887'
     Momentum: 0.9
-    Image Size: '299'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L442
-  Weights: https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth
+    Batch Size: 128
+    Image Size: '256'
+    Weight Decay: 0.005
+    Interpolation: bilinear
+    Training Steps: 8000000
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/cspnet.py#L415
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/cspresnet50_ra-d3e8d487.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 77.46%
-      Top 5 Accuracy: 93.48%
+      Top 1 Accuracy: 79.57%
+      Top 5 Accuracy: 94.71%
 -->
