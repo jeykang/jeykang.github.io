@@ -1,13 +1,15 @@
-# SE-ResNet
+# ESE-VoVNet
 
-**SE ResNet** is a variant of a [ResNet](https://www.paperswithcode.com/method/resnet) that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
+**VoVNet** is a convolutional neural network that seeks to make [DenseNet](https://paperswithcode.com/method/densenet) more efficient by concatenating all features only once in the last feature map, which makes input size constant and enables enlarging new output channel. 
+
+Read about [one-shot aggregation here](https://paperswithcode.com/method/one-shot-aggregation).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('seresnet152d', pretrained=True)
+model = timm.create_model('ese_vovnet19b_dw', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `seresnet152d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `ese_vovnet19b_dw`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('seresnet152d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('ese_vovnet19b_dw', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,11 +74,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{hu2019squeezeandexcitation,
-      title={Squeeze-and-Excitation Networks}, 
-      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
+@misc{lee2019energy,
+      title={An Energy and GPU-Computation Efficient Backbone Network for Real-Time Object Detection}, 
+      author={Youngwan Lee and Joong-won Hwang and Sangrok Lee and Yuseok Bae and Jongyoul Park},
       year={2019},
-      eprint={1709.01507},
+      eprint={1904.09730},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -85,99 +87,67 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: SE ResNet
+- Name: ESE VovNet
   Paper:
-    Title: Squeeze-and-Excitation Networks
-    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
+    Title: 'CenterMask : Real-Time Anchor-Free Instance Segmentation'
+    URL: https://paperswithcode.com/paper/centermask-real-time-anchor-free-instance-1
 Models:
-- Name: seresnet152d
-  In Collection: SE ResNet
+- Name: ese_vovnet19b_dw
+  In Collection: ESE VovNet
   Metadata:
-    FLOPs: 20161904304
-    Parameters: 66840000
-    File Size: 268144497
+    FLOPs: 1711959904
+    Parameters: 6540000
+    File Size: 26243175
     Architecture:
-    - 1x1 Convolution
     - Batch Normalization
-    - Bottleneck Residual Block
     - Convolution
-    - Global Average Pooling
     - Max Pooling
+    - One-Shot Aggregation
     - ReLU
-    - Residual Block
-    - Residual Connection
-    - Softmax
-    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - Label Smoothing
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x NVIDIA Titan X GPUs
-    ID: seresnet152d
-    LR: 0.6
-    Epochs: 100
-    Layers: 152
-    Dropout: 0.2
-    Crop Pct: '0.94'
-    Momentum: 0.9
-    Batch Size: 1024
-    Image Size: '256'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1206
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnet152d_ra2-04464dd2.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 83.74%
-      Top 5 Accuracy: 96.77%
-- Name: seresnet50
-  In Collection: SE ResNet
-  Metadata:
-    FLOPs: 5285062320
-    Parameters: 28090000
-    File Size: 112621903
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Bottleneck Residual Block
-    - Convolution
-    - Global Average Pooling
-    - Max Pooling
-    - ReLU
-    - Residual Block
-    - Residual Connection
-    - Softmax
-    - Squeeze-and-Excitation Block
-    Tasks:
-    - Image Classification
-    Training Techniques:
-    - Label Smoothing
-    - SGD with Momentum
-    - Weight Decay
-    Training Data:
-    - ImageNet
-    Training Resources: 8x NVIDIA Titan X GPUs
-    ID: seresnet50
-    LR: 0.6
-    Epochs: 100
-    Layers: 50
-    Dropout: 0.2
+    ID: ese_vovnet19b_dw
+    Layers: 19
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1180
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnet50_ra_224-8efdb4bb.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/vovnet.py#L361
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/ese_vovnet19b_dw-a8741004.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 80.26%
-      Top 5 Accuracy: 95.07%
+      Top 1 Accuracy: 76.82%
+      Top 5 Accuracy: 93.28%
+- Name: ese_vovnet39b
+  In Collection: ESE VovNet
+  Metadata:
+    FLOPs: 9089259008
+    Parameters: 24570000
+    File Size: 98397138
+    Architecture:
+    - Batch Normalization
+    - Convolution
+    - Max Pooling
+    - One-Shot Aggregation
+    - ReLU
+    Tasks:
+    - Image Classification
+    Training Data:
+    - ImageNet
+    ID: ese_vovnet39b
+    Layers: 39
+    Crop Pct: '0.875'
+    Image Size: '224'
+    Interpolation: bicubic
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/vovnet.py#L371
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/ese_vovnet39b-f912fe73.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 79.31%
+      Top 5 Accuracy: 94.72%
 -->
