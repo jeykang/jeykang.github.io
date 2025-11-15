@@ -34,7 +34,7 @@ import tf
 from carla_msgs.msg import CarlaEgoVehicleStatus, CarlaEgoVehicleInfo, CarlaEgoVehicleInfoWheel, CarlaEgoVehicleControl, CarlaWorldInfo
 # pylint: enable=line-too-long
 
-from srunner.autoagents.autonomous_agent import AutonomousAgent
+from leaderboard.autoagents.autonomous_agent import AutonomousAgent, Track
 
 
 class RosAgent(AutonomousAgent):
@@ -66,6 +66,7 @@ class RosAgent(AutonomousAgent):
         """
         setup agent
         """
+        self.track = Track.MAP
         self.stack_thread = None
 
         # get start_script from environment
