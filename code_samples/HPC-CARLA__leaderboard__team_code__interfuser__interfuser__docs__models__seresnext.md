@@ -1,13 +1,13 @@
-# SelecSLS
+# SE-ResNeXt
 
-**SelecSLS** uses novel selective long and short range skip connections to improve the information flow allowing for a drastically faster network without compromising accuracy.
+**SE ResNeXt** is a variant of a [ResNext](https://www.paperswithcode.com/method/resneXt) that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('selecsls42b', pretrained=True)
+model = timm.create_model('seresnext26d_32x4d', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `selecsls42b`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `seresnext26d_32x4d`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('selecsls42b', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('seresnext26d_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,126 +72,157 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{Mehta_2020,
-   title={XNect},
-   volume={39},
-   ISSN={1557-7368},
-   url={http://dx.doi.org/10.1145/3386569.3392410},
-   DOI={10.1145/3386569.3392410},
-   number={4},
-   journal={ACM Transactions on Graphics},
-   publisher={Association for Computing Machinery (ACM)},
-   author={Mehta, Dushyant and Sotnychenko, Oleksandr and Mueller, Franziska and Xu, Weipeng and Elgharib, Mohamed and Fua, Pascal and Seidel, Hans-Peter and Rhodin, Helge and Pons-Moll, Gerard and Theobalt, Christian},
-   year={2020},
-   month={Jul}
+@misc{hu2019squeezeandexcitation,
+      title={Squeeze-and-Excitation Networks}, 
+      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
+      year={2019},
+      eprint={1709.01507},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: SelecSLS
+- Name: SEResNeXt
   Paper:
-    Title: 'XNect: Real-time Multi-Person 3D Motion Capture with a Single RGB Camera'
-    URL: https://paperswithcode.com/paper/xnect-real-time-multi-person-3d-human-pose
+    Title: Squeeze-and-Excitation Networks
+    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
 Models:
-- Name: selecsls42b
-  In Collection: SelecSLS
+- Name: seresnext26d_32x4d
+  In Collection: SEResNeXt
   Metadata:
-    FLOPs: 3824022528
-    Parameters: 32460000
-    File Size: 129948954
+    FLOPs: 3507053024
+    Parameters: 16810000
+    File Size: 67425193
     Architecture:
+    - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Dense Connections
-    - Dropout
     - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
     - ReLU
-    - SelecSLS Block
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
-    - Cosine Annealing
-    - Random Erasing
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: selecsls42b
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: seresnext26d_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 26
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/selecsls.py#L335
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-selecsls/selecsls42b-8af30141.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1234
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext26d_32x4d-80fa48a3.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 77.18%
-      Top 5 Accuracy: 93.39%
-- Name: selecsls60
-  In Collection: SelecSLS
+      Top 1 Accuracy: 77.59%
+      Top 5 Accuracy: 93.61%
+- Name: seresnext26t_32x4d
+  In Collection: SEResNeXt
   Metadata:
-    FLOPs: 4610472600
-    Parameters: 30670000
-    File Size: 122839714
+    FLOPs: 3466436448
+    Parameters: 16820000
+    File Size: 67414838
     Architecture:
+    - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Dense Connections
-    - Dropout
     - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
     - ReLU
-    - SelecSLS Block
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
-    - Cosine Annealing
-    - Random Erasing
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: selecsls60
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: seresnext26t_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 26
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/selecsls.py#L342
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-selecsls/selecsls60-bbf87526.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1246
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext26tn_32x4d-569cb627.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
       Top 1 Accuracy: 77.99%
-      Top 5 Accuracy: 93.83%
-- Name: selecsls60b
-  In Collection: SelecSLS
+      Top 5 Accuracy: 93.73%
+- Name: seresnext50_32x4d
+  In Collection: SEResNeXt
   Metadata:
-    FLOPs: 4657653144
-    Parameters: 32770000
-    File Size: 131252898
+    FLOPs: 5475179184
+    Parameters: 27560000
+    File Size: 110569859
     Architecture:
+    - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Dense Connections
-    - Dropout
     - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
     - ReLU
-    - SelecSLS Block
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
-    - Cosine Annealing
-    - Random Erasing
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: selecsls60b
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: seresnext50_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 50
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/selecsls.py#L349
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-selecsls/selecsls60b-94e619b5.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/resnet.py#L1267
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext50_32x4d_racm-a304a460.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 78.41%
-      Top 5 Accuracy: 94.18%
+      Top 1 Accuracy: 81.27%
+      Top 5 Accuracy: 95.62%
 -->
