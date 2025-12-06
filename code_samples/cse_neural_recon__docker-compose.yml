@@ -1,0 +1,151 @@
+# Docker Compose for Neural 3D Reconstruction Training
+# Supports multi-GPU training with resource isolation
+#
+# Usage:
+#   # Build the image
+#   docker compose build
+#
+#   # Train on GPU 0 (default)
+#   docker compose up train
+#
+#   # Train on specific GPU
+#   CUDA_VISIBLE_DEVICES=1 docker compose up train
+#
+#   # Run comparison benchmark
+#   docker compose up benchmark
+#
+#   # Interactive shell with GPU access
+#   docker compose run --rm shell
+#
+#   # Train on multiple GPUs (if available)
+#   docker compose up train-multi
+
+services:
+  # Base service with common configuration
+  base: &base
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mount the repository (code changes reflect immediately)
+      - .:/workspace:rw
+      # Mount data directory (read-only for safety)
+      - ./data:/workspace/data:ro
+      # Output directory (writable)
+      - ./output:/workspace/output:rw
+      # Persist pip cache for faster rebuilds
+      - pip-cache:/root/.cache/pip
+    working_dir: /workspace
+    environment:
+      - PYTHONPATH=/workspace
+      - PYTHONUNBUFFERED=1
+      # NVIDIA Container Runtime
+      - NVIDIA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-all}
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    # Resource limits (adjust based on your system)
+    shm_size: '16gb'  # Shared memory for DataLoader workers
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    stdin_open: true
+    tty: true
+
+  # Main training service - single GPU
+  train:
+    <<: *base
+    container_name: neural_recon_train
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: >
+      python scripts/train.py 
+      --config config/experiment/cse_warehouse.yaml
+      ${TRAIN_ARGS:-}
+
+  # Training with specific epochs (for testing)
+  train-quick:
+    <<: *base
+    container_name: neural_recon_train_quick
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: >
+      python scripts/train.py 
+      --config config/experiment/cse_warehouse.yaml
+      --epochs ${EPOCHS:-5}
+
+  # Benchmark service for device comparison
+  benchmark:
+    <<: *base
+    container_name: neural_recon_benchmark
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: >
+      python scripts/benchmark_productivity.py 
+      --epochs ${BENCHMARK_EPOCHS:-2}
+
+  # Multi-GPU training (experimental)
+  train-multi:
+    <<: *base
+    container_name: neural_recon_train_multi
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: >
+      python scripts/train.py 
+      --config config/experiment/cse_warehouse.yaml
+      ${TRAIN_ARGS:-}
+
+  # Interactive shell for debugging
+  shell:
+    <<: *base
+    container_name: neural_recon_shell
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: /bin/bash
+
+  # Device comparison tool
+  compare:
+    <<: *base
+    container_name: neural_recon_compare
+    command: >
+      python scripts/compare_devices.py 
+      --dir output/metrics
+      ${COMPARE_ARGS:-}
+    # No GPU needed for comparison
+    deploy:
+      resources:
+        reservations:
+          devices: []
+
+volumes:
+  pip-cache:
+    driver: local
+
+# Network for potential distributed training
+networks:
+  default:
+    name: neural_recon_net
