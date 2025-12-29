@@ -1,13 +1,13 @@
-# Wide ResNet
+# Res2NeXt
 
-**Wide Residual Networks** are a variant on [ResNets](https://paperswithcode.com/method/resnet) where we decrease depth and increase the width of residual networks. This is achieved through the use of [wide residual blocks](https://paperswithcode.com/method/wide-residual-block).
+**Res2NeXt** is an image model that employs a variation on [ResNeXt](https://paperswithcode.com/method/resnext) bottleneck residual blocks. The motivation is to be able to represent features at multiple scales. This is achieved through a novel building block for CNNs that constructs hierarchical residual-like connections within one single residual block. This represents multi-scale features at a granular level and increases the range of receptive fields for each network layer.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('wide_resnet101_2', pretrained=True)
+model = timm.create_model('res2next50', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `wide_resnet101_2`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `res2next50`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('wide_resnet101_2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('res2next50', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,92 +72,65 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/ZagoruykoK16,
-  author    = {Sergey Zagoruyko and
-               Nikos Komodakis},
-  title     = {Wide Residual Networks},
-  journal   = {CoRR},
-  volume    = {abs/1605.07146},
-  year      = {2016},
-  url       = {http://arxiv.org/abs/1605.07146},
-  archivePrefix = {arXiv},
-  eprint    = {1605.07146},
-  timestamp = {Mon, 13 Aug 2018 16:46:42 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/ZagoruykoK16.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@article{Gao_2021,
+   title={Res2Net: A New Multi-Scale Backbone Architecture},
+   volume={43},
+   ISSN={1939-3539},
+   url={http://dx.doi.org/10.1109/TPAMI.2019.2938758},
+   DOI={10.1109/tpami.2019.2938758},
+   number={2},
+   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+   publisher={Institute of Electrical and Electronics Engineers (IEEE)},
+   author={Gao, Shang-Hua and Cheng, Ming-Ming and Zhao, Kai and Zhang, Xin-Yu and Yang, Ming-Hsuan and Torr, Philip},
+   year={2021},
+   month={Feb},
+   pages={652–662}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: Wide ResNet
+- Name: Res2NeXt
   Paper:
-    Title: Wide Residual Networks
-    URL: https://paperswithcode.com/paper/wide-residual-networks
+    Title: 'Res2Net: A New Multi-scale Backbone Architecture'
+    URL: https://paperswithcode.com/paper/res2net-a-new-multi-scale-backbone
 Models:
-- Name: wide_resnet101_2
-  In Collection: Wide ResNet
+- Name: res2next50
+  In Collection: Res2NeXt
   Metadata:
-    FLOPs: 29304929280
-    Parameters: 126890000
-    File Size: 254695146
+    FLOPs: 5396798208
+    Parameters: 24670000
+    File Size: 99019592
     Architecture:
-    - 1x1 Convolution
     - Batch Normalization
     - Convolution
     - Global Average Pooling
-    - Max Pooling
     - ReLU
-    - Residual Connection
-    - Softmax
-    - Wide Residual Block
+    - Res2NeXt Block
     Tasks:
     - Image Classification
+    Training Techniques:
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: wide_resnet101_2
+    Training Resources: 4x Titan Xp GPUs
+    ID: res2next50
+    LR: 0.1
+    Epochs: 100
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 256
     Image Size: '224'
+    Weight Decay: 0.0001
     Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L802
-  Weights: https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/res2net.py#L207
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-res2net/res2next50_4s-6ef7e7bf.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 78.85%
-      Top 5 Accuracy: 94.28%
-- Name: wide_resnet50_2
-  In Collection: Wide ResNet
-  Metadata:
-    FLOPs: 14688058368
-    Parameters: 68880000
-    File Size: 275853271
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Max Pooling
-    - ReLU
-    - Residual Connection
-    - Softmax
-    - Wide Residual Block
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: wide_resnet50_2
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L790
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/wide_resnet50_racm-8234f177.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 81.45%
-      Top 5 Accuracy: 95.52%
+      Top 1 Accuracy: 78.24%
+      Top 5 Accuracy: 93.91%
 -->
