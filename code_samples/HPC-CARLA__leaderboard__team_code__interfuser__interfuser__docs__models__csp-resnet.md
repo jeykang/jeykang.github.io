@@ -1,15 +1,13 @@
-# FBNet
+# CSP-ResNet
 
-**FBNet** is a type of convolutional neural architectures discovered through [DNAS](https://paperswithcode.com/method/dnas) neural architecture search. It utilises a basic type of image model block inspired by [MobileNetv2](https://paperswithcode.com/method/mobilenetv2) that utilises depthwise convolutions and an inverted residual structure (see components).
-
-The principal building block is the [FBNet Block](https://paperswithcode.com/method/fbnet-block).
+**CSPResNet** is a convolutional neural network where we apply the Cross Stage Partial Network (CSPNet) approach to [ResNet](https://paperswithcode.com/method/resnet). The CSPNet partitions the feature map of the base layer into two parts and then merges them through a cross-stage hierarchy. The use of a split and merge strategy allows for more gradient flow through the network.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('fbnetc_100', pretrained=True)
+model = timm.create_model('cspresnet50', pretrained=True)
 model.eval()
 ```
 
@@ -55,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `fbnetc_100`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `cspresnet50`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('fbnetc_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('cspresnet50', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -74,11 +72,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{wu2019fbnet,
-      title={FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search}, 
-      author={Bichen Wu and Xiaoliang Dai and Peizhao Zhang and Yanghan Wang and Fei Sun and Yiming Wu and Yuandong Tian and Peter Vajda and Yangqing Jia and Kurt Keutzer},
+@misc{wang2019cspnet,
+      title={CSPNet: A New Backbone that can Enhance Learning Capability of CNN}, 
+      author={Chien-Yao Wang and Hong-Yuan Mark Liao and I-Hau Yeh and Yueh-Hua Wu and Ping-Yang Chen and Jun-Wei Hsieh},
       year={2019},
-      eprint={1812.03443},
+      eprint={1911.11929},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -87,51 +85,53 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: FBNet
+- Name: CSP ResNet
   Paper:
-    Title: 'FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural
-      Architecture Search'
-    URL: https://paperswithcode.com/paper/fbnet-hardware-aware-efficient-convnet-design
+    Title: 'CSPNet: A New Backbone that can Enhance Learning Capability of CNN'
+    URL: https://paperswithcode.com/paper/cspnet-a-new-backbone-that-can-enhance
 Models:
-- Name: fbnetc_100
-  In Collection: FBNet
+- Name: cspresnet50
+  In Collection: CSP ResNet
   Metadata:
-    FLOPs: 508940064
-    Parameters: 5570000
-    File Size: 22525094
+    FLOPs: 5924992000
+    Parameters: 21620000
+    File Size: 86679303
     Architecture:
     - 1x1 Convolution
+    - Batch Normalization
+    - Bottleneck Residual Block
     - Convolution
-    - Dense Connections
-    - Dropout
-    - FBNet Block
     - Global Average Pooling
+    - Max Pooling
+    - ReLU
+    - Residual Block
+    - Residual Connection
     - Softmax
     Tasks:
     - Image Classification
     Training Techniques:
+    - Label Smoothing
+    - Polynomial Learning Rate Decay
     - SGD with Momentum
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: fbnetc_100
+    ID: cspresnet50
     LR: 0.1
-    Epochs: 360
-    Layers: 22
-    Dropout: 0.2
-    Crop Pct: '0.875'
+    Layers: 50
+    Crop Pct: '0.887'
     Momentum: 0.9
-    Batch Size: 256
-    Image Size: '224'
-    Weight Decay: 0.0005
+    Batch Size: 128
+    Image Size: '256'
+    Weight Decay: 0.005
     Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L985
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/fbnetc_100-c345b898.pth
+    Training Steps: 8000000
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/cspnet.py#L415
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/cspresnet50_ra-d3e8d487.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.12%
-      Top 5 Accuracy: 92.37%
+      Top 1 Accuracy: 79.57%
+      Top 5 Accuracy: 94.71%
 -->
