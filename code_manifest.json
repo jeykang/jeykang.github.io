@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-05T08:52:11Z",
+  "generated_at": "2026-01-05T13:11:17Z",
   "source": {
     "user": "jeykang",
     "max_repos": 8,
@@ -47,132 +47,132 @@
   },
   "files": [
     {
-      "file": "code_samples/HPC-CARLA__list_limited.sh",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__lav__models__rgb_v2.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "list_limited.sh",
+      "path": "leaderboard/team_code/lav/models/rgb_v2.py",
       "branch": "main",
-      "bytes": 6602
+      "bytes": 2450
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__docs__get_started.html",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__resnet-d.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/docs/get_started.html",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/resnet-d.md",
       "branch": "main",
-      "bytes": 841
+      "bytes": 10019
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__test_collect.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__data__scenarios__no_scenarios.json",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/test_collect.py",
+      "path": "leaderboard/data/scenarios/no_scenarios.json",
       "branch": "main",
-      "bytes": 803
+      "bytes": 44
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__data__loader.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__requirements.txt",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/data/loader.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/requirements.txt",
       "branch": "main",
-      "bytes": 8747
+      "bytes": 39
     },
     {
-      "file": "code_samples/HPC-CARLA__scenario_runner__no_rendering_mode.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__leaderboard__autoagents__npc_agent.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "scenario_runner/no_rendering_mode.py",
+      "path": "leaderboard/leaderboard/autoagents/npc_agent.py",
       "branch": "main",
-      "bytes": 62042
+      "bytes": 3323
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__layers__evo_norm.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__loss__cross_entropy.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/layers/evo_norm.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/loss/cross_entropy.py",
       "branch": "main",
-      "bytes": 3463
+      "bytes": 1083
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__leaderboard__scenarios__master_scenario.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__selecsls.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/leaderboard/scenarios/master_scenario.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/selecsls.md",
       "branch": "main",
-      "bytes": 4435
+      "bytes": 6329
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__scripts__pretty_print_json.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__data__official__all_towns_traffic_scenarios_public.json",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/scripts/pretty_print_json.py",
-      "branch": "main",
-      "bytes": 4538
-    },
-    {
-      "file": "code_samples/cse_neural_recon__scripts__evaluate.py",
-      "repo": "cse_neural_recon",
-      "owner": "jeykang",
-      "path": "scripts/evaluate.py",
-      "branch": "main",
-      "bytes": 6343
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__tnt.py",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/tnt.py",
-      "branch": "main",
-      "bytes": 12341
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__docs___includes__google-analytics.html",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/docs/_includes/google-analytics.html",
-      "branch": "main",
-      "bytes": 343
-    },
-    {
-      "file": "code_samples/cse_neural_recon__data__extract_rosbag_universal.py",
-      "repo": "cse_neural_recon",
-      "owner": "jeykang",
-      "path": "data/extract_rosbag_universal.py",
-      "branch": "main",
-      "bytes": 8542
-    },
-    {
-      "file": "code_samples/PA3__train.py",
-      "repo": "PA3",
-      "owner": "jeykang",
-      "path": "train.py",
-      "branch": "master",
-      "bytes": 7736
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__tf-efficientnet.md",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/tf-efficientnet.md",
-      "branch": "main",
-      "bytes": 17478
-    },
-    {
-      "file": "code_samples/HPC-CARLA__simulation_results.2n16g.json",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "simulation_results.2n16g.json",
+      "path": "leaderboard/data/official/all_towns_traffic_scenarios_public.json",
       "branch": "main",
       "bytes": 65536
     },
     {
-      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenarios__control_loss.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__data__heatmap_utils.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "scenario_runner/srunner/scenarios/control_loss.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/data/heatmap_utils.py",
       "branch": "main",
-      "bytes": 9678
+      "bytes": 5968
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__gloun-resnet.md",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/gloun-resnet.md",
+      "branch": "main",
+      "bytes": 17284
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__leaderboard__utils__checkpoint_tools.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/leaderboard/utils/checkpoint_tools.py",
+      "branch": "main",
+      "bytes": 2031
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__Docs__list_of_scenarios.md",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/Docs/list_of_scenarios.md",
+      "branch": "main",
+      "bytes": 3858
+    },
+    {
+      "file": "code_samples/HPC-CARLA__data_collection__yamls__weather-4-gpu-3.yaml",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "data_collection/yamls/weather-4-gpu-3.yaml",
+      "branch": "main",
+      "bytes": 126
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenariomanager__actorcontrols__basic_control.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/srunner/scenariomanager/actorcontrols/basic_control.py",
+      "branch": "main",
+      "bytes": 3206
+    },
+    {
+      "file": "code_samples/gcnnpcr__GCNNPCR_python__modules__dgcnn.py",
+      "repo": "gcnnpcr",
+      "owner": "jeykang",
+      "path": "GCNNPCR_python/modules/dgcnn.py",
+      "branch": "main",
+      "bytes": 722
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenariomanager__actorcontrols__pedestrian_control.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/srunner/scenariomanager/actorcontrols/pedestrian_control.py",
+      "branch": "main",
+      "bytes": 2262
     }
   ]
 }
