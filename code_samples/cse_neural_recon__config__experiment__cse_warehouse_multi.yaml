@@ -1,11 +1,20 @@
-# CSE Warehouse Experiment Configuration
-# Optimized for DGX Spark with high VRAM and compute
-# Now using HashGridSDF with proper TSDF supervision
+# CSE Warehouse Multi-Sequence Experiment Configuration
+# IMPROVED VERSION: Uses all static sequences for better coverage
+# Fixes TSDF scale mismatch for proper SDF learning
 
-experiment_name: "cse_warehouse_tsdf"
+experiment_name: "cse_warehouse_multi"
 
 data:
-  data_path: "data/warehouse_extracted/static_warehouse_robot1"
+  # Multi-sequence training for better scene coverage
+  multi_sequence: true
+  base_dir: "data/warehouse_extracted"
+  sequence_pattern: "static_*"  # Use all static sequences (robot1, robot2, robot3)
+  # Can also specify explicit list:
+  # sequences:
+  #   - static_warehouse_robot1
+  #   - static_warehouse_robot2
+  #   - static_warehouse_robot3
+  
   dataset_type: "cse"
   depth_scale: 0.001  # mm to meters
   
@@ -44,7 +53,7 @@ model:
     enabled: false  # Disabled - simpler model first
 
 training:
-  epochs: 100
+  epochs: 50  # Fewer epochs since we have 3x more data
   batch_size: 8  # Higher batch size for DGX Spark
   
   # Optimizer
@@ -87,4 +96,4 @@ inference:
     z_max: 26.0
 
 output:
-  output_dir: "output/warehouse_tsdf"
+  output_dir: "output/warehouse_multi"
