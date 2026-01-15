@@ -1,0 +1,99 @@
+# CSE All Environments Configuration
+# Uses ALL available data across warehouse, hospital, and office
+# Includes both static AND dynamic sequences for maximum coverage
+
+experiment_name: "cse_all_environments"
+
+data:
+  # Multi-environment training
+  multi_environment: true
+  
+  # All environment directories
+  environments:
+    - base_dir: "data/warehouse_extracted"
+      sequences: ["static_warehouse_robot1", "static_warehouse_robot2", "static_warehouse_robot3",
+                  "dynamic_warehouse_robot1", "dynamic_warehouse_robot2", "dynamic_warehouse_robot3"]
+    - base_dir: "data/hospital_extracted"
+      sequences: ["static_hospital_robot1", "static_hospital_robot2", "static_hospital_robot3",
+                  "dynamic_hospital_robot1", "dynamic_hospital_robot2", "dynamic_hospital_robot3"]
+    - base_dir: "data/office_extracted"
+      sequences: ["static_office_robot1", "static_office_robot2", "static_office_robot3",
+                  "dynamic_office_robot1", "dynamic_office_robot2", "dynamic_office_robot3"]
+  
+  dataset_type: "cse"
+  depth_scale: 0.001  # mm to meters
+  
+  img_width: 640
+  img_height: 360
+  
+  # Depth bounds for all environments
+  min_depth: 0.1
+  max_depth: 30.0
+  
+  # Data augmentation to help with environment diversity
+  augmentation:
+    enabled: true
+    depth_noise_std: 0.02  # 2cm depth noise
+    color_jitter: 0.1
+
+model:
+  neural_sdf:
+    encoding_type: "hashgrid"
+    
+    hashgrid:
+      num_levels: 16
+      base_resolution: 16
+      max_resolution: 4096
+      features_per_level: 2
+      log2_hashmap_size: 21  # Larger hash table for more environments
+    
+    hidden_features: 512  # Larger network for more complex scenes
+    hidden_layers: 8
+    
+    geometric_init: true
+    sphere_init_radius: 0.5
+    use_weight_norm: true
+    output_color: true
+
+training:
+  epochs: 100
+  batch_size: 8  # Will be auto-scaled if --auto-batch-size is used
+  
+  # Optimizer
+  optimizer: "adamw"
+  learning_rate: 3e-4  # Slightly lower for stability with more data
+  weight_decay: 1e-4
+  
+  # Scheduler
+  scheduler: "cosine"
+  warmup_epochs: 5  # Longer warmup for diverse data
+  min_lr: 1e-6
+  
+  # Mixed precision
+  use_amp: true
+  gradient_clip: 1.0
+  
+  # Sampling - balanced for diverse environments
+  num_surface_samples: 8192
+  num_freespace_samples: 8192
+  num_random_samples: 4096
+  
+  # TSDF supervision (critical for proper SDF learning)
+  use_tsdf_supervision: true
+  truncation_dist: 0.2  # 20cm truncation
+  tsdf_weight: 5.0
+  
+  # Other losses
+  surface_weight: 1.0
+  freespace_weight: 2.0
+  eikonal_weight: 0.1
+  random_space_weight: 1.5
+  
+  # Logging
+  log_every: 50
+  val_every: 1
+  save_every: 5
+  visualize_every: 5
+
+output:
+  output_dir: "output/all_environments"
