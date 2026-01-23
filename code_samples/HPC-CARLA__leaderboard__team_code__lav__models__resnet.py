@@ -1,8 +1,12 @@
 import torch
 from torch import Tensor
 import torch.nn as nn
-from torch.hub import load_state_dict_from_url
+
 from typing import Type, Any, Callable, Union, List, Optional
+try:
+    from torch.hub import load_state_dict_from_url
+except ImportError:
+    from torch.utils.model_zoo import load_url as load_state_dict_from_url
 
 
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
@@ -147,6 +151,7 @@ class ResNet(nn.Module):
         self,
         block: Type[Union[BasicBlock, Bottleneck]],
         layers: List[int],
+        num_channels: int = 3,
         num_classes: int = 1000,
         zero_init_residual: bool = False,
         groups: int = 1,
@@ -170,7 +175,7 @@ class ResNet(nn.Module):
                              "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(num_channels, self.inplanes, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = norm_layer(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
@@ -237,13 +242,9 @@ class ResNet(nn.Module):
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
-        x_layer4 = self.layer4(x)
+        x = self.layer4(x)
 
-        x = self.avgpool(x_layer4)
-        x = torch.flatten(x, 1)
-        x = self.fc(x)
-
-        return x, x_layer4
+        return x
 
     def forward(self, x: Tensor) -> Tensor:
         return self._forward_impl(x)
@@ -264,6 +265,11 @@ def _resnet(
         model.load_state_dict(state_dict)
     return model
 
+
+
+def resnet_small(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> ResNet:
+    return _resnet('resnet_small', BasicBlock, [2, 2], pretrained, progress,
+                   **kwargs)
 
 def resnet18(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> ResNet:
     r"""ResNet-18 model from
