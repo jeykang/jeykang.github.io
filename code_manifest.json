@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-25T20:41:30Z",
+  "generated_at": "2026-01-26T02:42:39Z",
   "source": {
     "user": "jeykang",
     "max_repos": 8,
@@ -47,116 +47,108 @@
   },
   "files": [
     {
-      "file": "code_samples/fs-indexer__indexer____init__.py",
-      "repo": "fs-indexer",
-      "owner": "jeykang",
-      "path": "indexer/__init__.py",
-      "branch": "main",
-      "bytes": 146
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__resnet.py",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/resnet.py",
-      "branch": "main",
-      "bytes": 65536
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__res2net.md",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/res2net.md",
-      "branch": "main",
-      "bytes": 7583
-    },
-    {
-      "file": "code_samples/cse_neural_recon__config__experiment__cse_all_environments.yaml",
+      "file": "code_samples/cse_neural_recon__src__utils____init__.py",
       "repo": "cse_neural_recon",
       "owner": "jeykang",
-      "path": "config/experiment/cse_all_environments.yaml",
+      "path": "src/utils/__init__.py",
       "branch": "main",
-      "bytes": 2730
+      "bytes": 1254
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__scheduler__step_lr.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__README.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/scheduler/step_lr.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/README.md",
       "branch": "main",
-      "bytes": 1914
+      "bytes": 31313
     },
     {
-      "file": "code_samples/fs-indexer__tests__e2e__docs__test.txt",
-      "repo": "fs-indexer",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__resnet-d.md",
+      "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "tests/e2e/docs/test.txt",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/resnet-d.md",
+      "branch": "main",
+      "bytes": 10019
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__map_agent.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/map_agent.py",
+      "branch": "main",
+      "bytes": 5798
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__data__config.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/data/config.py",
+      "branch": "main",
+      "bytes": 2921
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__docs__assets__vendor__fontawesome-free__js__conflict-detection.js",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/docs/assets/vendor/fontawesome-free/js/conflict-detection.js",
+      "branch": "main",
+      "bytes": 33664
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenarios__other_leading_vehicle.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/srunner/scenarios/other_leading_vehicle.py",
+      "branch": "main",
+      "bytes": 7482
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__mobilenet-v2.md",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/mobilenet-v2.md",
+      "branch": "main",
+      "bytes": 6265
+    },
+    {
+      "file": "code_samples/jeykang.github.io__code_samples__fs-indexer__tests__e2e__docs__test.txt",
+      "repo": "jeykang.github.io",
+      "owner": "jeykang",
+      "path": "code_samples/fs-indexer__tests__e2e__docs__test.txt",
       "branch": "main",
       "bytes": 19
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__resnet-d.md",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__layers__norm_act.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/resnet-d.md",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/layers/norm_act.py",
       "branch": "main",
-      "bytes": 7610
+      "bytes": 3803
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__data__dataset_factory.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__layers__adaptive_avgmax_pool.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/data/dataset_factory.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/layers/adaptive_avgmax_pool.py",
       "branch": "main",
-      "bytes": 1552
+      "bytes": 3966
     },
     {
-      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenariomanager__actorcontrols__actor_control.py",
-      "repo": "HPC-CARLA",
+      "file": "code_samples/jeykang.github.io__snippets.json",
+      "repo": "jeykang.github.io",
       "owner": "jeykang",
-      "path": "scenario_runner/srunner/scenariomanager/actorcontrols/actor_control.py",
+      "path": "snippets.json",
       "branch": "main",
-      "bytes": 5705
+      "bytes": 117
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__layers__conv2d_same.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__rexnet.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/layers/conv2d_same.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/rexnet.py",
       "branch": "main",
-      "bytes": 1662
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__ssl-resnet.md",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/ssl-resnet.md",
-      "branch": "main",
-      "bytes": 4136
-    },
-    {
-      "file": "code_samples/HPC-CARLA__tools__generate_scenarios.py",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "tools/generate_scenarios.py",
-      "branch": "main",
-      "bytes": 4290
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__utils__jit.py",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/utils/jit.py",
-      "branch": "main",
-      "bytes": 662
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__docs__assets__vendor__fontawesome-free__js__brands.min.js",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/docs/assets/vendor/fontawesome-free/js/brands.min.js",
-      "branch": "main",
-      "bytes": 65536
+      "bytes": 10018
     },
     {
       "file": "code_samples/HPC-CARLA__leaderboard__leaderboard__utils__statistics_manager.py",
@@ -165,6 +157,14 @@
       "path": "leaderboard/leaderboard/utils/statistics_manager.py",
       "branch": "main",
       "bytes": 13582
+    },
+    {
+      "file": "code_samples/gcnnpcr__GCNNPCR_python____init__.py",
+      "repo": "gcnnpcr",
+      "owner": "jeykang",
+      "path": "GCNNPCR_python/__init__.py",
+      "branch": "main",
+      "bytes": 456
     }
   ]
 }
