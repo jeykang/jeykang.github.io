@@ -1,6 +1,6 @@
-""" TanH Scheduler
+""" Cosine Scheduler
 
-TanH schedule with warmup, cycle/restarts, noise.
+Cosine LR schedule with warmup, cycle/restarts, noise.
 
 Hacked together by / Copyright 2020 Ross Wightman
 """
@@ -15,18 +15,19 @@ from .scheduler import Scheduler
 _logger = logging.getLogger(__name__)
 
 
-class TanhLRScheduler(Scheduler):
+class CosineLRScheduler(Scheduler):
     """
-    Hyberbolic-Tangent decay with restarts.
-    This is described in the paper https://arxiv.org/abs/1806.01593
+    Cosine decay with restarts.
+    This is described in the paper https://arxiv.org/abs/1608.03983.
+
+    Inspiration from
+    https://github.com/allenai/allennlp/blob/master/allennlp/training/learning_rate_schedulers/cosine.py
     """
 
     def __init__(
         self,
         optimizer: torch.optim.Optimizer,
         t_initial: int,
-        lb: float = -6.0,
-        ub: float = 4.0,
         t_mul: float = 1.0,
         lr_min: float = 0.0,
         decay_rate: float = 1.0,
@@ -53,12 +54,11 @@ class TanhLRScheduler(Scheduler):
 
         assert t_initial > 0
         assert lr_min >= 0
-        assert lb < ub
-        assert cycle_limit >= 0
-        assert warmup_t >= 0
-        assert warmup_lr_init >= 0
-        self.lb = lb
-        self.ub = ub
+        if t_initial == 1 and t_mul == 1 and decay_rate == 1:
+            _logger.warning(
+                "Cosine annealing scheduler will have no effect on the learning "
+                "rate since t_initial = t_mul = eta_mul = 1."
+            )
         self.t_initial = t_initial
         self.t_mul = t_mul
         self.lr_min = lr_min
@@ -69,10 +69,9 @@ class TanhLRScheduler(Scheduler):
         self.warmup_prefix = warmup_prefix
         self.t_in_epochs = t_in_epochs
         if self.warmup_t:
-            t_v = (
-                self.base_values if self.warmup_prefix else self._get_lr(self.warmup_t)
-            )
-            self.warmup_steps = [(v - warmup_lr_init) / self.warmup_t for v in t_v]
+            self.warmup_steps = [
+                (v - warmup_lr_init) / self.warmup_t for v in self.base_values
+            ]
             super().update_groups(self.warmup_lr_init)
         else:
             self.warmup_steps = [1 for _ in self.base_values]
@@ -95,24 +94,19 @@ class TanhLRScheduler(Scheduler):
                 t_i = self.t_initial
                 t_curr = t - (self.t_initial * i)
 
-            if self.cycle_limit == 0 or (self.cycle_limit > 0 and i < self.cycle_limit):
-                gamma = self.decay_rate**i
-                lr_min = self.lr_min * gamma
-                lr_max_values = [v * gamma for v in self.base_values]
+            gamma = self.decay_rate**i
+            lr_min = self.lr_min * gamma
+            lr_max_values = [v * gamma for v in self.base_values]
 
-                tr = t_curr / t_i
+            if self.cycle_limit == 0 or (self.cycle_limit > 0 and i < self.cycle_limit):
                 lrs = [
                     lr_min
-                    + 0.5
-                    * (lr_max - lr_min)
-                    * (1 - math.tanh(self.lb * (1.0 - tr) + self.ub * tr))
+                    + 0.5 * (lr_max - lr_min) * (1 + math.cos(math.pi * t_curr / t_i))
                     for lr_max in lr_max_values
                 ]
             else:
-                lrs = [
-                    self.lr_min * (self.decay_rate**self.cycle_limit)
-                    for _ in self.base_values
-                ]
+                lrs = [self.lr_min for _ in self.base_values]
+
         return lrs
 
     def get_epoch_values(self, epoch: int):
