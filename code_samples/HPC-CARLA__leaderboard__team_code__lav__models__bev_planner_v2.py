@@ -3,7 +3,6 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 from .resnet import resnet18
-from copy import deepcopy
 
 class BEVPlanner(nn.Module):
     def __init__(self,
@@ -56,7 +55,6 @@ class BEVPlanner(nn.Module):
             pixels_per_meter=self.pixels_per_meter, 
             crop_size=self.crop_size*2
         )
-        # cropped_ego_bev = self.crop_feature(bev, locs_jitter, oris_jitter, pixels_per_meter=self.pixels_per_meter, crop_size=self.crop_size*2)
 
         ego_bev_embd = self.bev_conv_emb(cropped_ego_bev)
 
