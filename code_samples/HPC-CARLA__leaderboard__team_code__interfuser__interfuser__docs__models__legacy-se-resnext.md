@@ -1,13 +1,13 @@
-# ResNeXt
+# (Legacy) SE-ResNeXt
 
-A **ResNeXt** repeats a [building block](https://paperswithcode.com/method/resnext-block) that aggregates a set of transformations with the same topology. Compared to a [ResNet](https://paperswithcode.com/method/resnet), it exposes a new dimension,  *cardinality* (the size of the set of transformations) $C$, as an essential factor in addition to the dimensions of depth and width. 
+**SE ResNeXt** is a variant of a [ResNeXt](https://www.paperswithcode.com/method/resnext) that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('resnext101_32x8d', pretrained=True)
+model = timm.create_model('legacy_seresnext101_32x4d', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `resnext101_32x8d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `legacy_seresnext101_32x4d`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('resnext101_32x8d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('legacy_seresnext101_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,39 +72,30 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/XieGDTH16,
-  author    = {Saining Xie and
-               Ross B. Girshick and
-               Piotr Doll{\'{a}}r and
-               Zhuowen Tu and
-               Kaiming He},
-  title     = {Aggregated Residual Transformations for Deep Neural Networks},
-  journal   = {CoRR},
-  volume    = {abs/1611.05431},
-  year      = {2016},
-  url       = {http://arxiv.org/abs/1611.05431},
-  archivePrefix = {arXiv},
-  eprint    = {1611.05431},
-  timestamp = {Mon, 13 Aug 2018 16:45:58 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/XieGDTH16.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@misc{hu2019squeezeandexcitation,
+      title={Squeeze-and-Excitation Networks}, 
+      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
+      year={2019},
+      eprint={1709.01507},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: ResNeXt
+- Name: Legacy SE ResNeXt
   Paper:
-    Title: Aggregated Residual Transformations for Deep Neural Networks
-    URL: https://paperswithcode.com/paper/aggregated-residual-transformations-for-deep
+    Title: Squeeze-and-Excitation Networks
+    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
 Models:
-- Name: resnext101_32x8d
-  In Collection: ResNeXt
+- Name: legacy_seresnext101_32x4d
+  In Collection: Legacy SE ResNeXt
   Metadata:
-    FLOPs: 21180417024
-    Parameters: 88790000
-    File Size: 356082095
+    FLOPs: 10287698672
+    Parameters: 48960000
+    File Size: 196466866
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -116,129 +107,122 @@ Models:
     - ResNeXt Block
     - Residual Connection
     - Softmax
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: resnext101_32x8d
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/resnet.py#L877
-  Weights: https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 79.3%
-      Top 5 Accuracy: 94.53%
-- Name: resnext50_32x4d
-  In Collection: ResNeXt
-  Metadata:
-    FLOPs: 5472648192
-    Parameters: 25030000
-    File Size: 100435887
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Grouped Convolution
-    - Max Pooling
-    - ReLU
-    - ResNeXt Block
-    - Residual Connection
-    - Softmax
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: resnext50_32x4d
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/resnet.py#L851
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnext50_32x4d_ra-d733960d.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 79.79%
-      Top 5 Accuracy: 94.61%
-- Name: resnext50d_32x4d
-  In Collection: ResNeXt
-  Metadata:
-    FLOPs: 5781119488
-    Parameters: 25050000
-    File Size: 100515304
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Grouped Convolution
-    - Max Pooling
-    - ReLU
-    - ResNeXt Block
-    - Residual Connection
-    - Softmax
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: resnext50d_32x4d
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/b9843f954b0457af2db4f9dea41a8538f51f5d78/timm/models/resnet.py#L869
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnext50d_32x4d-103e99f8.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 79.67%
-      Top 5 Accuracy: 94.87%
-- Name: tv_resnext50_32x4d
-  In Collection: ResNeXt
-  Metadata:
-    FLOPs: 5472648192
-    Parameters: 25030000
-    File Size: 100441675
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Grouped Convolution
-    - Max Pooling
-    - ReLU
-    - ResNeXt Block
-    - Residual Connection
-    - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
+    - Label Smoothing
     - SGD with Momentum
     - Weight Decay
     Training Data:
     - ImageNet
-    ID: tv_resnext50_32x4d
-    LR: 0.1
-    Epochs: 90
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_seresnext101_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 101
+    Dropout: 0.2
     Crop Pct: '0.875'
-    LR Gamma: 0.1
     Momentum: 0.9
-    Batch Size: 32
+    Batch Size: 1024
     Image Size: '224'
-    LR Step Size: 30
-    Weight Decay: 0.0001
     Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L842
-  Weights: https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L462
+  Weights: http://data.lip6.fr/cadene/pretrainedmodels/se_resnext101_32x4d-3b2fe3d8.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 77.61%
-      Top 5 Accuracy: 93.68%
+      Top 1 Accuracy: 80.23%
+      Top 5 Accuracy: 95.02%
+- Name: legacy_seresnext26_32x4d
+  In Collection: Legacy SE ResNeXt
+  Metadata:
+    FLOPs: 3187342304
+    Parameters: 16790000
+    File Size: 67346327
+    Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
+    - Convolution
+    - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    - Squeeze-and-Excitation Block
+    Tasks:
+    - Image Classification
+    Training Techniques:
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
+    Training Data:
+    - ImageNet
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_seresnext26_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 26
+    Dropout: 0.2
+    Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
+    Image Size: '224'
+    Interpolation: bicubic
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L448
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext26_32x4d-65ebdb501.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 77.11%
+      Top 5 Accuracy: 93.31%
+- Name: legacy_seresnext50_32x4d
+  In Collection: Legacy SE ResNeXt
+  Metadata:
+    FLOPs: 5459954352
+    Parameters: 27560000
+    File Size: 110559176
+    Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
+    - Convolution
+    - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    - Squeeze-and-Excitation Block
+    Tasks:
+    - Image Classification
+    Training Techniques:
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
+    Training Data:
+    - ImageNet
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_seresnext50_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 50
+    Dropout: 0.2
+    Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
+    Image Size: '224'
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L455
+  Weights: http://data.lip6.fr/cadene/pretrainedmodels/se_resnext50_32x4d-a260b3a4.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 79.08%
+      Top 5 Accuracy: 94.43%
 -->
