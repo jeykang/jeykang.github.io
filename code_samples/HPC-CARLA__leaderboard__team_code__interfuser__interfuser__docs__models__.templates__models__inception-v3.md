@@ -1,8 +1,6 @@
-# (Gluon) Inception v3
+# Inception v3
 
 **Inception v3** is a convolutional neural network architecture from the Inception family that makes several improvements including using [Label Smoothing](https://paperswithcode.com/method/label-smoothing), Factorized 7 x 7 convolutions, and the use of an [auxiliary classifer](https://paperswithcode.com/method/auxiliary-classifier) to propagate label information lower down the network (along with the use of batch normalization for layers in the sidehead). The key building block is an [Inception Module](https://paperswithcode.com/method/inception-v3-module).
-
-The weights from this model were ported from [Gluon](https://cv.gluon.ai/model_zoo/classification.html).
 
 {% include 'code_snippets.md' %}
 
@@ -35,17 +33,17 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: Gloun Inception v3
+- Name: Inception v3
   Paper:
     Title: Rethinking the Inception Architecture for Computer Vision
     URL: https://paperswithcode.com/paper/rethinking-the-inception-architecture-for
 Models:
-- Name: gluon_inception_v3
-  In Collection: Gloun Inception v3
+- Name: inception_v3
+  In Collection: Inception v3
   Metadata:
     FLOPs: 7352418880
     Parameters: 23830000
-    File Size: 95567055
+    File Size: 108857766
     Architecture:
     - 1x1 Convolution
     - Auxiliary Classifier
@@ -61,18 +59,27 @@ Models:
     - Softmax
     Tasks:
     - Image Classification
+    Training Techniques:
+    - Gradient Clipping
+    - Label Smoothing
+    - RMSProp
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: gluon_inception_v3
+    Training Resources: 50x NVIDIA Kepler GPUs
+    ID: inception_v3
+    LR: 0.045
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
     Image Size: '299'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L464
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/gluon_inception_v3-9f746940.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L442
+  Weights: https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 78.8%
-      Top 5 Accuracy: 94.38%
+      Top 1 Accuracy: 77.46%
+      Top 5 Accuracy: 93.48%
 -->
