@@ -1,13 +1,13 @@
-# SK-ResNet
+# Wide ResNet
 
-**SK ResNet** is a variant of a [ResNet](https://www.paperswithcode.com/method/resnet) that employs a [Selective Kernel](https://paperswithcode.com/method/selective-kernel) unit. In general, all the large kernel convolutions in the original bottleneck blocks in ResNet are replaced by the proposed [SK convolutions](https://paperswithcode.com/method/selective-kernel-convolution), enabling the network to choose appropriate receptive field sizes in an adaptive manner.
+**Wide Residual Networks** are a variant on [ResNets](https://paperswithcode.com/method/resnet) where we decrease depth and increase the width of residual networks. This is achieved through the use of [wide residual blocks](https://paperswithcode.com/method/wide-residual-block).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('skresnet18', pretrained=True)
+model = timm.create_model('wide_resnet101_2', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `skresnet18`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `wide_resnet101_2`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('skresnet18', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('wide_resnet101_2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,102 +72,92 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{li2019selective,
-      title={Selective Kernel Networks}, 
-      author={Xiang Li and Wenhai Wang and Xiaolin Hu and Jian Yang},
-      year={2019},
-      eprint={1903.06586},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/ZagoruykoK16,
+  author    = {Sergey Zagoruyko and
+               Nikos Komodakis},
+  title     = {Wide Residual Networks},
+  journal   = {CoRR},
+  volume    = {abs/1605.07146},
+  year      = {2016},
+  url       = {http://arxiv.org/abs/1605.07146},
+  archivePrefix = {arXiv},
+  eprint    = {1605.07146},
+  timestamp = {Mon, 13 Aug 2018 16:46:42 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/ZagoruykoK16.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: SKResNet
+- Name: Wide ResNet
   Paper:
-    Title: Selective Kernel Networks
-    URL: https://paperswithcode.com/paper/selective-kernel-networks
+    Title: Wide Residual Networks
+    URL: https://paperswithcode.com/paper/wide-residual-networks
 Models:
-- Name: skresnet18
-  In Collection: SKResNet
+- Name: wide_resnet101_2
+  In Collection: Wide ResNet
   Metadata:
-    FLOPs: 2333467136
-    Parameters: 11960000
-    File Size: 47923238
+    FLOPs: 29304929280
+    Parameters: 126890000
+    File Size: 254695146
     Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
     - Convolution
-    - Dense Connections
     - Global Average Pooling
     - Max Pooling
+    - ReLU
     - Residual Connection
-    - Selective Kernel
     - Softmax
+    - Wide Residual Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: skresnet18
-    LR: 0.1
-    Epochs: 100
-    Layers: 18
+    ID: wide_resnet101_2
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 256
     Image Size: '224'
-    Weight Decay: 4.0e-05
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L148
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnet18_ra-4eec2804.pth
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L802
+  Weights: https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 73.03%
-      Top 5 Accuracy: 91.17%
-- Name: skresnet34
-  In Collection: SKResNet
+      Top 1 Accuracy: 78.85%
+      Top 5 Accuracy: 94.28%
+- Name: wide_resnet50_2
+  In Collection: Wide ResNet
   Metadata:
-    FLOPs: 4711849952
-    Parameters: 22280000
-    File Size: 89299314
+    FLOPs: 14688058368
+    Parameters: 68880000
+    File Size: 275853271
     Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
     - Convolution
-    - Dense Connections
     - Global Average Pooling
     - Max Pooling
+    - ReLU
     - Residual Connection
-    - Selective Kernel
     - Softmax
+    - Wide Residual Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: skresnet34
-    LR: 0.1
-    Epochs: 100
-    Layers: 34
+    ID: wide_resnet50_2
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 256
     Image Size: '224'
-    Weight Decay: 4.0e-05
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L165
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnet34_ra-bdc0ccde.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L790
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/wide_resnet50_racm-8234f177.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 76.93%
-      Top 5 Accuracy: 93.32%
+      Top 1 Accuracy: 81.45%
+      Top 5 Accuracy: 95.52%
 -->
