@@ -1,13 +1,13 @@
-# SK-ResNet
+# MnasNet
 
-**SK ResNet** is a variant of a [ResNet](https://www.paperswithcode.com/method/resnet) that employs a [Selective Kernel](https://paperswithcode.com/method/selective-kernel) unit. In general, all the large kernel convolutions in the original bottleneck blocks in ResNet are replaced by the proposed [SK convolutions](https://paperswithcode.com/method/selective-kernel-convolution), enabling the network to choose appropriate receptive field sizes in an adaptive manner.
+**MnasNet** is a type of convolutional neural network optimized for mobile devices that is discovered through mobile neural architecture search, which explicitly incorporates model latency into the main objective so that the search can identify a model that achieves a good trade-off between accuracy and latency. The main building block is an [inverted residual block](https://paperswithcode.com/method/inverted-residual-block) (from [MobileNetV2](https://paperswithcode.com/method/mobilenetv2)).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('skresnet18', pretrained=True)
+model = timm.create_model('mnasnet_100', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `skresnet18`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `mnasnet_100`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('skresnet18', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('mnasnet_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,11 +72,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{li2019selective,
-      title={Selective Kernel Networks}, 
-      author={Xiang Li and Wenhai Wang and Xiaolin Hu and Jian Yang},
+@misc{tan2019mnasnet,
+      title={MnasNet: Platform-Aware Neural Architecture Search for Mobile}, 
+      author={Mingxing Tan and Bo Chen and Ruoming Pang and Vijay Vasudevan and Mark Sandler and Andrew Howard and Quoc V. Le},
       year={2019},
-      eprint={1903.06586},
+      eprint={1807.11626},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -85,89 +85,86 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: SKResNet
+- Name: MNASNet
   Paper:
-    Title: Selective Kernel Networks
-    URL: https://paperswithcode.com/paper/selective-kernel-networks
+    Title: 'MnasNet: Platform-Aware Neural Architecture Search for Mobile'
+    URL: https://paperswithcode.com/paper/mnasnet-platform-aware-neural-architecture
 Models:
-- Name: skresnet18
-  In Collection: SKResNet
+- Name: mnasnet_100
+  In Collection: MNASNet
   Metadata:
-    FLOPs: 2333467136
-    Parameters: 11960000
-    File Size: 47923238
+    FLOPs: 416415488
+    Parameters: 4380000
+    File Size: 17731774
     Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
     - Convolution
-    - Dense Connections
+    - Depthwise Separable Convolution
+    - Dropout
     - Global Average Pooling
+    - Inverted Residual Block
     - Max Pooling
+    - ReLU
     - Residual Connection
-    - Selective Kernel
     - Softmax
     Tasks:
     - Image Classification
     Training Techniques:
-    - SGD with Momentum
+    - RMSProp
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: skresnet18
-    LR: 0.1
-    Epochs: 100
-    Layers: 18
+    ID: mnasnet_100
+    Layers: 100
+    Dropout: 0.2
     Crop Pct: '0.875'
     Momentum: 0.9
-    Batch Size: 256
+    Batch Size: 4000
     Image Size: '224'
-    Weight Decay: 4.0e-05
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L148
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnet18_ra-4eec2804.pth
+    RMSProp Decay: 0.9
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L894
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_b1-74cb7081.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 73.03%
-      Top 5 Accuracy: 91.17%
-- Name: skresnet34
-  In Collection: SKResNet
+      Top 1 Accuracy: 74.67%
+      Top 5 Accuracy: 92.1%
+- Name: semnasnet_100
+  In Collection: MNASNet
   Metadata:
-    FLOPs: 4711849952
-    Parameters: 22280000
-    File Size: 89299314
+    FLOPs: 414570766
+    Parameters: 3890000
+    File Size: 15731489
     Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
     - Convolution
-    - Dense Connections
+    - Depthwise Separable Convolution
+    - Dropout
     - Global Average Pooling
+    - Inverted Residual Block
     - Max Pooling
+    - ReLU
     - Residual Connection
-    - Selective Kernel
     - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - SGD with Momentum
-    - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 8x GPUs
-    ID: skresnet34
-    LR: 0.1
-    Epochs: 100
-    Layers: 34
+    ID: semnasnet_100
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 256
     Image Size: '224'
-    Weight Decay: 4.0e-05
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L165
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnet34_ra-bdc0ccde.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L928
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_a1-d9418771.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 76.93%
-      Top 5 Accuracy: 93.32%
+      Top 1 Accuracy: 75.45%
+      Top 5 Accuracy: 92.61%
 -->
