@@ -1,13 +1,13 @@
-# PNASNet
+# Res2NeXt
 
-**Progressive Neural Architecture Search**, or **PNAS**, is a method for learning the structure of convolutional neural networks (CNNs). It uses a sequential model-based optimization (SMBO) strategy, where we search the space of cell structures, starting with simple (shallow) models and progressing to complex ones, pruning out unpromising structures as we go. 
+**Res2NeXt** is an image model that employs a variation on [ResNeXt](https://paperswithcode.com/method/resnext) bottleneck residual blocks. The motivation is to be able to represent features at multiple scales. This is achieved through a novel building block for CNNs that constructs hierarchical residual-like connections within one single residual block. This represents multi-scale features at a granular level and increases the range of receptive fields for each network layer.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('pnasnet5large', pretrained=True)
+model = timm.create_model('res2next50', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `pnasnet5large`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `res2next50`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('pnasnet5large', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('res2next50', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,61 +72,65 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{liu2018progressive,
-      title={Progressive Neural Architecture Search}, 
-      author={Chenxi Liu and Barret Zoph and Maxim Neumann and Jonathon Shlens and Wei Hua and Li-Jia Li and Li Fei-Fei and Alan Yuille and Jonathan Huang and Kevin Murphy},
-      year={2018},
-      eprint={1712.00559},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{Gao_2021,
+   title={Res2Net: A New Multi-Scale Backbone Architecture},
+   volume={43},
+   ISSN={1939-3539},
+   url={http://dx.doi.org/10.1109/TPAMI.2019.2938758},
+   DOI={10.1109/tpami.2019.2938758},
+   number={2},
+   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+   publisher={Institute of Electrical and Electronics Engineers (IEEE)},
+   author={Gao, Shang-Hua and Cheng, Ming-Ming and Zhao, Kai and Zhang, Xin-Yu and Yang, Ming-Hsuan and Torr, Philip},
+   year={2021},
+   month={Feb},
+   pages={652–662}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: PNASNet
+- Name: Res2NeXt
   Paper:
-    Title: Progressive Neural Architecture Search
-    URL: https://paperswithcode.com/paper/progressive-neural-architecture-search
+    Title: 'Res2Net: A New Multi-scale Backbone Architecture'
+    URL: https://paperswithcode.com/paper/res2net-a-new-multi-scale-backbone
 Models:
-- Name: pnasnet5large
-  In Collection: PNASNet
+- Name: res2next50
+  In Collection: Res2NeXt
   Metadata:
-    FLOPs: 31458865950
-    Parameters: 86060000
-    File Size: 345153926
+    FLOPs: 5396798208
+    Parameters: 24670000
+    File Size: 99019592
     Architecture:
-    - Average Pooling
     - Batch Normalization
     - Convolution
-    - Depthwise Separable Convolution
-    - Dropout
+    - Global Average Pooling
     - ReLU
+    - Res2NeXt Block
     Tasks:
     - Image Classification
     Training Techniques:
-    - Label Smoothing
-    - RMSProp
+    - SGD with Momentum
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 100x NVIDIA P100 GPUs
-    ID: pnasnet5large
-    LR: 0.015
-    Dropout: 0.5
-    Crop Pct: '0.911'
+    Training Resources: 4x Titan Xp GPUs
+    ID: res2next50
+    LR: 0.1
+    Epochs: 100
+    Crop Pct: '0.875'
     Momentum: 0.9
-    Batch Size: 1600
-    Image Size: '331'
-    Interpolation: bicubic
-    Label Smoothing: 0.1
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/pnasnet.py#L343
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-cadene/pnasnet5large-bf079911.pth
+    Batch Size: 256
+    Image Size: '224'
+    Weight Decay: 0.0001
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/res2net.py#L207
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-res2net/res2next50_4s-6ef7e7bf.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 0.98%
-      Top 5 Accuracy: 18.58%
+      Top 1 Accuracy: 78.24%
+      Top 5 Accuracy: 93.91%
 -->
