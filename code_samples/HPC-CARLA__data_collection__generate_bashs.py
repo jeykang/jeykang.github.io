@@ -1,4 +1,5 @@
 import os
+import random
 
 routes = {}
 routes[
@@ -50,15 +51,64 @@ routes[
     "additional_routes/routes_town06_long.xml"
 ] = "scenarios/town06_all_scenarios.json"
 
+ip_ports = []
 
-routes_list = []
-for route in routes:
-    routes_list.append(route.split("/")[1].split(".")[0])
+for port in range(20000, 20028, 2):
+    ip_ports.append(("localhost", port, port + 500))
 
-if not os.path.exists("batch_run"):
-    os.mkdir("batch_run")
 
-for route in routes_list:
-    fw = open("batch_run/run_route_%s.sh" % route, "w")
-    for i in range(14):
-        fw.write("bash data_collection/bashs/weather-%d/%s.sh & \n" % (i, route))
+carla_seed = 2000
+traffic_seed = 2000
+
+configs = []
+for i in range(14):
+    configs.append("weather-%d.yaml" % i)
+
+
+def generate_script(
+    ip, port, tm_port, route, scenario, carla_seed, traffic_seed, config_path
+):
+    lines = []
+    lines.append("export HOST=%s\n" % ip)
+    lines.append("export PORT=%d\n" % port)
+    lines.append("export TM_PORT=%d\n" % tm_port)
+    lines.append("export ROUTES=${LEADERBOARD_ROOT}/data/%s\n" % route)
+    lines.append("export SCENARIOS=${LEADERBOARD_ROOT}/data/%s\n" % scenario)
+    lines.append("export CARLA_SEED=%d\n" % port)
+    lines.append("export TRAFFIC_SEED=%d\n" % port)
+    lines.append("export TEAM_CONFIG=${YAML_ROOT}/%s\n" % config_path)
+    lines.append("export SAVE_PATH=${DATA_ROOT}/%s/data\n" % config_path.split(".")[0])
+    lines.append(
+        "export CHECKPOINT_ENDPOINT=${DATA_ROOT}/%s/results/%s.json\n"
+        % (config_path.split(".")[0], route.split("/")[1].split(".")[0])
+    )
+    lines.append("\n")
+    base = open("base_script.sh").readlines()
+
+    for line in lines:
+        base.insert(13, line)
+
+    return base
+
+
+for i in range(14):
+    if not os.path.exists("bashs"):
+        os.makedirs("bashs")
+    os.makedirs("bashs/weather-%d" % i, exist_ok=True)
+    for route in routes:
+        ip, port, tm_port = ip_ports[i]
+        script = generate_script(
+            ip,
+            port,
+            tm_port,
+            route,
+            routes[route],
+            carla_seed,
+            traffic_seed,
+            configs[i],
+        )
+        fw = open(
+            "bashs/weather-%d/%s.sh" % (i, route.split("/")[1].split(".")[0]), "w"
+        )
+        for line in script:
+            fw.write(line)
