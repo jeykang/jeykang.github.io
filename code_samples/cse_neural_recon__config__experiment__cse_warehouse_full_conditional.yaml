@@ -1,0 +1,134 @@
+# CSE Warehouse Full (ALL sequences) - Conditional Pixel-Aligned SDF
+# هدف: given a set of RGB views (+poses) reconstruct local geometry (SDF) via
+# pixel-aligned features + hash-grid decoder. Depth is used only as supervision.
+#
+# Run:
+#   python scripts/train.py --config config/experiment/cse_warehouse_full_conditional.yaml --device cuda
+#
+# Notes:
+# - This disables `--auto-batch-size` automatically in scripts/train.py because
+#   the existing profiler doesn't include image-encoder memory.
+# - CSE data provides stereo (left/right). We enable `multicamera` + `multiview`
+#   so each training item contains multiple views (timestamps × cameras).
+
+experiment_name: "cse_warehouse_full_conditional"
+
+data:
+  # Multi-sequence training - all warehouse data (static + dynamic)
+  multi_sequence: true
+  base_dir: "data/warehouse_extracted"
+  sequence_pattern: "*_warehouse_*"
+  dataset_type: "cse"
+  depth_scale: 0.001  # mm -> meters
+
+  img_width: 640
+  img_height: 360
+  min_depth: 0.1
+  max_depth: 30.0
+
+  # Use stereo cameras as separate views.
+  multicamera:
+    enabled: true
+    # `cameras` optional; if omitted, dataset defaults to left/right stereo pair.
+    # sync_tolerance controls timestamp sync across cameras.
+    sync_tolerance: 0.05
+
+  # Viewset wrapper: each training item is a set of V views sampled from a local
+  # temporal window within the same underlying sequence.
+  multiview:
+    enabled: true
+    num_views: 6
+    window: 6
+    include_reference: true
+
+  # DataLoader
+  num_workers: 8
+  cache_frames: false
+
+model:
+  neural_sdf:
+    # Switch model class to PixelAlignedConditionalSDF (src/models/conditional_sdf.py)
+    conditional: true
+    encoding_type: "hashgrid"
+
+    # Hash grid configuration
+    hashgrid:
+      num_levels: 16
+      base_resolution: 16
+      max_resolution: 4096
+      features_per_level: 2
+      log2_hashmap_size: 20
+
+    hidden_features: 256
+    hidden_layers: 6
+    use_weight_norm: true
+
+    # Pixel-aligned conditioning
+    conditioning:
+      encoder_out_dim: 64
+      cond_dim: 64
+
+  planar_attention:
+    enabled: false
+
+training:
+  epochs: 100
+
+  # Start conservative; multi-view + pixel-aligned conditioning is expensive.
+  # Increase once stable (DGX Spark can handle more).
+  batch_size: 8
+
+  optimizer: "adamw"
+  learning_rate: 5e-4
+  weight_decay: 1e-4
+
+  # Hash-grid params often benefit from higher LR.
+  encoding_lr_mult: 10.0
+  encoding_weight_decay: 0.0
+
+  scheduler: "cosine"
+  warmup_epochs: 5
+  min_lr: 1e-6
+
+  use_amp: true
+  gradient_clip: 1.0
+
+  # Sampling (TOTAL per item; trainer splits across views internally)
+  num_surface_samples: 8192
+  num_freespace_samples: 8192
+  num_random_samples: 4096
+  tsdf_num_depth_samples: 8
+  # tsdf_num_rays defaults to num_surface_samples // 4
+
+  # TSDF supervision
+  use_tsdf_supervision: true
+  truncation_dist: 0.2
+  tsdf_weight: 5.0
+  # Stronger sign supervision tends to help avoid "filled volume" solutions.
+  tsdf_behind_weight: 0.5
+
+  # Other losses
+  surface_weight: 2.0
+  freespace_weight: 1.0
+  random_space_weight: 0.5
+  eikonal_weight: 0.02
+
+  # Freespace sampling: keep local to reduce thick "outside" band early.
+  freespace_jitter_min: 0.05
+  freespace_jitter_max: 1.0
+
+  # Visualization/debugging
+  log_every: 50
+  val_every: 1
+  save_every: 5
+  visualize_every: 5
+  viz_num_batches: 8
+  viz_frames_per_sequence: 20
+  viz_max_points_per_sequence: 50000
+
+  collect_metrics: true
+  metrics_sample_rate: 10
+
+output:
+  output_dir: "output/warehouse_full_conditional"
+
