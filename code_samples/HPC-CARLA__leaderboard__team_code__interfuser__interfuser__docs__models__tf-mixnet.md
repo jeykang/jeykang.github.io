@@ -1,13 +1,15 @@
-# MnasNet
+# (Tensorflow) MixNet
 
-**MnasNet** is a type of convolutional neural network optimized for mobile devices that is discovered through mobile neural architecture search, which explicitly incorporates model latency into the main objective so that the search can identify a model that achieves a good trade-off between accuracy and latency. The main building block is an [inverted residual block](https://paperswithcode.com/method/inverted-residual-block) (from [MobileNetV2](https://paperswithcode.com/method/mobilenetv2)).
+**MixNet** is a type of convolutional neural network discovered via AutoML that utilises [MixConvs](https://paperswithcode.com/method/mixconv) instead of regular [depthwise convolutions](https://paperswithcode.com/method/depthwise-convolution).
+
+The weights from this model were ported from [Tensorflow/TPU](https://github.com/tensorflow/tpu).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('mnasnet_100', pretrained=True)
+model = timm.create_model('tf_mixnet_l', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `mnasnet_100`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `tf_mixnet_l`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('mnasnet_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('tf_mixnet_l', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,11 +74,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{tan2019mnasnet,
-      title={MnasNet: Platform-Aware Neural Architecture Search for Mobile}, 
-      author={Mingxing Tan and Bo Chen and Ruoming Pang and Vijay Vasudevan and Mark Sandler and Andrew Howard and Quoc V. Le},
+@misc{tan2019mixconv,
+      title={MixConv: Mixed Depthwise Convolutional Kernels}, 
+      author={Mingxing Tan and Quoc V. Le},
       year={2019},
-      eprint={1807.11626},
+      eprint={1907.09595},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -85,86 +87,108 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: MNASNet
+- Name: TF MixNet
   Paper:
-    Title: 'MnasNet: Platform-Aware Neural Architecture Search for Mobile'
-    URL: https://paperswithcode.com/paper/mnasnet-platform-aware-neural-architecture
+    Title: 'MixConv: Mixed Depthwise Convolutional Kernels'
+    URL: https://paperswithcode.com/paper/mixnet-mixed-depthwise-convolutional-kernels
 Models:
-- Name: mnasnet_100
-  In Collection: MNASNet
+- Name: tf_mixnet_l
+  In Collection: TF MixNet
   Metadata:
-    FLOPs: 416415488
-    Parameters: 4380000
-    File Size: 17731774
+    FLOPs: 688674516
+    Parameters: 7330000
+    File Size: 29620756
     Architecture:
-    - 1x1 Convolution
     - Batch Normalization
-    - Convolution
-    - Depthwise Separable Convolution
+    - Dense Connections
     - Dropout
     - Global Average Pooling
-    - Inverted Residual Block
-    - Max Pooling
-    - ReLU
-    - Residual Connection
-    - Softmax
+    - Grouped Convolution
+    - MixConv
+    - Squeeze-and-Excitation Block
+    - Swish
     Tasks:
     - Image Classification
     Training Techniques:
-    - RMSProp
-    - Weight Decay
+    - MNAS
     Training Data:
     - ImageNet
-    ID: mnasnet_100
-    Layers: 100
-    Dropout: 0.2
+    ID: tf_mixnet_l
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 4000
     Image Size: '224'
     Interpolation: bicubic
-    RMSProp Decay: 0.9
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L894
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_b1-74cb7081.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1720
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/tf_mixnet_l-6c92e0c8.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 74.67%
-      Top 5 Accuracy: 92.1%
-- Name: semnasnet_100
-  In Collection: MNASNet
+      Top 1 Accuracy: 78.78%
+      Top 5 Accuracy: 94.0%
+- Name: tf_mixnet_m
+  In Collection: TF MixNet
   Metadata:
-    FLOPs: 414570766
-    Parameters: 3890000
-    File Size: 15731489
+    FLOPs: 416633502
+    Parameters: 5010000
+    File Size: 20310871
     Architecture:
-    - 1x1 Convolution
     - Batch Normalization
-    - Convolution
-    - Depthwise Separable Convolution
+    - Dense Connections
     - Dropout
     - Global Average Pooling
-    - Inverted Residual Block
-    - Max Pooling
-    - ReLU
-    - Residual Connection
-    - Softmax
+    - Grouped Convolution
+    - MixConv
     - Squeeze-and-Excitation Block
+    - Swish
     Tasks:
     - Image Classification
+    Training Techniques:
+    - MNAS
     Training Data:
     - ImageNet
-    ID: semnasnet_100
+    ID: tf_mixnet_m
     Crop Pct: '0.875'
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L928
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_a1-d9418771.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1709
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/tf_mixnet_m-0f4d8805.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.45%
-      Top 5 Accuracy: 92.61%
+      Top 1 Accuracy: 76.96%
+      Top 5 Accuracy: 93.16%
+- Name: tf_mixnet_s
+  In Collection: TF MixNet
+  Metadata:
+    FLOPs: 302587678
+    Parameters: 4130000
+    File Size: 16738218
+    Architecture:
+    - Batch Normalization
+    - Dense Connections
+    - Dropout
+    - Global Average Pooling
+    - Grouped Convolution
+    - MixConv
+    - Squeeze-and-Excitation Block
+    - Swish
+    Tasks:
+    - Image Classification
+    Training Techniques:
+    - MNAS
+    Training Data:
+    - ImageNet
+    ID: tf_mixnet_s
+    Crop Pct: '0.875'
+    Image Size: '224'
+    Interpolation: bicubic
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1698
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/tf_mixnet_s-89d3354b.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 75.68%
+      Top 5 Accuracy: 92.64%
 -->
