@@ -1,13 +1,13 @@
 import tqdm
 import torch
-from lav.lav_final_v2 import LAV
+from lav.lav_final import LAV
 from lav.utils.datasets import get_data_loader
 from lav.utils.logger import Logger
 
 def main(args):
 
     lav = LAV(args)
-    data_loader = get_data_loader('temporal_lidar_painted' if lav.point_painting else 'lidar', args)
+    data_loader = get_data_loader('lidar_painted' if lav.point_painting else 'lidar', args)
     logger = Logger('lav_lidar', args)
     save_dir = logger.save_dir
 
@@ -48,12 +48,11 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--config-path', default='config_v2.yaml')
+    parser.add_argument('--config-path', default='config.yaml')
 
     parser.add_argument('--device', default='cuda', choices=['cuda', 'cpu'])
 
     parser.add_argument('--perceive-only', action='store_true')
-    parser.add_argument('--motion-only', action='store_true')
 
     # Training misc
     parser.add_argument('--num-epoch', type=int, default=64)
