@@ -1,13 +1,13 @@
-# MixNet
+# (Legacy) SE-ResNeXt
 
-**MixNet** is a type of convolutional neural network discovered via AutoML that utilises [MixConvs](https://paperswithcode.com/method/mixconv) instead of regular [depthwise convolutions](https://paperswithcode.com/method/depthwise-convolution).
+**SE ResNeXt** is a variant of a [ResNeXt](https://www.paperswithcode.com/method/resnext) that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('mixnet_l', pretrained=True)
+model = timm.create_model('legacy_seresnext101_32x4d', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `mixnet_l`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `legacy_seresnext101_32x4d`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('mixnet_l', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('legacy_seresnext101_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,11 +72,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{tan2019mixconv,
-      title={MixConv: Mixed Depthwise Convolutional Kernels}, 
-      author={Mingxing Tan and Quoc V. Le},
+@misc{hu2019squeezeandexcitation,
+      title={Squeeze-and-Excitation Networks}, 
+      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
       year={2019},
-      eprint={1907.09595},
+      eprint={1709.01507},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -85,141 +85,144 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: MixNet
+- Name: Legacy SE ResNeXt
   Paper:
-    Title: 'MixConv: Mixed Depthwise Convolutional Kernels'
-    URL: https://paperswithcode.com/paper/mixnet-mixed-depthwise-convolutional-kernels
+    Title: Squeeze-and-Excitation Networks
+    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
 Models:
-- Name: mixnet_l
-  In Collection: MixNet
+- Name: legacy_seresnext101_32x4d
+  In Collection: Legacy SE ResNeXt
   Metadata:
-    FLOPs: 738671316
-    Parameters: 7330000
-    File Size: 29608232
+    FLOPs: 10287698672
+    Parameters: 48960000
+    File Size: 196466866
     Architecture:
+    - 1x1 Convolution
     - Batch Normalization
-    - Dense Connections
-    - Dropout
+    - Convolution
     - Global Average Pooling
     - Grouped Convolution
-    - MixConv
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
     - Squeeze-and-Excitation Block
-    - Swish
     Tasks:
     - Image Classification
     Training Techniques:
-    - MNAS
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: mixnet_l
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_seresnext101_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 101
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
     Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1669
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mixnet_l-5a9a2ed8.pth
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L462
+  Weights: http://data.lip6.fr/cadene/pretrainedmodels/se_resnext101_32x4d-3b2fe3d8.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 78.98%
-      Top 5 Accuracy: 94.18%
-- Name: mixnet_m
-  In Collection: MixNet
+      Top 1 Accuracy: 80.23%
+      Top 5 Accuracy: 95.02%
+- Name: legacy_seresnext26_32x4d
+  In Collection: Legacy SE ResNeXt
   Metadata:
-    FLOPs: 454543374
-    Parameters: 5010000
-    File Size: 20298347
+    FLOPs: 3187342304
+    Parameters: 16790000
+    File Size: 67346327
     Architecture:
+    - 1x1 Convolution
     - Batch Normalization
-    - Dense Connections
-    - Dropout
+    - Convolution
     - Global Average Pooling
     - Grouped Convolution
-    - MixConv
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
     - Squeeze-and-Excitation Block
-    - Swish
     Tasks:
     - Image Classification
     Training Techniques:
-    - MNAS
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: mixnet_m
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_seresnext26_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 26
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1660
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mixnet_m-4647fc68.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L448
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/seresnext26_32x4d-65ebdb501.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 77.27%
-      Top 5 Accuracy: 93.42%
-- Name: mixnet_s
-  In Collection: MixNet
+      Top 1 Accuracy: 77.11%
+      Top 5 Accuracy: 93.31%
+- Name: legacy_seresnext50_32x4d
+  In Collection: Legacy SE ResNeXt
   Metadata:
-    FLOPs: 321264910
-    Parameters: 4130000
-    File Size: 16727982
+    FLOPs: 5459954352
+    Parameters: 27560000
+    File Size: 110559176
     Architecture:
+    - 1x1 Convolution
     - Batch Normalization
-    - Dense Connections
-    - Dropout
+    - Convolution
     - Global Average Pooling
     - Grouped Convolution
-    - MixConv
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
     - Squeeze-and-Excitation Block
-    - Swish
     Tasks:
     - Image Classification
     Training Techniques:
-    - MNAS
+    - Label Smoothing
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: mixnet_s
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_seresnext50_32x4d
+    LR: 0.6
+    Epochs: 100
+    Layers: 50
+    Dropout: 0.2
     Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 1024
     Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1651
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mixnet_s-a907afbc.pth
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L455
+  Weights: http://data.lip6.fr/cadene/pretrainedmodels/se_resnext50_32x4d-a260b3a4.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.99%
-      Top 5 Accuracy: 92.79%
-- Name: mixnet_xl
-  In Collection: MixNet
-  Metadata:
-    FLOPs: 1195880424
-    Parameters: 11900000
-    File Size: 48001170
-    Architecture:
-    - Batch Normalization
-    - Dense Connections
-    - Dropout
-    - Global Average Pooling
-    - Grouped Convolution
-    - MixConv
-    - Squeeze-and-Excitation Block
-    - Swish
-    Tasks:
-    - Image Classification
-    Training Techniques:
-    - MNAS
-    Training Data:
-    - ImageNet
-    ID: mixnet_xl
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L1678
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mixnet_xl_ra-aac3c00c.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 80.47%
-      Top 5 Accuracy: 94.93%
+      Top 1 Accuracy: 79.08%
+      Top 5 Accuracy: 94.43%
 -->
