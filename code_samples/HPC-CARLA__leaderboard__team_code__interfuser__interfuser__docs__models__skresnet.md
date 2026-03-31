@@ -1,13 +1,13 @@
-# SK-ResNeXt
+# SK-ResNet
 
-**SK ResNeXt** is a variant of a [ResNeXt](https://www.paperswithcode.com/method/resnext) that employs a [Selective Kernel](https://paperswithcode.com/method/selective-kernel) unit. In general, all the large kernel convolutions in the original bottleneck blocks in ResNext are replaced by the proposed [SK convolutions](https://paperswithcode.com/method/selective-kernel-convolution), enabling the network to choose appropriate receptive field sizes in an adaptive manner.
+**SK ResNet** is a variant of a [ResNet](https://www.paperswithcode.com/method/resnet) that employs a [Selective Kernel](https://paperswithcode.com/method/selective-kernel) unit. In general, all the large kernel convolutions in the original bottleneck blocks in ResNet are replaced by the proposed [SK convolutions](https://paperswithcode.com/method/selective-kernel-convolution), enabling the network to choose appropriate receptive field sizes in an adaptive manner.
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('skresnext50_32x4d', pretrained=True)
+model = timm.create_model('skresnet18', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `skresnext50_32x4d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `skresnet18`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('skresnext50_32x4d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('skresnet18', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -85,47 +85,89 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: SKResNeXt
+- Name: SKResNet
   Paper:
     Title: Selective Kernel Networks
     URL: https://paperswithcode.com/paper/selective-kernel-networks
 Models:
-- Name: skresnext50_32x4d
-  In Collection: SKResNeXt
+- Name: skresnet18
+  In Collection: SKResNet
   Metadata:
-    FLOPs: 5739845824
-    Parameters: 27480000
-    File Size: 110340975
+    FLOPs: 2333467136
+    Parameters: 11960000
+    File Size: 47923238
     Architecture:
     - Convolution
     - Dense Connections
     - Global Average Pooling
-    - Grouped Convolution
     - Max Pooling
     - Residual Connection
     - Selective Kernel
     - Softmax
     Tasks:
     - Image Classification
+    Training Techniques:
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
     Training Resources: 8x GPUs
-    ID: skresnext50_32x4d
+    ID: skresnet18
     LR: 0.1
     Epochs: 100
-    Layers: 50
+    Layers: 18
     Crop Pct: '0.875'
     Momentum: 0.9
     Batch Size: 256
     Image Size: '224'
-    Weight Decay: 0.0001
+    Weight Decay: 4.0e-05
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L210
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnext50_ra-f40e40bf.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L148
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnet18_ra-4eec2804.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 80.15%
-      Top 5 Accuracy: 94.64%
+      Top 1 Accuracy: 73.03%
+      Top 5 Accuracy: 91.17%
+- Name: skresnet34
+  In Collection: SKResNet
+  Metadata:
+    FLOPs: 4711849952
+    Parameters: 22280000
+    File Size: 89299314
+    Architecture:
+    - Convolution
+    - Dense Connections
+    - Global Average Pooling
+    - Max Pooling
+    - Residual Connection
+    - Selective Kernel
+    - Softmax
+    Tasks:
+    - Image Classification
+    Training Techniques:
+    - SGD with Momentum
+    - Weight Decay
+    Training Data:
+    - ImageNet
+    Training Resources: 8x GPUs
+    ID: skresnet34
+    LR: 0.1
+    Epochs: 100
+    Layers: 34
+    Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 256
+    Image Size: '224'
+    Weight Decay: 4.0e-05
+    Interpolation: bicubic
+  Code: https://github.com/rwightman/pytorch-image-models/blob/a7f95818e44b281137503bcf4b3e3e94d8ffa52f/timm/models/sknet.py#L165
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/skresnet34_ra-bdc0ccde.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 76.93%
+      Top 5 Accuracy: 93.32%
 -->

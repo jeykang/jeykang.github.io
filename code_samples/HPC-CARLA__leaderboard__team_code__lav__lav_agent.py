@@ -8,23 +8,26 @@ import torch
 import carla
 import random
 import matplotlib.cm
+import json
+import pathlib
+from PIL import Image
 
 from collections import deque
 from torch.nn import functional as F
 
 from leaderboard.autoagents.autonomous_agent import AutonomousAgent, Track
 
-from models.lidar import LiDARModel
-from models.uniplanner import UniPlanner
-from models.bev_planner import BEVPlanner
-from models.rgb import RGBSegmentationModel, RGBBrakePredictionModel
-from pid import PIDController
-from ekf import EKF
-from point_painting import CoordConverter, point_painting
-from planner import RoutePlanner
-from waypointer import Waypointer
-from model_inference import InferModel
+from team_code.lav.models.lidar import LiDARModel
+from team_code.lav.models.uniplanner import UniPlanner
+from team_code.lav.models.bev_planner import BEVPlanner
+from team_code.lav.models.rgb import RGBSegmentationModel, RGBBrakePredictionModel
+from .pid import PIDController
+from .ekf import EKF, move_lidar_points
+from .point_painting import CoordConverter, point_painting
+from .planner import RoutePlanner
+from .waypointer import Waypointer
 
+SAVE_PATH = os.environ.get('SAVE_PATH', None)
 
 def get_entry_point():
     return 'LAVAgent'
@@ -42,7 +45,6 @@ class LAVAgent(AutonomousAgent):
             {'type': 'sensor.speedometer', 'id': 'EGO'},
             {'type': 'sensor.other.gnss', 'x': 0., 'y': 0., 'z': self.camera_z, 'id': 'GPS'},
             {'type': 'sensor.other.imu',  'x': 0., 'y': 0., 'z': self.camera_z, 'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0,'sensor_tick': 0.05, 'id': 'IMU'},
-            
         ]
 
         # Add LiDAR
@@ -113,19 +115,19 @@ class LAVAgent(AutonomousAgent):
             num_plan_iter=self.num_plan_iter,
         ).to(self.device)
 
-        self.bra_model = torch.jit.load(self.bra_model_trace_dir)
-        self.seg_model = torch.jit.load(self.seg_model_trace_dir)
+        self.bra_model = RGBBrakePredictionModel([4,10,18]).to(self.device)
+        self.seg_model = RGBSegmentationModel(self.seg_channels).to(self.device)
 
         # Load the models
         self.lidar_model.load_state_dict(torch.load(self.lidar_model_dir))
         self.uniplanner.load_state_dict(torch.load(self.uniplanner_dir))
+        self.bra_model.load_state_dict(torch.load(self.bra_model_dir))
+        self.seg_model.load_state_dict(torch.load(self.seg_model_dir))
 
         self.lidar_model.eval()
         self.uniplanner.eval()
         self.bra_model.eval()
         self.seg_model.eval()
-
-        self.infer_model = InferModel(self.lidar_model, self.uniplanner, self.camera_x, self.camera_z).to(self.device)
 
         # Coordinate converters for point-painting
         self.coord_converters = [CoordConverter(
@@ -133,7 +135,7 @@ class LAVAgent(AutonomousAgent):
             rgb_h=288, rgb_w=256, fov=64
         ) for cam_yaw in CAMERA_YAWS]
 
-        # Setup tracker TODO: update 1 to actual cos0
+        # Setup tracker
         self.ekf = EKF(1, 1.477531, 1.393600)
         self.ekf_initialized = False
 
@@ -157,6 +159,18 @@ class LAVAgent(AutonomousAgent):
         self.force_move = 0
         self.lane_changed = None
 
+        # NEW: Setup for data saving
+        self.save_path = None
+        if SAVE_PATH is not None:
+            self.save_path = pathlib.Path(SAVE_PATH)
+            self.save_path.mkdir(parents=True, exist_ok=True)
+            (self.save_path / 'rgb_0').mkdir(exist_ok=True)
+            (self.save_path / 'rgb_1').mkdir(exist_ok=True)
+            (self.save_path / 'rgb_2').mkdir(exist_ok=True)
+            (self.save_path / 'tel_rgb').mkdir(exist_ok=True)
+            (self.save_path / 'lidar').mkdir(exist_ok=True)
+            (self.save_path / 'measurements').mkdir(exist_ok=True)
+
     def flush_data(self):
 
         if self.log_wandb:
@@ -167,11 +181,6 @@ class LAVAgent(AutonomousAgent):
         self.vizs.clear()
 
     def destroy(self):
-
-        if len(self.vizs) == 0:
-            return
-
-        self.flush_data()
 
         self.waypointer = None
         self.planner    = None
@@ -213,9 +222,7 @@ class LAVAgent(AutonomousAgent):
         spd      = ego.get('speed')
 
         compass = imu[-1]
-        
-        # Let's hope this only happens when compass == 0 or 2pi
-        # https://discord.com/channels/444206285647380482/551506571608326156/769089544103919626
+
         if np.isnan(compass):
             compass = 0.
 
@@ -230,15 +237,13 @@ class LAVAgent(AutonomousAgent):
         else:
             self.stop_counter = 0
 
-        lidar = torch.tensor(lidar, dtype=torch.float, device=self.device)
-
         if self.num_frames <= 1:
             self.prev_lidar = lidar
             return carla.VehicleControl()
 
 
         if self.prev_lidar is not None:
-            cur_lidar = torch.cat([lidar, self.prev_lidar])
+            cur_lidar = np.concatenate([lidar, self.prev_lidar])
         else:
             cur_lidar = lidar
 
@@ -250,20 +255,22 @@ class LAVAgent(AutonomousAgent):
         rgbs = []
 
         for i in range(len(CAMERA_YAWS)):
-            _, rgb = input_data.get(f'RGB_{i}')
-            rgbs.append(rgb[...,:3][...,::-1])
+            _, rgb_data = input_data.get(f'RGB_{i}')
+            rgbs.append(rgb_data[...,:3][...,::-1])
 
         rgb = np.concatenate(rgbs, axis=1)
         all_rgb = np.stack(rgbs, axis=0)
 
-        _, tel_rgb = input_data.get('TEL_RGB')
-        tel_rgb = tel_rgb[...,:3][...,::-1].copy()
+        _, tel_rgb_data = input_data.get('TEL_RGB')
+        tel_rgb = tel_rgb_data[...,:3][...,::-1].copy()
         tel_rgb = tel_rgb[:-self.crop_tel_bottom]
 
         all_rgbs = torch.tensor(all_rgb).permute(0,3,1,2).float().to(self.device)
-        pred_sem = torch.softmax(self.seg_model(all_rgbs), dim=1)
+        pred_sem = to_numpy(torch.softmax(self.seg_model(all_rgbs), dim=1))
+        pred_sem = pred_sem[:,1:] * (1-pred_sem[:,:1])
+        painted_lidar = point_painting(cur_lidar, pred_sem, self.coord_converters)
 
-        fused_lidar = self.infer_model.forward_paint(cur_lidar, pred_sem)
+        fused_lidar = np.concatenate([cur_lidar, painted_lidar], axis=-1)
 
         # EKF updates and bookeepings
         self.lidars.append(fused_lidar)
@@ -274,7 +281,7 @@ class LAVAgent(AutonomousAgent):
             self.locs.popleft()
             self.oris.popleft()
 
-        lidar_points = self.get_stacked_lidar()
+        stacked_lidar = self.get_stacked_lidar()
 
         # High-level commands
         if self.waypointer is None:
@@ -308,27 +315,33 @@ class LAVAgent(AutonomousAgent):
         wx, wy = _rotate(wx, wy, -imu[-1]+np.pi/2)
 
         # Predict brakes from images
-        rgbs = torch.tensor(rgb[None]).permute(0,3,1,2).float().to(self.device)
-        tel_rgbs= torch.tensor(tel_rgb[None]).permute(0,3,1,2).float().to(self.device)
+        rgbs_torch = torch.tensor(rgb[None]).permute(0,3,1,2).float().to(self.device)
+        tel_rgbs_torch = torch.tensor(tel_rgb[None]).permute(0,3,1,2).float().to(self.device)
+        pred_bra = self.bra_model(rgbs_torch, tel_rgbs_torch)
 
-        nxps       = torch.tensor([-wx,-wy]).float().to(self.device)
+        # Heavy duties
+        lidar_points = torch.tensor(stacked_lidar, dtype=torch.float32).to(self.device)
+
+        nxps = torch.tensor([-wx,-wy]).float().to(self.device)
+
+        features,      \
+        pred_heatmaps, \
+        pred_sizemaps, \
+        pred_orimaps,  \
+        pred_bev = self.lidar_model([lidar_points], [len(lidar_points)])
+
+        # Object detection
+        det = self.det_inference(torch.sigmoid(pred_heatmaps[0]), pred_sizemaps[0], pred_orimaps[0])
 
         # Motion forecast & planning
-        ego_embd, ego_plan_locs, ego_cast_locs, other_cast_locs, other_cast_cmds, pred_bev, det = self.infer_model(lidar_points, nxps, cmd_value)
+        ego_plan_locs, ego_cast_locs, other_cast_locs, other_cast_cmds = self.uniplanner.infer(features[0], det[1], cmd_value, nxps)
         ego_plan_locs = to_numpy(ego_plan_locs)
         ego_cast_locs = to_numpy(ego_cast_locs)
         other_cast_locs = to_numpy(other_cast_locs)
         other_cast_cmds = to_numpy(other_cast_cmds)
 
-        pred_bra = self.bra_model(rgbs, tel_rgbs)
-
         if cmd_value in [4,5]:
             ego_plan_locs = ego_cast_locs
-
-        if not np.isnan(ego_plan_locs).any():
-            steer, throt, brake = self.pid_control(ego_plan_locs, spd, cmd_value)
-        else:
-            steer, throt, brake = 0, 0, 0
 
         if not np.isnan(ego_plan_locs).any():
             steer, throt, brake = self.pid_control(ego_plan_locs, spd, cmd_value)
@@ -344,7 +357,7 @@ class LAVAgent(AutonomousAgent):
         if spd * 3.6 > self.max_speed:
             throt = 0
 
-        if self.stop_counter >= 600: # Creep forward
+        if self.stop_counter >= 600: # Do not apply this for now
             self.force_move = 20
 
         if self.force_move > 0:
@@ -357,7 +370,28 @@ class LAVAgent(AutonomousAgent):
         if len(self.vizs) >= 12000:
             self.flush_data()
 
-        return carla.VehicleControl(steer=steer, throttle=throt, brake=brake)
+        control = carla.VehicleControl(steer=steer, throttle=throt, brake=brake)
+
+        # NEW: Call the save function
+        if self.save_path is not None:
+            self.save(input_data, control, ego_plan_locs, cmd_value)
+
+        return control
+
+    # NEW: Method to save sensor data to disk
+    def save(self, input_data, control, ego_plan_locs, command):
+        """frame = self.num_frames
+        
+        # Save images
+        Image.fromarray(input_data.get('RGB_0')[1][...,:3]).save(self.save_path / 'rgb_0' / f'{frame:04d}.png')
+        Image.fromarray(input_data.get('RGB_1')[1][...,:3]).save(self.save_path / 'rgb_1' / f'{frame:04d}.png')
+        Image.fromarray(input_data.get('RGB_2')[1][...,:3]).save(self.save_path / 'rgb_2' / f'{frame:04d}.png')
+        Image.fromarray(input_data.get('TEL_RGB')[1][...,:3]).save(self.save_path / 'tel_rgb' / f'{frame:04d}.png')
+        
+        # Save LiDAR
+        np.save(self.save_path / 'lidar' / f'{frame:04d}.npy', input_data.get('LIDAR')[1], allow_pickle=True)"""
+        pass
+
 
 
     def get_stacked_lidar(self):
@@ -373,20 +407,21 @@ class LAVAgent(AutonomousAgent):
             lidar_f = lidar[:,3:]
 
             lidar_xyz = move_lidar_points(lidar_xyz, loc - loc0, ori0, ori)
-            lidar_t = torch.zeros((len(lidar_xyz), self.num_frame_stack+1), dtype=lidar_xyz.dtype, device=self.device)
+            lidar_t = np.zeros((len(lidar_xyz), self.num_frame_stack+1), dtype=lidar_xyz.dtype)
             lidar_t[:,i] = 1      # Be extra careful on this.
 
-            rel_lidar = torch.cat([lidar_xyz, lidar_f, lidar_t], dim=-1)
+            rel_lidar = np.concatenate([lidar_xyz, lidar_f, lidar_t], axis=-1)
 
             rel_lidars.append(rel_lidar)
 
-        return torch.cat(rel_lidars)
+        return np.concatenate(rel_lidars)
 
     def plan_collide(self, ego_plan_locs, other_cast_locs, other_cast_cmds, dist_threshold_static=1.0, dist_threshold_moving=2.5):
         # TODO: Do a proper occupancy map?
         for other_trajs, other_cmds in zip(other_cast_locs, other_cast_cmds):
             init_x, init_y = other_trajs[0,0]
             if init_y > 0.5*self.pixels_per_meter:
+            # if init_y > 0:
                 continue
             for other_traj, other_cmd in zip(other_trajs, other_cmds):
                 if other_cmd < self.cmd_thresh:
@@ -451,10 +486,12 @@ class LAVAgent(AutonomousAgent):
 
         idx = (lidar_xyzr[:,0] > -2.4)&(lidar_xyzr[:,0] < 0)&(lidar_xyzr[:,1]>-0.8)&(lidar_xyzr[:,1]<0.8)&(lidar_xyzr[:,2]>-1.5)&(lidar_xyzr[:,2]<-1)
 
+        idx = np.argwhere(idx)
+
         if lidar_painted is None:
-            return lidar_xyzr[~idx]
+            return np.delete(lidar_xyzr, idx, axis=0)
         else:
-            return lidar_xyzr[~idx], lidar_painted[~idx]
+            return np.delete(lidar_xyzr, idx, axis=0), np.delete(lidar_painted, idx, axis=0)
 
     def visualize(self, rgb, tel_rgb, lidar, pred_bra, pred_bev, pred_loc, cast_locs, cast_cmds, det, tgt, cmd, spd, steer, throt, brake, text_args=(cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255,255,255), 1)):
         lidar_viz = lidar_to_bev(
@@ -499,7 +536,7 @@ class LAVAgent(AutonomousAgent):
             lidar_viz,
             cv2.cvtColor((255*pred_bev.mean(axis=0)).astype(np.uint8), cv2.COLOR_GRAY2RGB),
         ], axis=1)
-
+        
         canvas = cv2.resize(canvas, dsize=(int(canvas.shape[1]/2),int(canvas.shape[0]/2)))
         
         cv2.putText(canvas, f'speed: {spd:.3f}m/s', (4, 10), *text_args)
@@ -528,42 +565,6 @@ def _rotate(x, y, theta):
 def to_numpy(x):
     return x.detach().cpu().numpy()
 
-def extract_peak(heatmap, max_pool_ks=7, min_score=0.1, max_det=15, break_tie=False):
-    
-    # Credit: Prof. Philipp Krähenbühl in CS394D
-
-    if break_tie:
-        heatmap = heatmap + 1e-7*torch.randn(*heatmap.size(), device=heatmap.device)
-
-    max_cls = F.max_pool2d(heatmap[None, None], kernel_size=max_pool_ks, padding=max_pool_ks//2, stride=1)[0, 0]
-    possible_det = heatmap - (max_cls > heatmap).float() * 1e5
-    if max_det > possible_det.numel():
-        max_det = possible_det.numel()
-    score, loc = torch.topk(possible_det.view(-1), max_det)
-
-    return [(float(s), int(l) % heatmap.size(1), int(l) // heatmap.size(1))
-            for s, l in zip(score.cpu(), loc.cpu()) if s > min_score]
-
-def move_lidar_points(lidar, dloc, ori0, ori1):
-
-
-    dloc = dloc @ [
-        [ np.cos(ori0), -np.sin(ori0)],
-        [ np.sin(ori0), np.cos(ori0)]
-    ]
-
-    ori = ori1 - ori0
-    lidar = lidar @ torch.tensor([
-        [np.cos(ori), np.sin(ori),0],
-        [-np.sin(ori), np.cos(ori),0],
-        [0,0,1],
-    ], dtype=torch.float, device=lidar.device)
-
-    lidar[:,0] += dloc[0]
-    lidar[:,1] += dloc[1]
-    
-    return lidar
-
 def lidar_to_bev(lidar, min_x=-10,max_x=70,min_y=-40,max_y=40, pixels_per_meter=4, hist_max_per_pixel=10):
     xbins = np.linspace(
         min_x, max_x+1,
@@ -579,3 +580,19 @@ def lidar_to_bev(lidar, min_x=-10,max_x=70,min_y=-40,max_y=40, pixels_per_meter=
 
     overhead_splat = hist / hist_max_per_pixel * 255.
     return overhead_splat[::-1,:]
+
+def extract_peak(heatmap, max_pool_ks=7, min_score=0.1, max_det=15, break_tie=False):
+
+    # Credit: Prof. Philipp Krähenbühl in CS394D
+    
+    if break_tie:
+        heatmap = heatmap + 1e-7*torch.randn(*heatmap.size(), device=heatmap.device)
+
+    max_cls = F.max_pool2d(heatmap[None, None], kernel_size=max_pool_ks, padding=max_pool_ks//2, stride=1)[0, 0]
+    possible_det = heatmap - (max_cls > heatmap).float() * 1e5
+    if max_det > possible_det.numel():
+        max_det = possible_det.numel()
+    score, loc = torch.topk(possible_det.view(-1), max_det)
+
+    return [(float(s), int(l) % heatmap.size(1), int(l) // heatmap.size(1))
+            for s, l in zip(score.cpu(), loc.cpu()) if s > min_score]
