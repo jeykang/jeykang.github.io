@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-07T17:29:37Z",
+  "generated_at": "2026-04-07T21:06:11Z",
   "source": {
     "user": "jeykang",
     "max_repos": 8,
@@ -47,132 +47,132 @@
   },
   "files": [
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__sknet.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__byoanet.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/sknet.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/byoanet.py",
       "branch": "main",
-      "bytes": 9430
+      "bytes": 17226
     },
     {
-      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__autoagents__dummy_agent.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__planner.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "scenario_runner/srunner/autoagents/dummy_agent.py",
+      "path": "leaderboard/team_code/planner.py",
       "branch": "main",
-      "bytes": 3047
+      "bytes": 3242
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__leaderboard__scenarios__scenarioatomics__atomic_criteria.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__data__transforms_carla_factory.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/leaderboard/scenarios/scenarioatomics/atomic_criteria.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/data/transforms_carla_factory.py",
       "branch": "main",
-      "bytes": 4023
+      "bytes": 4360
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__scheduler__plateau_lr.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__nasnet.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/scheduler/plateau_lr.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/nasnet.py",
       "branch": "main",
-      "bytes": 4023
+      "bytes": 29055
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__adversarial-inception-v3.md",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__changes.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/adversarial-inception-v3.md",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/changes.md",
       "branch": "main",
-      "bytes": 3434
+      "bytes": 9330
     },
     {
-      "file": "code_samples/cse_neural_recon__config__experiment__cse_warehouse_full.yaml",
-      "repo": "cse_neural_recon",
-      "owner": "jeykang",
-      "path": "config/experiment/cse_warehouse_full.yaml",
-      "branch": "main",
-      "bytes": 1901
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__layers__weight_init.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__tf-efficientnet-lite.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/layers/weight_init.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/tf-efficientnet-lite.md",
       "branch": "main",
-      "bytes": 3336
+      "bytes": 6884
     },
     {
-      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenariomanager__weather_sim.py",
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenariomanager__actorcontrols__vehicle_longitudinal_control.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "scenario_runner/srunner/scenariomanager/weather_sim.py",
+      "path": "scenario_runner/srunner/scenariomanager/actorcontrols/vehicle_longitudinal_control.py",
       "branch": "main",
-      "bytes": 5797
+      "bytes": 2098
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__lav__train_bev_v2.py",
+      "file": "code_samples/HPC-CARLA__launch_metrics_daemon.sh",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/lav/train_bev_v2.py",
+      "path": "launch_metrics_daemon.sh",
       "branch": "main",
-      "bytes": 1939
+      "bytes": 491
     },
     {
-      "file": "code_samples/cse_neural_recon__src__training__trainer.py",
-      "repo": "cse_neural_recon",
-      "owner": "jeykang",
-      "path": "src/training/trainer.py",
-      "branch": "main",
-      "bytes": 65536
-    },
-    {
-      "file": "code_samples/PA3__dataset__IHD_train.txt",
-      "repo": "PA3",
-      "owner": "jeykang",
-      "path": "dataset/IHD_train.txt",
-      "branch": "master",
-      "bytes": 65536
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__utils__misc.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__lav__train_full.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/utils/misc.py",
+      "path": "leaderboard/team_code/lav/train_full.py",
       "branch": "main",
-      "bytes": 644
+      "bytes": 2147
     },
     {
-      "file": "code_samples/cse_neural_recon__src__models__planar_attention.py",
-      "repo": "cse_neural_recon",
-      "owner": "jeykang",
-      "path": "src/models/planar_attention.py",
-      "branch": "main",
-      "bytes": 10357
-    },
-    {
-      "file": "code_samples/fs-indexer__indexer__indexer.py",
-      "repo": "fs-indexer",
-      "owner": "jeykang",
-      "path": "indexer/indexer.py",
-      "branch": "main",
-      "bytes": 14810
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__docs__assets__vendor__fontawesome-free__js__regular.js",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__feature_extraction.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/docs/assets/vendor/fontawesome-free/js/regular.js",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/feature_extraction.md",
       "branch": "main",
-      "bytes": 65536
+      "bytes": 6150
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__training_hparam_examples.md",
+      "file": "code_samples/HPC-CARLA__tools__data__batch_rm_haze_data.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/training_hparam_examples.md",
+      "path": "tools/data/batch_rm_haze_data.py",
       "branch": "main",
-      "bytes": 4937
+      "bytes": 1245
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__mixnet.md",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/mixnet.md",
+      "branch": "main",
+      "bytes": 6958
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__tests__test_optim.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/tests/test_optim.py",
+      "branch": "main",
+      "bytes": 23817
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__swsl-resnext.md",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/swsl-resnext.md",
+      "branch": "main",
+      "bytes": 8896
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__gluon_xception.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/gluon_xception.py",
+      "branch": "main",
+      "bytes": 9707
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__autoagents__autonomous_agent.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/srunner/autoagents/autonomous_agent.py",
+      "branch": "main",
+      "bytes": 3485
     }
   ]
 }
