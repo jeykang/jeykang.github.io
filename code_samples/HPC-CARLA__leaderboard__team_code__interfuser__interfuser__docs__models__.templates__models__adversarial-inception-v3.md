@@ -1,6 +1,6 @@
-# # Ensemble Adversarial Inception ResNet v2
+# Adversarial Inception v3
 
-**Inception-ResNet-v2** is a convolutional neural architecture that builds on the Inception family of architectures but incorporates [residual connections](https://paperswithcode.com/method/residual-connection) (replacing the filter concatenation stage of the Inception architecture).
+**Inception v3** is a convolutional neural network architecture from the Inception family that makes several improvements including using [Label Smoothing](https://paperswithcode.com/method/label-smoothing), Factorized 7 x 7 convolutions, and the use of an [auxiliary classifer](https://paperswithcode.com/method/auxiliary-classifier) to propagate label information lower down the network (along with the use of batch normalization for layers in the sidehead). The key building block is an [Inception Module](https://paperswithcode.com/method/inception-v3-module).
 
 This particular model was trained for study of adversarial examples (adversarial training).
 
@@ -55,17 +55,17 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: Ensemble Adversarial
+- Name: Adversarial Inception v3
   Paper:
     Title: Adversarial Attacks and Defences Competition
     URL: https://paperswithcode.com/paper/adversarial-attacks-and-defences-competition
 Models:
-- Name: ens_adv_inception_resnet_v2
-  In Collection: Ensemble Adversarial
+- Name: adv_inception_v3
+  In Collection: Adversarial Inception v3
   Metadata:
-    FLOPs: 16959133120
-    Parameters: 55850000
-    File Size: 223774238
+    FLOPs: 7352418880
+    Parameters: 23830000
+    File Size: 95549439
     Architecture:
     - 1x1 Convolution
     - Auxiliary Classifier
@@ -83,16 +83,16 @@ Models:
     - Image Classification
     Training Data:
     - ImageNet
-    ID: ens_adv_inception_resnet_v2
-    Crop Pct: '0.897'
+    ID: adv_inception_v3
+    Crop Pct: '0.875'
     Image Size: '299'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_resnet_v2.py#L351
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/ens_adv_inception_resnet_v2-2592a550.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L456
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/adv_inception_v3-9e27bd63.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 1.0%
-      Top 5 Accuracy: 17.32%
+      Top 1 Accuracy: 77.58%
+      Top 5 Accuracy: 93.74%
 -->
