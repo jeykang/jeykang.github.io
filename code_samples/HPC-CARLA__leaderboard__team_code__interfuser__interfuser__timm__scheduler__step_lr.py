@@ -1,20 +1,22 @@
-""" MultiStep LR Scheduler
+""" Step Scheduler
 
-Basic multi step LR schedule with warmup, noise.
+Basic step LR schedule with warmup, noise.
+
+Hacked together by / Copyright 2020 Ross Wightman
 """
+import math
 import torch
-import bisect
-from timm.scheduler.scheduler import Scheduler
-from typing import List
+
+from .scheduler import Scheduler
 
 
-class MultiStepLRScheduler(Scheduler):
+class StepLRScheduler(Scheduler):
     """ """
 
     def __init__(
         self,
         optimizer: torch.optim.Optimizer,
-        decay_t: List[int],
+        decay_t: float,
         decay_rate: float = 1.0,
         warmup_t=0,
         warmup_lr_init=0,
@@ -48,18 +50,12 @@ class MultiStepLRScheduler(Scheduler):
         else:
             self.warmup_steps = [1 for _ in self.base_values]
 
-    def get_curr_decay_steps(self, t):
-        # find where in the array t goes,
-        # assumes self.decay_t is sorted
-        return bisect.bisect_right(self.decay_t, t + 1)
-
     def _get_lr(self, t):
         if t < self.warmup_t:
             lrs = [self.warmup_lr_init + t * s for s in self.warmup_steps]
         else:
             lrs = [
-                v * (self.decay_rate ** self.get_curr_decay_steps(t))
-                for v in self.base_values
+                v * (self.decay_rate ** (t // self.decay_t)) for v in self.base_values
             ]
         return lrs
 
