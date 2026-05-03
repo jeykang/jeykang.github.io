@@ -1,12 +1,15 @@
-# Inception v4
+# (Legacy) SENet
 
-**Inception-v4** is a convolutional neural network architecture that builds on previous iterations of the Inception family by simplifying the architecture and using more inception modules than [Inception-v3](https://paperswithcode.com/method/inception-v3).
+A **SENet** is a convolutional neural network architecture that employs [squeeze-and-excitation blocks](https://paperswithcode.com/method/squeeze-and-excitation-block) to enable the network to perform dynamic channel-wise feature recalibration.
+
+The weights from this model were ported from Gluon.
+
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('inception_v4', pretrained=True)
+model = timm.create_model('legacy_senet154', pretrained=True)
 model.eval()
 ```
 
@@ -52,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `inception_v4`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `legacy_senet154`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('inception_v4', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('legacy_senet154', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -71,11 +74,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{szegedy2016inceptionv4,
-      title={Inception-v4, Inception-ResNet and the Impact of Residual Connections on Learning}, 
-      author={Christian Szegedy and Sergey Ioffe and Vincent Vanhoucke and Alex Alemi},
-      year={2016},
-      eprint={1602.07261},
+@misc{hu2019squeezeandexcitation,
+      title={Squeeze-and-Excitation Networks}, 
+      author={Jie Hu and Li Shen and Samuel Albanie and Gang Sun and Enhua Wu},
+      year={2019},
+      eprint={1709.01507},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -84,49 +87,49 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: Inception v4
+- Name: Legacy SENet
   Paper:
-    Title: Inception-v4, Inception-ResNet and the Impact of Residual Connections on
-      Learning
-    URL: https://paperswithcode.com/paper/inception-v4-inception-resnet-and-the-impact
+    Title: Squeeze-and-Excitation Networks
+    URL: https://paperswithcode.com/paper/squeeze-and-excitation-networks
 Models:
-- Name: inception_v4
-  In Collection: Inception v4
+- Name: legacy_senet154
+  In Collection: Legacy SENet
   Metadata:
-    FLOPs: 15806527936
-    Parameters: 42680000
-    File Size: 171082495
+    FLOPs: 26659556016
+    Parameters: 115090000
+    File Size: 461488402
     Architecture:
-    - Average Pooling
-    - Dropout
-    - Inception-A
-    - Inception-B
-    - Inception-C
-    - Reduction-A
-    - Reduction-B
+    - Convolution
+    - Dense Connections
+    - Global Average Pooling
+    - Max Pooling
     - Softmax
+    - Squeeze-and-Excitation Block
     Tasks:
     - Image Classification
     Training Techniques:
     - Label Smoothing
-    - RMSProp
+    - SGD with Momentum
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 20x NVIDIA Kepler GPUs
-    ID: inception_v4
-    LR: 0.045
+    Training Resources: 8x NVIDIA Titan X GPUs
+    ID: legacy_senet154
+    LR: 0.6
+    Epochs: 100
+    Layers: 154
     Dropout: 0.2
     Crop Pct: '0.875'
     Momentum: 0.9
-    Image Size: '299'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v4.py#L313
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-cadene/inceptionv4-8e4777a0.pth
+    Batch Size: 1024
+    Image Size: '224'
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/senet.py#L440
+  Weights: http://data.lip6.fr/cadene/pretrainedmodels/senet154-c7b49a05.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 1.01%
-      Top 5 Accuracy: 16.85%
+      Top 1 Accuracy: 81.33%
+      Top 5 Accuracy: 95.51%
 -->
