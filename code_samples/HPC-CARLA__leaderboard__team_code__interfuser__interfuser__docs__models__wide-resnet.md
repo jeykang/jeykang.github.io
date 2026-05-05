@@ -1,13 +1,13 @@
-# MnasNet
+# Wide ResNet
 
-**MnasNet** is a type of convolutional neural network optimized for mobile devices that is discovered through mobile neural architecture search, which explicitly incorporates model latency into the main objective so that the search can identify a model that achieves a good trade-off between accuracy and latency. The main building block is an [inverted residual block](https://paperswithcode.com/method/inverted-residual-block) (from [MobileNetV2](https://paperswithcode.com/method/mobilenetv2)).
+**Wide Residual Networks** are a variant on [ResNets](https://paperswithcode.com/method/resnet) where we decrease depth and increase the width of residual networks. This is achieved through the use of [wide residual blocks](https://paperswithcode.com/method/wide-residual-block).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('mnasnet_100', pretrained=True)
+model = timm.create_model('wide_resnet101_2', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +53,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `mnasnet_100`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `wide_resnet101_2`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('mnasnet_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('wide_resnet101_2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,99 +72,92 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{tan2019mnasnet,
-      title={MnasNet: Platform-Aware Neural Architecture Search for Mobile}, 
-      author={Mingxing Tan and Bo Chen and Ruoming Pang and Vijay Vasudevan and Mark Sandler and Andrew Howard and Quoc V. Le},
-      year={2019},
-      eprint={1807.11626},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/ZagoruykoK16,
+  author    = {Sergey Zagoruyko and
+               Nikos Komodakis},
+  title     = {Wide Residual Networks},
+  journal   = {CoRR},
+  volume    = {abs/1605.07146},
+  year      = {2016},
+  url       = {http://arxiv.org/abs/1605.07146},
+  archivePrefix = {arXiv},
+  eprint    = {1605.07146},
+  timestamp = {Mon, 13 Aug 2018 16:46:42 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/ZagoruykoK16.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: MNASNet
+- Name: Wide ResNet
   Paper:
-    Title: 'MnasNet: Platform-Aware Neural Architecture Search for Mobile'
-    URL: https://paperswithcode.com/paper/mnasnet-platform-aware-neural-architecture
+    Title: Wide Residual Networks
+    URL: https://paperswithcode.com/paper/wide-residual-networks
 Models:
-- Name: mnasnet_100
-  In Collection: MNASNet
+- Name: wide_resnet101_2
+  In Collection: Wide ResNet
   Metadata:
-    FLOPs: 416415488
-    Parameters: 4380000
-    File Size: 17731774
+    FLOPs: 29304929280
+    Parameters: 126890000
+    File Size: 254695146
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Depthwise Separable Convolution
-    - Dropout
     - Global Average Pooling
-    - Inverted Residual Block
     - Max Pooling
     - ReLU
     - Residual Connection
     - Softmax
+    - Wide Residual Block
     Tasks:
     - Image Classification
-    Training Techniques:
-    - RMSProp
-    - Weight Decay
     Training Data:
     - ImageNet
-    ID: mnasnet_100
-    Layers: 100
-    Dropout: 0.2
+    ID: wide_resnet101_2
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 4000
     Image Size: '224'
-    Interpolation: bicubic
-    RMSProp Decay: 0.9
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L894
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_b1-74cb7081.pth
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L802
+  Weights: https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 74.67%
-      Top 5 Accuracy: 92.1%
-- Name: semnasnet_100
-  In Collection: MNASNet
+      Top 1 Accuracy: 78.85%
+      Top 5 Accuracy: 94.28%
+- Name: wide_resnet50_2
+  In Collection: Wide ResNet
   Metadata:
-    FLOPs: 414570766
-    Parameters: 3890000
-    File Size: 15731489
+    FLOPs: 14688058368
+    Parameters: 68880000
+    File Size: 275853271
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Depthwise Separable Convolution
-    - Dropout
     - Global Average Pooling
-    - Inverted Residual Block
     - Max Pooling
     - ReLU
     - Residual Connection
     - Softmax
-    - Squeeze-and-Excitation Block
+    - Wide Residual Block
     Tasks:
     - Image Classification
     Training Data:
     - ImageNet
-    ID: semnasnet_100
+    ID: wide_resnet50_2
     Crop Pct: '0.875'
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L928
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mnasnet_a1-d9418771.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L790
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/wide_resnet50_racm-8234f177.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 75.45%
-      Top 5 Accuracy: 92.61%
+      Top 1 Accuracy: 81.45%
+      Top 5 Accuracy: 95.52%
 -->
