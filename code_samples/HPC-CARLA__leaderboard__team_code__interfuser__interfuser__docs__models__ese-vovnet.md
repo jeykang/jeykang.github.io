@@ -1,13 +1,15 @@
-# Wide ResNet
+# ESE-VoVNet
 
-**Wide Residual Networks** are a variant on [ResNets](https://paperswithcode.com/method/resnet) where we decrease depth and increase the width of residual networks. This is achieved through the use of [wide residual blocks](https://paperswithcode.com/method/wide-residual-block).
+**VoVNet** is a convolutional neural network that seeks to make [DenseNet](https://paperswithcode.com/method/densenet) more efficient by concatenating all features only once in the last feature map, which makes input size constant and enables enlarging new output channel. 
+
+Read about [one-shot aggregation here](https://paperswithcode.com/method/one-shot-aggregation).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('wide_resnet101_2', pretrained=True)
+model = timm.create_model('ese_vovnet19b_dw', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `wide_resnet101_2`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `ese_vovnet19b_dw`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('wide_resnet101_2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('ese_vovnet19b_dw', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,92 +74,80 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@article{DBLP:journals/corr/ZagoruykoK16,
-  author    = {Sergey Zagoruyko and
-               Nikos Komodakis},
-  title     = {Wide Residual Networks},
-  journal   = {CoRR},
-  volume    = {abs/1605.07146},
-  year      = {2016},
-  url       = {http://arxiv.org/abs/1605.07146},
-  archivePrefix = {arXiv},
-  eprint    = {1605.07146},
-  timestamp = {Mon, 13 Aug 2018 16:46:42 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/ZagoruykoK16.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@misc{lee2019energy,
+      title={An Energy and GPU-Computation Efficient Backbone Network for Real-Time Object Detection}, 
+      author={Youngwan Lee and Joong-won Hwang and Sangrok Lee and Yuseok Bae and Jongyoul Park},
+      year={2019},
+      eprint={1904.09730},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: Wide ResNet
+- Name: ESE VovNet
   Paper:
-    Title: Wide Residual Networks
-    URL: https://paperswithcode.com/paper/wide-residual-networks
+    Title: 'CenterMask : Real-Time Anchor-Free Instance Segmentation'
+    URL: https://paperswithcode.com/paper/centermask-real-time-anchor-free-instance-1
 Models:
-- Name: wide_resnet101_2
-  In Collection: Wide ResNet
+- Name: ese_vovnet19b_dw
+  In Collection: ESE VovNet
   Metadata:
-    FLOPs: 29304929280
-    Parameters: 126890000
-    File Size: 254695146
+    FLOPs: 1711959904
+    Parameters: 6540000
+    File Size: 26243175
     Architecture:
-    - 1x1 Convolution
     - Batch Normalization
     - Convolution
-    - Global Average Pooling
     - Max Pooling
+    - One-Shot Aggregation
     - ReLU
-    - Residual Connection
-    - Softmax
-    - Wide Residual Block
     Tasks:
     - Image Classification
     Training Data:
     - ImageNet
-    ID: wide_resnet101_2
-    Crop Pct: '0.875'
-    Image Size: '224'
-    Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L802
-  Weights: https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 78.85%
-      Top 5 Accuracy: 94.28%
-- Name: wide_resnet50_2
-  In Collection: Wide ResNet
-  Metadata:
-    FLOPs: 14688058368
-    Parameters: 68880000
-    File Size: 275853271
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Max Pooling
-    - ReLU
-    - Residual Connection
-    - Softmax
-    - Wide Residual Block
-    Tasks:
-    - Image Classification
-    Training Data:
-    - ImageNet
-    ID: wide_resnet50_2
+    ID: ese_vovnet19b_dw
+    Layers: 19
     Crop Pct: '0.875'
     Image Size: '224'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/5f9aff395c224492e9e44248b15f44b5cc095d9c/timm/models/resnet.py#L790
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/wide_resnet50_racm-8234f177.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/vovnet.py#L361
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/ese_vovnet19b_dw-a8741004.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 81.45%
-      Top 5 Accuracy: 95.52%
+      Top 1 Accuracy: 76.82%
+      Top 5 Accuracy: 93.28%
+- Name: ese_vovnet39b
+  In Collection: ESE VovNet
+  Metadata:
+    FLOPs: 9089259008
+    Parameters: 24570000
+    File Size: 98397138
+    Architecture:
+    - Batch Normalization
+    - Convolution
+    - Max Pooling
+    - One-Shot Aggregation
+    - ReLU
+    Tasks:
+    - Image Classification
+    Training Data:
+    - ImageNet
+    ID: ese_vovnet39b
+    Layers: 39
+    Crop Pct: '0.875'
+    Image Size: '224'
+    Interpolation: bicubic
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/vovnet.py#L371
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/ese_vovnet39b-f912fe73.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 79.31%
+      Top 5 Accuracy: 94.72%
 -->
