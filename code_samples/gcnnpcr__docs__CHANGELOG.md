@@ -5,8 +5,8 @@
 - Update extension description and add extension specific test settings
 
 
-## [0.1.0] - 2025-12-04
+## [0.1.0] - 2025-02-11
 
 ### Added
 
-- Initial version of FPS Measurement with Camera Extension
+- Initial version of GCNNPCR Extension
