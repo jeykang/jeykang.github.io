@@ -4,12 +4,13 @@ import torch
 from torch import nn, optim
 from torch.nn import functional as F
 from torch.optim.lr_scheduler import StepLR
+from einops import repeat
 from lav.utils import _numpy
 from lav.utils.point_painting import CoordConverter, point_painting
 
-from lav.models.rgb_v2 import RGBSegmentationModel, RGBBrakePredictionModel
+from lav.models.rgb import RGBSegmentationModel, RGBBrakePredictionModel
 from lav.models.lidar import LiDARModel
-from lav.models.bev_planner_v2 import BEVPlanner
+from lav.models.bev_planner import BEVPlanner
 
 PIXELS_PER_METER = 4
 
@@ -38,25 +39,11 @@ class LAV:
             num_cmds=self.num_cmds,
             num_plan=self.num_plan,
             num_plan_iter=self.num_plan_iter,
-            num_frame_stack=self.num_frame_stack,
         ).to(self.device)
 
         # Optimizers
         self.seg_optim = optim.Adam(self.seg_model.parameters(), lr=args.lr)
         self.bra_optim = optim.Adam(self.bra_model.parameters(), lr=args.lr)
-
-        # if self.distill:
-        #     self.lidar_optim = optim.Adam(
-        #         list(self.lidar_model.parameters()) + \
-        #         list(self.uniplanner.lidar_conv_emb.parameters()),
-        #         lr=args.lr
-        #     )
-        # else:
-        #     self.lidar_optim = optim.Adam(
-        #         list(self.lidar_model.parameters()) + \
-        #         list(self.uniplanner.parameters()),
-        #         lr=args.lr
-        #     )
 
         self.bev_optim = optim.Adam(self.bev_planner.parameters(), lr=args.lr)
         self.bev_scheduler = StepLR(self.bev_optim, step_size=32, gamma=0.5)
@@ -77,8 +64,6 @@ class LAV:
             W/2 + (self.min_y+self.max_y)/2*self.pixels_per_meter,
             H/2 + (self.min_x+self.max_x)/2*self.pixels_per_meter
         ]
-
-        self.branch_weights = torch.tensor(self.branch_weights).float().to(self.device)
 
     def state_dict(self, model_name):
         if model_name == 'bev':
@@ -107,10 +92,7 @@ class LAV:
         else:
             self.uniplanner.load_state_dict(state_dict)
 
-    def train_bev(self, bev, ego_locs, cmds, nxps, bras, locs, oris, typs, num_objs, other_weight=0.):
-
-        if not self.use_others_to_train:
-            other_weight = 0.
+    def train_bev(self, bev, ego_locs, cmds, nxps, bras, locs, oris, typs, num_objs):
 
         bev = bev.float().to(self.device)
         ego_locs = ego_locs.float().to(self.device)
@@ -128,18 +110,16 @@ class LAV:
             ego_locs, locs, oris, nxps, typs,
         )
 
-        # plan_loss1 = F.l1_loss(ego_plan_locs.gather(1,cmds.expand(self.num_plan,2,1,-1).permute(3,2,0,1)).squeeze(1), ego_locs[:,1:], reduction='none').mean(dim=[1,2])[idxs].mean()
-        # import pdb; pdb.set_trace()
         special_cmds = (cmds!=3)
-        plan_loss = torch.mean(F.l1_loss(ego_plan_locs, ego_locs[:,1:][:,None,None].repeat(1,self.num_plan_iter,self.num_cmds,1,1), reduction='none').mean(dim=[1,2,3,4])[idxs] * self.branch_weights[cmds[idxs]])
-        ego_cast_loss = F.l1_loss(ego_cast_locs.gather(1,cmds.expand(self.num_plan,2,1,-1).permute(3,2,0,1)).squeeze(1), ego_locs[:,1:], reduction='none').mean(dim=[1,2]).mean()
+        plan_loss = F.l1_loss(ego_plan_locs, repeat(ego_locs[:,1:], "b t d -> b i c t d", i=self.num_plan_iter, c=self.num_cmds, d=2))
 
-        other_cast_losses = F.l1_loss(other_cast_locs, other_next_locs.unsqueeze(1).repeat(1,self.num_cmds,1,1), reduction='none').mean(dim=[2,3])
+        ego_cast_loss = F.l1_loss(ego_cast_locs.gather(1,repeat(cmds, "b -> b 1 t d",  t=self.num_plan, d=2)).squeeze(1), ego_locs[:,1:])
+        other_cast_losses = F.l1_loss(other_cast_locs, repeat(other_next_locs, "b t d -> b c t d", c=self.num_cmds), reduction="none").mean(dim=[2,3])
         other_cast_loss = other_cast_losses.min(1)[0].mean()
 
-        cmd_loss = F.binary_cross_entropy(ego_cast_cmds, (1.-self.cmd_smooth) * F.one_hot(cmds, self.num_cmds) + self.cmd_smooth / self.num_cmds) 
+        cmd_loss = F.binary_cross_entropy(ego_cast_cmds, F.one_hot(cmds, self.num_cmds).float())
 
-        loss = plan_loss + ego_cast_loss + other_cast_loss * other_weight + cmd_loss * self.cmd_weight
+        loss = plan_loss + ego_cast_loss + other_cast_loss + cmd_loss * self.cmd_weight
 
         self.bev_optim.zero_grad()
         loss.backward()
@@ -183,6 +163,7 @@ class LAV:
 
         return opt_info
 
+
     def train_bra(self, rgb1, rgb2, sem1, sem2, bra):
 
         rgb1 = rgb1.float().permute(0,3,1,2).to(self.device)
@@ -214,6 +195,7 @@ class LAV:
         del rgb1, sem1, rgb2, sem2, bra, loss
 
         return opt_info
+
 
     @torch.no_grad()
     def det_inference(self, heatmaps, sizemaps, orimaps, **kwargs):
@@ -269,10 +251,7 @@ class LAV:
         return ego_plan_locs, other_cast_locs, other_cast_cmds
 
 
-
 def extract_peak(heatmap, max_pool_ks=7, min_score=0.2, max_det=20, break_tie=False):
-
-    # Source: Prof. Philipp Krähenbühl in CS394D
 
     if break_tie:
         heatmap = heatmap + 1e-7*torch.randn(*heatmap.size(), device=heatmap.device)
