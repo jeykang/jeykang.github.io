@@ -1,13 +1,15 @@
-# Inception ResNet v2
+# (Tensorflow) Inception v3
 
-**Inception-ResNet-v2** is a convolutional neural architecture that builds on the Inception family of architectures but incorporates [residual connections](https://paperswithcode.com/method/residual-connection) (replacing the filter concatenation stage of the Inception architecture).
+**Inception v3** is a convolutional neural network architecture from the Inception family that makes several improvements including using [Label Smoothing](https://paperswithcode.com/method/label-smoothing), Factorized 7 x 7 convolutions, and the use of an [auxiliary classifer](https://paperswithcode.com/method/auxiliary-classifier) to propagate label information lower down the network (along with the use of batch normalization for layers in the sidehead). The key building block is an [Inception Module](https://paperswithcode.com/method/inception-v3-module).
+
+The weights from this model were ported from [Tensorflow/Models](https://github.com/tensorflow/models).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('inception_resnet_v2', pretrained=True)
+model = timm.create_model('tf_inception_v3', pretrained=True)
 model.eval()
 ```
 
@@ -53,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `inception_resnet_v2`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `tf_inception_v3`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('inception_resnet_v2', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('tf_inception_v3', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -72,62 +74,75 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{szegedy2016inceptionv4,
-      title={Inception-v4, Inception-ResNet and the Impact of Residual Connections on Learning}, 
-      author={Christian Szegedy and Sergey Ioffe and Vincent Vanhoucke and Alex Alemi},
-      year={2016},
-      eprint={1602.07261},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/SzegedyVISW15,
+  author    = {Christian Szegedy and
+               Vincent Vanhoucke and
+               Sergey Ioffe and
+               Jonathon Shlens and
+               Zbigniew Wojna},
+  title     = {Rethinking the Inception Architecture for Computer Vision},
+  journal   = {CoRR},
+  volume    = {abs/1512.00567},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1512.00567},
+  archivePrefix = {arXiv},
+  eprint    = {1512.00567},
+  timestamp = {Mon, 13 Aug 2018 16:49:07 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/SzegedyVISW15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: Inception ResNet v2
+- Name: TF Inception v3
   Paper:
-    Title: Inception-v4, Inception-ResNet and the Impact of Residual Connections on
-      Learning
-    URL: https://paperswithcode.com/paper/inception-v4-inception-resnet-and-the-impact
+    Title: Rethinking the Inception Architecture for Computer Vision
+    URL: https://paperswithcode.com/paper/rethinking-the-inception-architecture-for
 Models:
-- Name: inception_resnet_v2
-  In Collection: Inception ResNet v2
+- Name: tf_inception_v3
+  In Collection: TF Inception v3
   Metadata:
-    FLOPs: 16959133120
-    Parameters: 55850000
-    File Size: 223774238
+    FLOPs: 7352418880
+    Parameters: 23830000
+    File Size: 95549439
     Architecture:
+    - 1x1 Convolution
+    - Auxiliary Classifier
     - Average Pooling
+    - Average Pooling
+    - Batch Normalization
+    - Convolution
+    - Dense Connections
     - Dropout
-    - Inception-ResNet-v2 Reduction-B
-    - Inception-ResNet-v2-A
-    - Inception-ResNet-v2-B
-    - Inception-ResNet-v2-C
-    - Reduction-A
+    - Inception-v3 Module
+    - Max Pooling
+    - ReLU
     - Softmax
     Tasks:
     - Image Classification
     Training Techniques:
+    - Gradient Clipping
     - Label Smoothing
     - RMSProp
     - Weight Decay
     Training Data:
     - ImageNet
-    Training Resources: 20x NVIDIA Kepler GPUs
-    ID: inception_resnet_v2
+    Training Resources: 50x NVIDIA Kepler GPUs
+    ID: tf_inception_v3
     LR: 0.045
     Dropout: 0.2
-    Crop Pct: '0.897'
+    Crop Pct: '0.875'
     Momentum: 0.9
     Image Size: '299'
     Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_resnet_v2.py#L343
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/inception_resnet_v2-940b1cd6.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/inception_v3.py#L449
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/tf_inception_v3-e0069de4.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 0.95%
-      Top 5 Accuracy: 17.29%
+      Top 1 Accuracy: 77.87%
+      Top 5 Accuracy: 93.65%
 -->
