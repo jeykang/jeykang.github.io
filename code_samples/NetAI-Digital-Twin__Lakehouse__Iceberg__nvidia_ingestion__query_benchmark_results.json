@@ -1,0 +1,407 @@
+[
+  {
+    "experiment": "Gold vs Silver+Join",
+    "variant": "Gold lidar_with_ego",
+    "description": "Pre-materialized Gold table read",
+    "median_s": 0.11265349388122559,
+    "row_count": 400,
+    "runs": 5,
+    "all_times_s": [
+      0.08542823791503906,
+      0.11245536804199219,
+      0.11265349388122559,
+      0.1131289005279541,
+      0.11811566352844238
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Gold vs Silver+Join",
+    "variant": "Silver lidar+ego join",
+    "description": "Ad-hoc join of Silver lidar + egomotion",
+    "median_s": 0.26030755043029785,
+    "row_count": 400,
+    "runs": 5,
+    "all_times_s": [
+      0.24104666709899902,
+      0.24680876731872559,
+      0.26030755043029785,
+      0.273115873336792,
+      0.28822898864746094
+    ],
+    "extra": {
+      "speedup_vs_gold": "2.3x"
+    }
+  },
+  {
+    "experiment": "Gold vs Silver+Join",
+    "variant": "Gold radar_ego_fusion",
+    "description": "Pre-materialized Gold table count",
+    "median_s": 0.07466793060302734,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.05596303939819336,
+      0.07306814193725586,
+      0.07466793060302734,
+      0.07739615440368652,
+      0.08057546615600586
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Gold vs Silver+Join",
+    "variant": "Silver 19-table union+ego join",
+    "description": "Ad-hoc UNION ALL of 19 radar Silver tables + ego join",
+    "median_s": 0.3001260757446289,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.24822163581848145,
+      0.2544374465942383,
+      0.3001260757446289,
+      0.4030799865722656,
+      0.4493424892425537
+    ],
+    "extra": {
+      "speedup_vs_gold": "4.0x"
+    }
+  },
+  {
+    "experiment": "Gold vs Silver+Join",
+    "variant": "Gold sensor_fusion_clip",
+    "description": "Pre-materialized Gold table count",
+    "median_s": 0.061620473861694336,
+    "row_count": 310895,
+    "runs": 5,
+    "all_times_s": [
+      0.05858778953552246,
+      0.060063838958740234,
+      0.061620473861694336,
+      0.06342506408691406,
+      0.0668022632598877
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Gold vs Silver+Join",
+    "variant": "Silver clip+data+sensor join",
+    "description": "Ad-hoc join of 3 Silver metadata tables",
+    "median_s": 0.25025510787963867,
+    "row_count": 1,
+    "runs": 5,
+    "all_times_s": [
+      0.2409522533416748,
+      0.2479112148284912,
+      0.25025510787963867,
+      0.252032995223999,
+      0.2752039432525635
+    ],
+    "extra": {
+      "speedup_vs_gold": "4.1x"
+    }
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Full scan (all partitions)",
+    "description": "Read all 19 sensor partitions",
+    "median_s": 0.04393935203552246,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.041379690170288086,
+      0.04382753372192383,
+      0.04393935203552246,
+      0.04492592811584473,
+      0.045084476470947266
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Single partition (sensor_name='radar_rear_left_mrr_2')",
+    "description": "Reads 1/19 partitions, 95% pruned",
+    "median_s": 0.0464940071105957,
+    "row_count": 323780,
+    "runs": 5,
+    "all_times_s": [
+      0.042119503021240234,
+      0.04309272766113281,
+      0.0464940071105957,
+      0.04716300964355469,
+      0.059041500091552734
+    ],
+    "extra": {
+      "speedup_vs_full": "0.9x",
+      "pct_pruned": "95%"
+    }
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Two partitions",
+    "description": "Reads 2/19 partitions",
+    "median_s": 0.05644035339355469,
+    "row_count": 415631,
+    "runs": 5,
+    "all_times_s": [
+      0.05147671699523926,
+      0.05308413505554199,
+      0.05644035339355469,
+      0.05886268615722656,
+      0.06370949745178223
+    ],
+    "extra": {
+      "speedup_vs_full": "0.8x"
+    }
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Egomotion full scan",
+    "description": "All 2 clip partitions",
+    "median_s": 0.04227900505065918,
+    "row_count": 0,
+    "runs": 5,
+    "all_times_s": [
+      0.04023241996765137,
+      0.04197859764099121,
+      0.04227900505065918,
+      0.042864084243774414,
+      0.05205941200256348
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Egomotion single clip_id",
+    "description": "1/2 partition filtered",
+    "median_s": 0.04690098762512207,
+    "row_count": 2040,
+    "runs": 5,
+    "all_times_s": [
+      0.04533195495605469,
+      0.046378135681152344,
+      0.04690098762512207,
+      0.04736590385437012,
+      0.05178642272949219
+    ],
+    "extra": {
+      "speedup_vs_full": "0.9x",
+      "n_clips": 2
+    }
+  },
+  {
+    "experiment": "Timestamp Range",
+    "variant": "Full scan (no filter)",
+    "description": "Scan all timestamps",
+    "median_s": 0.048349618911743164,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.03780722618103027,
+      0.04798269271850586,
+      0.048349618911743164,
+      0.05044984817504883,
+      0.05560636520385742
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Timestamp Range",
+    "variant": "Narrow range (first 10%)",
+    "description": "timestamp < 2009027 \u2014 10.2% of rows",
+    "median_s": 0.10368680953979492,
+    "row_count": 329376,
+    "runs": 5,
+    "all_times_s": [
+      0.08826971054077148,
+      0.10019183158874512,
+      0.10368680953979492,
+      0.10891556739807129,
+      0.12320446968078613
+    ],
+    "extra": {
+      "speedup_vs_full": "0.5x",
+      "pct_rows": "10.2%"
+    }
+  },
+  {
+    "experiment": "Timestamp Range",
+    "variant": "Combined (partition + timestamp)",
+    "description": "sensor_name='radar_rear_left_mrr_2' AND timestamp < narrow",
+    "median_s": 0.07521677017211914,
+    "row_count": 34785,
+    "runs": 5,
+    "all_times_s": [
+      0.06981062889099121,
+      0.07072710990905762,
+      0.07521677017211914,
+      0.0839691162109375,
+      0.08522415161132812
+    ],
+    "extra": {
+      "speedup_vs_full": "0.6x"
+    }
+  },
+  {
+    "experiment": "Aggregation",
+    "variant": "Radar stats per sensor (partitioned col)",
+    "description": "GROUP BY sensor_name on radar_ego_fusion",
+    "median_s": 0.18079304695129395,
+    "row_count": 19,
+    "runs": 5,
+    "all_times_s": [
+      0.15798711776733398,
+      0.1658320426940918,
+      0.18079304695129395,
+      0.1846330165863037,
+      0.1972963809967041
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Aggregation",
+    "variant": "Radar stats per clip (non-partition col)",
+    "description": "GROUP BY clip_id on radar_ego_fusion",
+    "median_s": 0.14997196197509766,
+    "row_count": 6,
+    "runs": 5,
+    "all_times_s": [
+      0.14514374732971191,
+      0.1485593318939209,
+      0.14997196197509766,
+      0.15045571327209473,
+      0.17470240592956543
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Aggregation",
+    "variant": "Ego velocity stats per clip",
+    "description": "GROUP BY clip_id on Silver egomotion",
+    "median_s": 0.09217691421508789,
+    "row_count": 2,
+    "runs": 5,
+    "all_times_s": [
+      0.06046628952026367,
+      0.08187437057495117,
+      0.09217691421508789,
+      0.0952911376953125,
+      0.1119685173034668
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Aggregation",
+    "variant": "sensor_fusion_clip count",
+    "description": "Count on wide Gold table (35+ columns)",
+    "median_s": 0.04636859893798828,
+    "row_count": 310895,
+    "runs": 5,
+    "all_times_s": [
+      0.04541182518005371,
+      0.04621267318725586,
+      0.04636859893798828,
+      0.047675132751464844,
+      0.04837846755981445
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Time Travel",
+    "variant": "Current snapshot read",
+    "description": "Latest snapshot 6308912989817621573",
+    "median_s": 0.040793657302856445,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.03861546516418457,
+      0.03956460952758789,
+      0.040793657302856445,
+      0.04310178756713867,
+      0.05434060096740723
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Time Travel",
+    "variant": "Historical snapshot read",
+    "description": "VERSION AS OF 703848912188984665",
+    "median_s": 0.03652620315551758,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.03405332565307617,
+      0.03441333770751953,
+      0.03652620315551758,
+      0.04193902015686035,
+      0.04208827018737793
+    ],
+    "extra": {
+      "overhead_s": "-0.004"
+    }
+  },
+  {
+    "experiment": "Tier Read Latency",
+    "variant": "Bronze (single radar table)",
+    "description": "SELECT count(*) FROM iceberg.nvidia_bronze.radar_radar_front_center_imaging_lrr_1",
+    "median_s": 0.04474043846130371,
+    "row_count": 571598,
+    "runs": 5,
+    "all_times_s": [
+      0.04277396202087402,
+      0.04438424110412598,
+      0.04474043846130371,
+      0.04540824890136719,
+      0.05961346626281738
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Tier Read Latency",
+    "variant": "Silver (single radar table, partitioned)",
+    "description": "SELECT count(*) FROM iceberg.nvidia_silver.radar_radar_front_center_imaging_lrr_1",
+    "median_s": 0.0436701774597168,
+    "row_count": 571598,
+    "runs": 5,
+    "all_times_s": [
+      0.03919029235839844,
+      0.04097700119018555,
+      0.0436701774597168,
+      0.04523825645446777,
+      0.04789853096008301
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Tier Read Latency",
+    "variant": "Gold (radar_ego_fusion, all sensors)",
+    "description": "SELECT count(*) FROM iceberg.nvidia_gold.radar_ego_fusion",
+    "median_s": 0.0374760627746582,
+    "row_count": 3230684,
+    "runs": 5,
+    "all_times_s": [
+      0.033360958099365234,
+      0.03563380241394043,
+      0.0374760627746582,
+      0.04179668426513672,
+      0.042365074157714844
+    ],
+    "extra": {}
+  },
+  {
+    "experiment": "Tier Read Latency",
+    "variant": "Gold (radar_ego_fusion, single sensor)",
+    "description": "SELECT count(*) FROM iceberg.nvidia_gold.radar_ego_fusion WHERE sensor_name = 'radar_front_center_imaging_lrr_1'",
+    "median_s": 0.034174442291259766,
+    "row_count": 571598,
+    "runs": 5,
+    "all_times_s": [
+      0.03247189521789551,
+      0.033760786056518555,
+      0.034174442291259766,
+      0.036620140075683594,
+      0.038034915924072266
+    ],
+    "extra": {}
+  }
+]
