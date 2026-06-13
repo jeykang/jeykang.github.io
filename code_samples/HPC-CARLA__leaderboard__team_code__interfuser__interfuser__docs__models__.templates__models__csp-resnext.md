@@ -1,6 +1,6 @@
-# CSP-ResNet
+# CSP-ResNeXt
 
-**CSPResNet** is a convolutional neural network where we apply the Cross Stage Partial Network (CSPNet) approach to [ResNet](https://paperswithcode.com/method/resnet). The CSPNet partitions the feature map of the base layer into two parts and then merges them through a cross-stage hierarchy. The use of a split and merge strategy allows for more gradient flow through the network.
+**CSPResNeXt** is a convolutional neural network where we apply the Cross Stage Partial Network (CSPNet) approach to [ResNeXt](https://paperswithcode.com/method/resnext). The CSPNet partitions the feature map of the base layer into two parts and then merges them through a cross-stage hierarchy. The use of a split and merge strategy allows for more gradient flow through the network.
 
 {% include 'code_snippets.md' %}
 
@@ -24,26 +24,26 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: CSP ResNet
+- Name: CSP ResNeXt
   Paper:
     Title: 'CSPNet: A New Backbone that can Enhance Learning Capability of CNN'
     URL: https://paperswithcode.com/paper/cspnet-a-new-backbone-that-can-enhance
 Models:
-- Name: cspresnet50
-  In Collection: CSP ResNet
+- Name: cspresnext50
+  In Collection: CSP ResNeXt
   Metadata:
-    FLOPs: 5924992000
-    Parameters: 21620000
-    File Size: 86679303
+    FLOPs: 3962945536
+    Parameters: 20570000
+    File Size: 82562887
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
-    - Bottleneck Residual Block
     - Convolution
     - Global Average Pooling
+    - Grouped Convolution
     - Max Pooling
     - ReLU
-    - Residual Block
+    - ResNeXt Block
     - Residual Connection
     - Softmax
     Tasks:
@@ -55,22 +55,23 @@ Models:
     - Weight Decay
     Training Data:
     - ImageNet
-    ID: cspresnet50
+    Training Resources: 1x GPU
+    ID: cspresnext50
     LR: 0.1
     Layers: 50
-    Crop Pct: '0.887'
+    Crop Pct: '0.875'
     Momentum: 0.9
     Batch Size: 128
-    Image Size: '256'
+    Image Size: '224'
     Weight Decay: 0.005
     Interpolation: bilinear
     Training Steps: 8000000
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/cspnet.py#L415
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/cspresnet50_ra-d3e8d487.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/cspnet.py#L430
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/cspresnext50_ra_224-648b4713.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 79.57%
-      Top 5 Accuracy: 94.71%
+      Top 1 Accuracy: 80.05%
+      Top 5 Accuracy: 94.94%
 -->
