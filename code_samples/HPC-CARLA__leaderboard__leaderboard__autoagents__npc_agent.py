@@ -11,10 +11,12 @@ from __future__ import print_function
 
 import carla
 from agents.navigation.basic_agent import BasicAgent
-
-from srunner.autoagents.autonomous_agent import AutonomousAgent
 from srunner.scenariomanager.carla_data_provider import CarlaDataProvider
 
+from leaderboard.autoagents.autonomous_agent import AutonomousAgent, Track
+
+def get_entry_point():
+    return 'NpcAgent'
 
 class NpcAgent(AutonomousAgent):
 
@@ -29,6 +31,7 @@ class NpcAgent(AutonomousAgent):
         """
         Setup the agent parameters
         """
+        self.track = Track.SENSORS
 
         self._route_assigned = False
         self._agent = None
@@ -48,8 +51,7 @@ class NpcAgent(AutonomousAgent):
 
             {'type': 'sensor.lidar.ray_cast', 'x': 0.7, 'y': 0.0, 'z': 1.60, 'yaw': 0.0, 'pitch': 0.0, 'roll': 0.0,
              'id': 'LIDAR'}
-
-
+        ]
         """
 
         sensors = [
@@ -84,10 +86,17 @@ class NpcAgent(AutonomousAgent):
             if self._global_plan:
                 plan = []
 
-                for transform, road_option in self._global_plan_world_coord:
+                prev = None
+                for transform, _ in self._global_plan_world_coord:
                     wp = CarlaDataProvider.get_map().get_waypoint(transform.location)
-                    plan.append((wp, road_option))
+                    if  prev:
+                        route_segment = self._agent._trace_route(prev, wp)
+                        plan.extend(route_segment)
 
+                    prev = wp
+
+                #loc = plan[-1][0].transform.location
+                #self._agent.set_destination([loc.x, loc.y, loc.z])
                 self._agent._local_planner.set_global_plan(plan)  # pylint: disable=protected-access
                 self._route_assigned = True
 
