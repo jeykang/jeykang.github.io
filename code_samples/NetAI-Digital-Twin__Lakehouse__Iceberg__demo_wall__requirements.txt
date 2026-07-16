@@ -1,0 +1,6 @@
+# Core deps for extract_assets.py (run in a venv on the server).
+# Optional extras installed separately: ultralytics (--yolo), trino (--trino).
+opencv-python-headless
+DracoPy
+pyarrow
+numpy
