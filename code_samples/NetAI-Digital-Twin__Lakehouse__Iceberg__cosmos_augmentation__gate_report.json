@@ -1,0 +1,110 @@
+[
+  {
+    "day_ndet": 0.0,
+    "aug_ndet": 0.67,
+    "added": 0.67,
+    "day_conf": 0.0,
+    "aug_conf": 0.309,
+    "harder": false,
+    "passed": false,
+    "clip": "2daf9698",
+    "cond": "night",
+    "kept": false
+  },
+  {
+    "day_ndet": 2.33,
+    "aug_ndet": 0.67,
+    "added": -1.67,
+    "day_conf": 0.584,
+    "aug_conf": 0.192,
+    "harder": true,
+    "passed": true,
+    "clip": "31856298",
+    "cond": "rain",
+    "kept": true
+  },
+  {
+    "day_ndet": 4.33,
+    "aug_ndet": 0.0,
+    "added": -4.33,
+    "day_conf": 0.453,
+    "aug_conf": 0.0,
+    "harder": true,
+    "passed": true,
+    "clip": "ad2948d2",
+    "cond": "fog",
+    "kept": true
+  },
+  {
+    "day_ndet": 2.33,
+    "aug_ndet": 0.67,
+    "added": -1.67,
+    "day_conf": 0.379,
+    "aug_conf": 0.406,
+    "harder": true,
+    "passed": true,
+    "clip": "aa56971d",
+    "cond": "night",
+    "kept": true
+  },
+  {
+    "day_ndet": 1.67,
+    "aug_ndet": 0.33,
+    "added": -1.33,
+    "day_conf": 0.311,
+    "aug_conf": 0.208,
+    "harder": true,
+    "passed": true,
+    "clip": "558c9557",
+    "cond": "rain",
+    "kept": true
+  },
+  {
+    "day_ndet": 0.0,
+    "aug_ndet": 0.0,
+    "added": 0.0,
+    "day_conf": 0.0,
+    "aug_conf": 0.0,
+    "harder": false,
+    "passed": true,
+    "clip": "f7c70bee",
+    "cond": "fog",
+    "kept": false
+  },
+  {
+    "day_ndet": 2.33,
+    "aug_ndet": 1.67,
+    "added": -0.67,
+    "day_conf": 0.433,
+    "aug_conf": 0.5,
+    "harder": true,
+    "passed": true,
+    "clip": "3f1e2632",
+    "cond": "night",
+    "kept": true
+  },
+  {
+    "day_ndet": 3.0,
+    "aug_ndet": 2.33,
+    "added": -0.67,
+    "day_conf": 0.528,
+    "aug_conf": 0.409,
+    "harder": true,
+    "passed": true,
+    "clip": "f0218bff",
+    "cond": "rain",
+    "kept": true
+  },
+  {
+    "day_ndet": 0.67,
+    "aug_ndet": 0.0,
+    "added": -0.67,
+    "day_conf": 0.397,
+    "aug_conf": 0.0,
+    "harder": true,
+    "passed": true,
+    "clip": "1a96d2ae",
+    "cond": "fog",
+    "kept": true
+  }
+]
