@@ -1,0 +1,836 @@
+{
+  "timestamp": "2026-04-01T10:15:42",
+  "strategy": "hybrid_views_cache",
+  "description": "Bronze=add_files(zero-copy), Silver=SQL views(clip_id), Gold=views+CACHE TABLE + materialized tiny aggregations",
+  "source_dir": "/tmp/nvidia-extract/scale_50",
+  "sensors": 14,
+  "scales": [
+    {
+      "scale": 100,
+      "strategy": "hybrid_views_cache",
+      "tables": {
+        "egomotion": {
+          "rows": 274470,
+          "register_s": 4.59,
+          "files": 100,
+          "bytes": 38004527
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 5251812,
+          "register_s": 1.48,
+          "files": 100,
+          "bytes": 68292710
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 8883496,
+          "register_s": 1.02,
+          "files": 100,
+          "bytes": 112852338
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 4882880,
+          "register_s": 0.98,
+          "files": 100,
+          "bytes": 64257571
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 7643633,
+          "register_s": 0.94,
+          "files": 100,
+          "bytes": 98457402
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 5383117,
+          "register_s": 0.99,
+          "files": 100,
+          "bytes": 70111482
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 9478457,
+          "register_s": 1.05,
+          "files": 100,
+          "bytes": 119249143
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 5007179,
+          "register_s": 0.93,
+          "files": 100,
+          "bytes": 65413060
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 8421923,
+          "register_s": 0.88,
+          "files": 100,
+          "bytes": 107296367
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 28520809,
+          "register_s": 0.84,
+          "files": 100,
+          "bytes": 308741227
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 14529724,
+          "register_s": 0.86,
+          "files": 100,
+          "bytes": 169301473
+        },
+        "radar_front_center_srr_0": {
+          "rows": 5830043,
+          "register_s": 0.83,
+          "files": 100,
+          "bytes": 77204540
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 13800803,
+          "register_s": 0.86,
+          "files": 100,
+          "bytes": 161320175
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 5519940,
+          "register_s": 0.81,
+          "files": 100,
+          "bytes": 73668601
+        }
+      },
+      "total_rows": 123428286,
+      "total_register_s": 17.07099199295044,
+      "total_files": 1400,
+      "total_bytes": 1534170616,
+      "rss_mb": 219.9,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0364,
+          "min_s": 0.0327,
+          "max_s": 0.0452
+        },
+        "bronze_ego_count": {
+          "median_s": 0.0343,
+          "min_s": 0.0334,
+          "max_s": 0.0422
+        },
+        "silver_radar_count": {
+          "median_s": 0.0598,
+          "min_s": 0.0584,
+          "max_s": 0.0902
+        },
+        "silver_ego_count": {
+          "median_s": 0.0459,
+          "min_s": 0.0454,
+          "max_s": 0.066
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.0766,
+          "min_s": 0.0626,
+          "max_s": 0.0898
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.0793,
+          "min_s": 0.0704,
+          "max_s": 0.1022
+        },
+        "gold_ego_summary_count": {
+          "median_s": 0.0401,
+          "min_s": 0.0321,
+          "max_s": 0.0432
+        },
+        "gold_ego_summary_sample": {
+          "median_s": 0.0456,
+          "min_s": 0.0424,
+          "max_s": 0.0579
+        },
+        "gold_fusion_count_cached": {
+          "median_s": 0.1238,
+          "min_s": 0.1094,
+          "max_s": 0.139
+        },
+        "gold_fusion_sample_cached": {
+          "median_s": 0.0743,
+          "min_s": 0.0491,
+          "max_s": 0.0835
+        },
+        "gold_fusion_agg_cached": {
+          "median_s": 0.3075,
+          "min_s": 0.2818,
+          "max_s": 0.313
+        },
+        "gold_fusion_count_uncached": {
+          "median_s": 0.1526,
+          "min_s": 0.1524,
+          "max_s": 0.1746
+        },
+        "gold_fusion_sample_uncached": {
+          "median_s": 0.283,
+          "min_s": 0.2402,
+          "max_s": 0.3439
+        },
+        "gold_fusion_agg_uncached": {
+          "median_s": 0.3368,
+          "min_s": 0.3279,
+          "max_s": 0.341
+        }
+      },
+      "silver_view_creation_s": 2.66,
+      "silver_storage_bytes": 0,
+      "silver_radar_temps": 13,
+      "gold_time_s": 0.69,
+      "gold_details": {
+        "egomotion_summary": {
+          "type": "materialized",
+          "rows": 100,
+          "materialize_s": 0.56
+        },
+        "radar_ego_fusion_view": {
+          "type": "temp_view",
+          "create_s": 0.69
+        }
+      },
+      "cache_time_s": 8.69,
+      "cache_details": {
+        "radar_ego_fusion": {
+          "cache_s": 8.3,
+          "cached": true
+        },
+        "silver_egomotion": {
+          "cache_s": 0.4
+        }
+      },
+      "rss_after_cache_mb": 219.9,
+      "wall_clock_s": 42.4
+    },
+    {
+      "scale": 500,
+      "strategy": "hybrid_views_cache",
+      "tables": {
+        "egomotion": {
+          "rows": 1400129,
+          "register_s": 2.0,
+          "files": 500,
+          "bytes": 193739716
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 26056369,
+          "register_s": 1.84,
+          "files": 500,
+          "bytes": 338667478
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 44140585,
+          "register_s": 1.86,
+          "files": 500,
+          "bytes": 557241297
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 24078061,
+          "register_s": 1.8,
+          "files": 500,
+          "bytes": 316540185
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 40195525,
+          "register_s": 1.87,
+          "files": 500,
+          "bytes": 512576238
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 26547963,
+          "register_s": 1.83,
+          "files": 500,
+          "bytes": 346009753
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 46913359,
+          "register_s": 1.83,
+          "files": 500,
+          "bytes": 586759309
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 25356305,
+          "register_s": 1.82,
+          "files": 500,
+          "bytes": 329531067
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 42440949,
+          "register_s": 1.81,
+          "files": 500,
+          "bytes": 537817691
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 144941927,
+          "register_s": 1.85,
+          "files": 500,
+          "bytes": 1570663679
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 78154077,
+          "register_s": 1.82,
+          "files": 500,
+          "bytes": 906329297
+        },
+        "radar_front_center_srr_0": {
+          "rows": 29355372,
+          "register_s": 1.88,
+          "files": 500,
+          "bytes": 387832922
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 72635921,
+          "register_s": 1.85,
+          "files": 500,
+          "bytes": 845936285
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 27844620,
+          "register_s": 1.88,
+          "files": 500,
+          "bytes": 372084320
+        }
+      },
+      "total_rows": 630061162,
+      "total_register_s": 25.935445308685303,
+      "total_files": 7000,
+      "total_bytes": 7801729237,
+      "rss_mb": 219.9,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0381,
+          "min_s": 0.0345,
+          "max_s": 0.0421
+        },
+        "bronze_ego_count": {
+          "median_s": 0.04,
+          "min_s": 0.0331,
+          "max_s": 0.0414
+        },
+        "silver_radar_count": {
+          "median_s": 0.1758,
+          "min_s": 0.1599,
+          "max_s": 0.1759
+        },
+        "silver_ego_count": {
+          "median_s": 0.0774,
+          "min_s": 0.0747,
+          "max_s": 0.0815
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.1276,
+          "min_s": 0.1224,
+          "max_s": 0.1279
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.1324,
+          "min_s": 0.1206,
+          "max_s": 0.1365
+        },
+        "gold_ego_summary_count": {
+          "median_s": 0.0319,
+          "min_s": 0.0292,
+          "max_s": 0.0379
+        },
+        "gold_ego_summary_sample": {
+          "median_s": 0.0291,
+          "min_s": 0.0284,
+          "max_s": 0.0366
+        },
+        "gold_fusion_count_uncached": {
+          "median_s": 0.519,
+          "min_s": 0.4982,
+          "max_s": 0.5507
+        },
+        "gold_fusion_sample_uncached": {
+          "median_s": 0.3185,
+          "min_s": 0.3071,
+          "max_s": 0.3232
+        },
+        "gold_fusion_agg_uncached": {
+          "median_s": 1.1031,
+          "min_s": 1.0895,
+          "max_s": 1.1414
+        }
+      },
+      "silver_view_creation_s": 7.61,
+      "silver_storage_bytes": 0,
+      "silver_radar_temps": 13,
+      "gold_time_s": 0.53,
+      "gold_details": {
+        "egomotion_summary": {
+          "type": "materialized",
+          "rows": 500,
+          "materialize_s": 0.42
+        },
+        "radar_ego_fusion_view": {
+          "type": "temp_view",
+          "create_s": 0.53
+        }
+      },
+      "cache_time_s": 0.59,
+      "cache_details": {
+        "radar_ego_fusion": {
+          "cached": false,
+          "reason": "data too large (7 GB)"
+        },
+        "silver_egomotion": {
+          "cache_s": 0.59
+        }
+      },
+      "rss_after_cache_mb": 219.9,
+      "wall_clock_s": 48.9
+    },
+    {
+      "scale": 2000,
+      "strategy": "hybrid_views_cache",
+      "tables": {
+        "egomotion": {
+          "rows": 5588483,
+          "register_s": 5.75,
+          "files": 2000,
+          "bytes": 773768449
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 105654086,
+          "register_s": 5.63,
+          "files": 2000,
+          "bytes": 1367646674
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 177434153,
+          "register_s": 5.66,
+          "files": 2000,
+          "bytes": 2235633315
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 97629639,
+          "register_s": 5.74,
+          "files": 2000,
+          "bytes": 1278053734
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 161555888,
+          "register_s": 5.59,
+          "files": 2000,
+          "bytes": 2056138136
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 108443645,
+          "register_s": 5.72,
+          "files": 2000,
+          "bytes": 1404976783
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 188059345,
+          "register_s": 5.66,
+          "files": 2000,
+          "bytes": 2348391353
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 102313567,
+          "register_s": 5.69,
+          "files": 2000,
+          "bytes": 1324411526
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 170784806,
+          "register_s": 5.93,
+          "files": 2000,
+          "bytes": 2159204928
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 584676933,
+          "register_s": 5.81,
+          "files": 2000,
+          "bytes": 6339466797
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 316621677,
+          "register_s": 5.62,
+          "files": 2000,
+          "bytes": 3667744414
+        },
+        "radar_front_center_srr_0": {
+          "rows": 119260501,
+          "register_s": 5.71,
+          "files": 2000,
+          "bytes": 1569420134
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 294493651,
+          "register_s": 5.7,
+          "files": 2000,
+          "bytes": 3426340414
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 111792286,
+          "register_s": 5.59,
+          "files": 2000,
+          "bytes": 1490394611
+        }
+      },
+      "total_rows": 2544308660,
+      "total_register_s": 79.80043411254883,
+      "total_files": 28000,
+      "total_bytes": 31441591268,
+      "rss_mb": 219.9,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0385,
+          "min_s": 0.0333,
+          "max_s": 0.0446
+        },
+        "bronze_ego_count": {
+          "median_s": 0.0413,
+          "min_s": 0.0318,
+          "max_s": 0.0435
+        },
+        "silver_radar_count": {
+          "median_s": 0.5936,
+          "min_s": 0.5834,
+          "max_s": 0.6067
+        },
+        "silver_ego_count": {
+          "median_s": 0.1517,
+          "min_s": 0.1416,
+          "max_s": 0.1598
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.3075,
+          "min_s": 0.307,
+          "max_s": 0.3813
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.3162,
+          "min_s": 0.3087,
+          "max_s": 0.3365
+        },
+        "gold_ego_summary_count": {
+          "median_s": 0.0305,
+          "min_s": 0.0257,
+          "max_s": 0.0326
+        },
+        "gold_ego_summary_sample": {
+          "median_s": 0.0279,
+          "min_s": 0.0242,
+          "max_s": 0.0305
+        },
+        "gold_fusion_count_uncached": {
+          "median_s": 2.5474,
+          "min_s": 2.5366,
+          "max_s": 2.5502
+        },
+        "gold_fusion_sample_uncached": {
+          "median_s": 0.773,
+          "min_s": 0.7655,
+          "max_s": 0.8069
+        },
+        "gold_fusion_agg_uncached": {
+          "median_s": 4.5565,
+          "min_s": 4.5256,
+          "max_s": 4.6391
+        }
+      },
+      "silver_view_creation_s": 28.36,
+      "silver_storage_bytes": 0,
+      "silver_radar_temps": 13,
+      "gold_time_s": 1.0,
+      "gold_details": {
+        "egomotion_summary": {
+          "type": "materialized",
+          "rows": 2000,
+          "materialize_s": 0.89
+        },
+        "radar_ego_fusion_view": {
+          "type": "temp_view",
+          "create_s": 1.0
+        }
+      },
+      "cache_time_s": 1.65,
+      "cache_details": {
+        "radar_ego_fusion": {
+          "cached": false,
+          "reason": "data too large (29 GB)"
+        },
+        "silver_egomotion": {
+          "cache_s": 1.65
+        }
+      },
+      "rss_after_cache_mb": 219.9,
+      "wall_clock_s": 152.4
+    },
+    {
+      "scale": 4994,
+      "strategy": "hybrid_views_cache",
+      "tables": {
+        "egomotion": {
+          "rows": 13978872,
+          "register_s": 13.33,
+          "files": 4994,
+          "bytes": 1936289006
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 263561772,
+          "register_s": 13.59,
+          "files": 4994,
+          "bytes": 3413883484
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 263660030,
+          "register_s": 8.28,
+          "files": 3000,
+          "bytes": 3324874705
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 242029069,
+          "register_s": 13.52,
+          "files": 4994,
+          "bytes": 3171689939
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 257755881,
+          "register_s": 8.86,
+          "files": 3207,
+          "bytes": 3282511259
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 271364753,
+          "register_s": 13.49,
+          "files": 4994,
+          "bytes": 3515069269
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 292329822,
+          "register_s": 8.64,
+          "files": 3131,
+          "bytes": 3653216983
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 249291197,
+          "register_s": 13.19,
+          "files": 4900,
+          "bytes": 3231574677
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 273892679,
+          "register_s": 8.71,
+          "files": 3219,
+          "bytes": 3464794769
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 883908101,
+          "register_s": 8.2,
+          "files": 3039,
+          "bytes": 9581708863
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 486648078,
+          "register_s": 8.4,
+          "files": 3086,
+          "bytes": 5638869829
+        },
+        "radar_front_center_srr_0": {
+          "rows": 296146106,
+          "register_s": 13.2,
+          "files": 4994,
+          "bytes": 3902341575
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 468380866,
+          "register_s": 8.66,
+          "files": 3200,
+          "bytes": 5451957484
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 221894351,
+          "register_s": 10.57,
+          "files": 3971,
+          "bytes": 2957799785
+        }
+      },
+      "total_rows": 4484841577,
+      "total_register_s": 150.64864563941956,
+      "total_files": 55723,
+      "total_bytes": 56526581627,
+      "rss_mb": 219.9,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0362,
+          "min_s": 0.0361,
+          "max_s": 0.0473
+        },
+        "bronze_ego_count": {
+          "median_s": 0.0416,
+          "min_s": 0.0352,
+          "max_s": 0.043
+        },
+        "silver_radar_count": {
+          "median_s": 1.3931,
+          "min_s": 1.383,
+          "max_s": 1.4343
+        },
+        "silver_ego_count": {
+          "median_s": 0.3097,
+          "min_s": 0.2899,
+          "max_s": 0.3425
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.6968,
+          "min_s": 0.6956,
+          "max_s": 0.7124
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.737,
+          "min_s": 0.7133,
+          "max_s": 0.7382
+        },
+        "gold_ego_summary_count": {
+          "median_s": 0.0306,
+          "min_s": 0.0222,
+          "max_s": 0.033
+        },
+        "gold_ego_summary_sample": {
+          "median_s": 0.0276,
+          "min_s": 0.0222,
+          "max_s": 0.0293
+        },
+        "gold_fusion_count_uncached": {
+          "median_s": 5.6292,
+          "min_s": 5.579,
+          "max_s": 5.6517
+        },
+        "gold_fusion_sample_uncached": {
+          "median_s": 1.6309,
+          "min_s": 1.6074,
+          "max_s": 1.6887
+        },
+        "gold_fusion_agg_uncached": {
+          "median_s": 10.1497,
+          "min_s": 10.1195,
+          "max_s": 10.2164
+        }
+      },
+      "silver_view_creation_s": 51.92,
+      "silver_storage_bytes": 0,
+      "silver_radar_temps": 13,
+      "gold_time_s": 1.94,
+      "gold_details": {
+        "egomotion_summary": {
+          "type": "materialized",
+          "rows": 4994,
+          "materialize_s": 1.83
+        },
+        "radar_ego_fusion_view": {
+          "type": "temp_view",
+          "create_s": 1.94
+        }
+      },
+      "cache_time_s": 3.78,
+      "cache_details": {
+        "radar_ego_fusion": {
+          "cached": false,
+          "reason": "data too large (53 GB)"
+        },
+        "silver_egomotion": {
+          "cache_s": 3.78
+        }
+      },
+      "rss_after_cache_mb": 219.9,
+      "wall_clock_s": 294.5
+    }
+  ],
+  "regression": {
+    "slope_s_per_file": 0.0024948805954063706,
+    "intercept_s": 10.904907990745762,
+    "files_per_second": 400.8
+  },
+  "projections": {
+    "full_119TB": {
+      "files": 6000000,
+      "projected_register_h": 4.16,
+      "query_latency_ms": "21-80 (constant, with cache)"
+    },
+    "petabyte_1PB": {
+      "files": 60000000,
+      "projected_register_h": 41.58,
+      "query_latency_ms": "21-80 (constant, with cache)"
+    }
+  },
+  "query_scaling": {
+    "bronze_radar_count": {
+      "small_s": 0.0364,
+      "large_s": 0.0362,
+      "data_scale": 36.3,
+      "latency_ratio": 0.995,
+      "scaling": "constant"
+    },
+    "bronze_ego_count": {
+      "small_s": 0.0343,
+      "large_s": 0.0416,
+      "data_scale": 36.3,
+      "latency_ratio": 1.213,
+      "scaling": "constant"
+    },
+    "silver_radar_count": {
+      "small_s": 0.0598,
+      "large_s": 1.3931,
+      "data_scale": 36.3,
+      "latency_ratio": 23.296,
+      "scaling": "linear"
+    },
+    "silver_ego_count": {
+      "small_s": 0.0459,
+      "large_s": 0.3097,
+      "data_scale": 36.3,
+      "latency_ratio": 6.747,
+      "scaling": "sublinear"
+    },
+    "silver_ego_clip_agg": {
+      "small_s": 0.0766,
+      "large_s": 0.6968,
+      "data_scale": 36.3,
+      "latency_ratio": 9.097,
+      "scaling": "sublinear"
+    },
+    "silver_ego_clip_count": {
+      "small_s": 0.0793,
+      "large_s": 0.737,
+      "data_scale": 36.3,
+      "latency_ratio": 9.294,
+      "scaling": "sublinear"
+    },
+    "gold_ego_summary_count": {
+      "small_s": 0.0401,
+      "large_s": 0.0306,
+      "data_scale": 36.3,
+      "latency_ratio": 0.763,
+      "scaling": "constant"
+    },
+    "gold_ego_summary_sample": {
+      "small_s": 0.0456,
+      "large_s": 0.0276,
+      "data_scale": 36.3,
+      "latency_ratio": 0.605,
+      "scaling": "constant"
+    },
+    "gold_fusion_count_uncached": {
+      "small_s": 0.1526,
+      "large_s": 5.6292,
+      "data_scale": 36.3,
+      "latency_ratio": 36.889,
+      "scaling": "linear"
+    },
+    "gold_fusion_sample_uncached": {
+      "small_s": 0.283,
+      "large_s": 1.6309,
+      "data_scale": 36.3,
+      "latency_ratio": 5.763,
+      "scaling": "sublinear"
+    },
+    "gold_fusion_agg_uncached": {
+      "small_s": 0.3368,
+      "large_s": 10.1497,
+      "data_scale": 36.3,
+      "latency_ratio": 30.136,
+      "scaling": "linear"
+    }
+  }
+}
