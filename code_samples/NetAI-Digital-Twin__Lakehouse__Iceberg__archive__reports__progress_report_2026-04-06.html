@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Data Lakehouse — Biweekly Progress (April 2026)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #111827;
+    color: #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    padding: 48px 20px;
+  }
+
+  .slide {
+    width: 1152px;
+    min-height: 648px;
+    background: #1f2937;
+    border-radius: 10px;
+    padding: 32px 40px 28px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0077B6, #00B4D8, #90E0EF);
+  }
+
+  .slide-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .slide-header h1 { font-size: 20px; font-weight: 700; color: #fff; }
+  .tag {
+    font-size: 9px; font-weight: 700; padding: 2px 9px;
+    border-radius: 10px; text-transform: uppercase; letter-spacing: 0.6px;
+  }
+  .tag-done { background: #065f46; color: #6ee7b7; }
+  .tag-wip  { background: #78350f; color: #fcd34d; }
+
+  .columns { display: flex; gap: 28px; }
+  .col-3 { display: flex; gap: 24px; }
+  .col { flex: 1; }
+  .col-wide { flex: 1.35; }
+  .col-narrow { flex: 0.65; }
+  .col-mid { flex: 1; }
+
+  h2 {
+    font-size: 10px; font-weight: 700; color: #00B4D8;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin: 11px 0 5px;
+  }
+  h2:first-child { margin-top: 0; }
+
+  .highlight { color: #67e8f9; font-weight: 600; }
+  .num { color: #fbbf24; font-weight: 700; }
+  .dim { color: #9ca3af; }
+  .small { font-size: 10px; }
+  .xsmall { font-size: 9px; }
+
+  ul { list-style: none; padding: 0; }
+  ul li {
+    font-size: 11.5px; line-height: 1.45; padding-left: 14px;
+    position: relative; margin-bottom: 3px; color: #d1d5db;
+  }
+  ul li::before {
+    content: '>'; position: absolute; left: 0;
+    color: #00B4D8; font-weight: 700; font-size: 10px;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 10.5px; margin: 3px 0; }
+  thead th {
+    text-align: left; font-weight: 600; color: #9ca3af;
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px;
+    padding: 2px 5px; border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  thead th.r { text-align: right; }
+  tbody td { padding: 2px 5px; color: #d1d5db; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  tbody td.r { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ── Strategy cards ── */
+  .strat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 5px 0; }
+  .strat-card {
+    border-radius: 5px; padding: 7px 9px; border: 1px solid;
+    font-size: 10px; line-height: 1.4;
+  }
+  .strat-card .strat-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; margin-bottom: 3px;
+  }
+  .strat-card .strat-detail { color: #d1d5db; }
+  .strat-card .strat-detail .num { font-size: 11px; }
+  .strat-bad   { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.2); }
+  .strat-bad .strat-label { color: #f87171; }
+  .strat-mid   { background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.2); }
+  .strat-mid .strat-label { color: #fbbf24; }
+  .strat-good  { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.2); }
+  .strat-good .strat-label { color: #34d399; }
+
+  /* ── Pipeline diagram ── */
+  .pipeline { display: flex; flex-direction: column; gap: 0; margin: 5px 0; }
+  .pipe-row { display: flex; align-items: center; gap: 7px; }
+  .pipe-box {
+    flex: 1; display: flex; align-items: center; gap: 7px;
+    padding: 5px 8px; border-radius: 5px; border: 1px solid; min-height: 36px;
+  }
+  .pipe-icon { font-size: 15px; flex-shrink: 0; width: 22px; text-align: center; }
+  .pipe-text { flex: 1; }
+  .pipe-text strong { font-size: 11px; display: block; color: #fff; }
+  .pipe-text .sub { font-size: 9px; color: #9ca3af; line-height: 1.2; }
+  .pipe-note {
+    width: 80px; flex-shrink: 0;
+    font-size: 9px; color: #6b7280; text-align: right; line-height: 1.2;
+  }
+  .pipe-note .num { font-size: 10px; }
+  .pipe-arrow {
+    text-align: center; color: #374151; font-size: 12px;
+    line-height: 1; padding: 0; margin-left: 11px;
+  }
+  .pb-src    { background: rgba(107,114,128,0.12); border-color: rgba(107,114,128,0.25); }
+  .pb-bronze { background: rgba(245,158,11,0.10);  border-color: rgba(245,158,11,0.25); }
+  .pb-silver { background: rgba(59,130,246,0.10);   border-color: rgba(59,130,246,0.25); }
+  .pb-gold   { background: rgba(16,185,129,0.10);   border-color: rgba(16,185,129,0.25); }
+  .pb-query  { background: rgba(139,92,246,0.10);   border-color: rgba(139,92,246,0.25); }
+  .pb-cosmos { background: rgba(236,72,153,0.10);   border-color: rgba(236,72,153,0.25); }
+  .pb-out    { background: rgba(6,182,212,0.10);    border-color: rgba(6,182,212,0.25); }
+
+  /* ── Metric cards ── */
+  .metric-row { display: flex; gap: 7px; margin: 5px 0; }
+  .metric-card {
+    flex: 1; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 5px; padding: 5px 7px; text-align: center;
+  }
+  .metric-card .value { font-size: 15px; font-weight: 700; color: #fbbf24; }
+  .metric-card .label { font-size: 9px; color: #6b7280; margin-top: 1px; }
+
+  /* ── Variation chips ── */
+  .var-grid { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0; }
+  .var-chip { font-size: 9.5px; padding: 2px 8px; border-radius: 11px; font-weight: 600; }
+  .var-fog    { background: #374151; color: #d1d5db; }
+  .var-rain   { background: #1e3a5f; color: #93c5fd; }
+  .var-night  { background: #1f2937; color: #a78bfa; }
+  .var-snow   { background: #374151; color: #f3f4f6; }
+  .var-golden { background: #451a03; color: #fbbf24; }
+  .var-over   { background: #1f2937; color: #9ca3af; }
+
+  /* ── Status list ── */
+  .status-list { list-style: none; padding: 0; margin: 5px 0; }
+  .status-list li {
+    font-size: 11px; padding-left: 18px; position: relative;
+    margin-bottom: 2px; color: #d1d5db;
+  }
+  .status-list li::before { position: absolute; left: 0; font-weight: bold; font-size: 11px; }
+  .status-list li.done::before  { content: '\2713'; color: #10b981; }
+  .status-list li.next::before  { content: '\25CB'; color: #fbbf24; }
+
+  .slide-footer {
+    position: absolute; bottom: 10px; left: 40px; right: 40px;
+    font-size: 9px; color: #4b5563; display: flex; justify-content: space-between;
+  }
+
+  .section-divider {
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin: 8px 0 3px;
+  }
+
+  /* ── HW projection cards ── */
+  .hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 5px 0; }
+  .hw-card {
+    border-radius: 5px; padding: 7px 9px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02); font-size: 10px; line-height: 1.4;
+  }
+  .hw-card .hw-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; margin-bottom: 3px; color: #00B4D8;
+  }
+  .hw-card .hw-detail { color: #d1d5db; }
+</style>
+</head>
+<body>
+
+<!-- ================================================================== -->
+<!-- SLIDE 1                                                             -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="tag tag-done">Complete</span>
+    <h1>Nvidia PhysicalAI AV Dataset &mdash; Ingestion, Overhead Reduction &amp; Projections</h1>
+  </div>
+
+  <div class="col-3">
+    <!-- ── COLUMN 1: scaling + overhead ── -->
+    <div class="col" style="flex:1.15;">
+
+      <h2>Part 1 &mdash; Pipeline validated at scale</h2>
+      <ul>
+        <li><span class="highlight">Bronze &rarr; Silver &rarr; Gold</span> pipeline for
+            <span class="num">310,895</span> clips, 14 sensor types, 41 tables/tier</li>
+        <li>Linear scaling confirmed (R&sup2; &gt; 0.99) across 2&ndash;75 clips</li>
+      </ul>
+      <table>
+        <thead><tr><th>Metric</th><th class="r">Per-clip cost</th><th class="r">R&sup2;</th></tr></thead>
+        <tbody>
+          <tr><td>Peak memory</td><td class="r"><span class="num">421 MB</span>/clip + 944 MB</td><td class="r">0.995</td></tr>
+          <tr><td>Wall time</td><td class="r"><span class="num">53.9 s</span>/clip + 117 s</td><td class="r">0.993</td></tr>
+          <tr><td>Rows ingested</td><td class="r"><span class="num">4.74 M</span>/clip + 9.3 M</td><td class="r">0.989</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-divider"></div>
+
+      <h2>Part 2 &mdash; Storage overhead reduction</h2>
+      <p class="xsmall dim" style="margin-bottom:4px;">
+        Naive all-materialized tiers replicate data at each layer.
+        Three strategies benchmarked to reduce overhead while preserving tier guarantees:
+      </p>
+      <div class="strat-grid">
+        <div class="strat-card strat-bad">
+          <div class="strat-label">All materialized</div>
+          <div class="strat-detail">
+            Silver: +100%<br>Gold: +30%<br>
+            Total: <span class="num">2.3&times;</span> source<br>
+            <span class="dim">169 TB &rarr; 388 TB</span>
+          </div>
+        </div>
+        <div class="strat-card strat-mid">
+          <div class="strat-label">View Silver + mat. Gold</div>
+          <div class="strat-detail">
+            Silver: +0%<br>Gold: +30%<br>
+            Total: <span class="num">1.3&times;</span> source<br>
+            <span class="dim">169 TB &rarr; 220 TB</span>
+          </div>
+        </div>
+        <div class="strat-card strat-good">
+          <div class="strat-label">View Silver + view Gold</div>
+          <div class="strat-detail">
+            Silver: +0%<br>Gold: +0%<br>
+            Total: <span class="num">1.0&times;</span> source<br>
+            <span class="dim">169 TB &rarr; 169 TB</span>
+          </div>
+        </div>
+      </div>
+      <p class="xsmall dim">
+        All produce identical query interfaces. Gold views use <code style="font-size:9px;color:#67e8f9;">CACHE TABLE</code>
+        for hot queries. Switchable via <code style="font-size:9px;color:#67e8f9;">--gold-mode</code>.
+      </p>
+
+    </div>
+
+    <!-- ── COLUMN 2: architecture + query ── -->
+    <div class="col" style="flex:0.85;">
+
+      <h2>Architecture</h2>
+      <div class="pipeline">
+        <div class="pipe-row">
+          <div class="pipe-box pb-src">
+            <div class="pipe-icon">&#128451;</div>
+            <div class="pipe-text">
+              <strong>Source Parquet</strong>
+              <span class="sub">14 sensor types</span>
+            </div>
+          </div>
+          <div class="pipe-note"><span class="num">555 MB</span>/clip</div>
+        </div>
+        <div class="pipe-arrow">&darr;</div>
+        <div class="pipe-row">
+          <div class="pipe-box pb-bronze">
+            <div class="pipe-icon">&#9881;</div>
+            <div class="pipe-text">
+              <strong>Bronze &mdash; 41 tables</strong>
+              <span class="sub">Schema-enforced raw data</span>
+            </div>
+          </div>
+          <div class="pipe-note">96% of<br>wall time</div>
+        </div>
+        <div class="pipe-arrow">&darr;</div>
+        <div class="pipe-row">
+          <div class="pipe-box pb-silver">
+            <div class="pipe-icon">&#128065;</div>
+            <div class="pipe-text">
+              <strong>Silver &mdash; 41 views</strong>
+              <span class="sub">Iceberg optimizations<br>0 bytes overhead</span>
+            </div>
+          </div>
+          <div class="pipe-note">partition,<br>sort, stats</div>
+        </div>
+        <div class="pipe-arrow">&darr;</div>
+        <div class="pipe-row">
+          <div class="pipe-box pb-gold">
+            <div class="pipe-icon">&#9733;</div>
+            <div class="pipe-text">
+              <strong>Gold &mdash; 3 tables</strong>
+              <span class="sub">Pre-joined, ML-ready</span>
+            </div>
+          </div>
+          <div class="pipe-note"><span class="num">2.3&ndash;4.1&times;</span><br>faster reads</div>
+        </div>
+        <div class="pipe-arrow">&darr;</div>
+        <div class="pipe-row">
+          <div class="pipe-box pb-query">
+            <div class="pipe-icon">&#128269;</div>
+            <div class="pipe-text">
+              <strong>Trino SQL / Superset</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Query latency</h2>
+      <table>
+        <thead><tr><th>Query</th><th class="r">Gold</th><th class="r">Join</th><th class="r">&Delta;</th></tr></thead>
+        <tbody>
+          <tr><td>radar_ego (19 sensors)</td><td class="r">75 ms</td><td class="r">300 ms</td><td class="r"><span class="num">4.0&times;</span></td></tr>
+          <tr><td>sensor_fusion (4 tbl)</td><td class="r">62 ms</td><td class="r">250 ms</td><td class="r"><span class="num">4.1&times;</span></td></tr>
+          <tr><td>lidar_with_ego</td><td class="r">113 ms</td><td class="r">260 ms</td><td class="r"><span class="num">2.3&times;</span></td></tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- ── COLUMN 3: hardware projections ── -->
+    <div class="col" style="flex:0.95;">
+
+      <h2>Hardware projections &mdash; ingestion</h2>
+      <p class="xsmall dim" style="margin-bottom:4px;">
+        Chunk-based: independent JVMs ingest N clips each, write to Iceberg, exit.
+        Memory is the sole binding constraint.
+      </p>
+      <table>
+        <thead><tr><th>Dataset</th><th class="r">Cluster</th><th class="r">Elapsed</th></tr></thead>
+        <tbody>
+          <tr><td>169 TB <span class="dim">(full NV)</span></td><td class="r">10 &times; 128 GB</td><td class="r"><span class="num">~20 days</span></td></tr>
+          <tr><td></td><td class="r">50 &times; 128 GB</td><td class="r"><span class="num">~4 days</span></td></tr>
+          <tr style="border-top:1px solid rgba(255,255,255,0.08);">
+            <td>1 PB</td><td class="r">50 &times; 128 GB</td><td class="r"><span class="num">~23 days</span></td></tr>
+          <tr><td></td><td class="r">100 &times; 256 GB</td><td class="r"><span class="num">~6 days</span></td></tr>
+          <tr style="border-top:1px solid rgba(255,255,255,0.08);">
+            <td>5 PB</td><td class="r">100 &times; 256 GB</td><td class="r"><span class="num">~30 days</span></td></tr>
+          <tr><td></td><td class="r">500 &times; 128 GB</td><td class="r"><span class="num">~6 days</span></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Hardware projections &mdash; queries</h2>
+      <p class="xsmall dim" style="margin-bottom:4px;">
+        Query memory constant at <span class="num" style="font-size:10px;">224 MB</span>
+        regardless of data volume (measured 123 M &rarr; 4.48 B rows).
+        Persistent cluster is a fraction of ingestion cost.
+      </p>
+      <table>
+        <thead><tr><th>Query pattern</th><th class="r">Latency at scale</th></tr></thead>
+        <tbody>
+          <tr><td>Single clip lookup</td><td class="r"><span class="num">50&ndash;100 ms</span> at any scale</td></tr>
+          <tr><td>COUNT (all tiers)</td><td class="r"><span class="num">21&ndash;80 ms</span> through 4.48 B rows</td></tr>
+          <tr><td>Aggregation</td><td class="r"><span class="num">&lt; 300 ms</span> through 4.48 B rows</td></tr>
+          <tr><td>Time travel read</td><td class="r"><span class="num">0 ms</span> overhead vs current</td></tr>
+        </tbody>
+      </table>
+      <table style="margin-top:6px;">
+        <thead><tr><th>Dataset</th><th class="r">Query cluster</th></tr></thead>
+        <tbody>
+          <tr><td>169 TB</td><td class="r">3&ndash;5 &times; 32 GB Trino workers</td></tr>
+          <tr><td>1 PB</td><td class="r">5&ndash;10 &times; 32 GB Trino workers</td></tr>
+          <tr><td>5 PB</td><td class="r">10&ndash;20 &times; 32 GB Trino workers</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Full-dataset projection</h2>
+      <div class="metric-row">
+        <div class="metric-card">
+          <div class="value">311 K</div>
+          <div class="label">clips</div>
+        </div>
+        <div class="metric-card">
+          <div class="value">1.5 T</div>
+          <div class="label">rows</div>
+        </div>
+        <div class="metric-card">
+          <div class="value">~169 TB</div>
+          <div class="label">source data</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>NetAI Digital Twin &mdash; Data Lakehouse</span>
+    <span>April 2026</span>
+  </div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- SLIDE 2                                                             -->
+<!-- ================================================================== -->
+<div class="slide">
+  <div class="slide-header">
+    <span class="tag tag-wip">In Progress</span>
+    <h1>Cosmos Synthetic Data Augmentation Pipeline</h1>
+  </div>
+
+  <div class="columns">
+    <div class="col col-wide">
+
+      <h2>Architecture</h2>
+      <div class="pipeline">
+        <div class="pipe-row">
+          <div class="pipe-box pb-gold">
+            <div class="pipe-icon">&#9733;</div>
+            <div class="pipe-text">
+              <strong>Gold: sensor_fusion_clip</strong>
+              <span class="sub">Clip metadata (split, country, hour, platform)</span>
+            </div>
+          </div>
+          <div class="pipe-note">Phase 1<br><span class="dim">extract</span></div>
+        </div>
+        <div class="pipe-arrow">&darr;</div>
+        <div class="pipe-row">
+          <div class="pipe-box pb-cosmos">
+            <div class="pipe-icon">&#127912;</div>
+            <div class="pipe-text">
+              <strong>Cosmos World Foundation Model</strong>
+              <span class="sub">Cloud API (build.nvidia.com) &mdash; default<br>
+              or self-hosted NIM container &mdash; on-premise GPU</span>
+            </div>
+          </div>
+          <div class="pipe-note">Phase 2<br><span class="dim">generate per clip<br>&times; N variations</span></div>
+        </div>
+        <div class="pipe-arrow">&darr;</div>
+        <div class="pipe-row">
+          <div class="pipe-box pb-out">
+            <div class="pipe-icon">&#128451;</div>
+            <div class="pipe-text">
+              <strong>nvidia_cosmos namespace</strong>
+              <span class="sub">generated_scenes (partitioned by variation)<br>
+              generation_lineage (source &rarr; synthetic traceability)<br>
+              MP4 video files &rarr; S3 object storage</span>
+            </div>
+          </div>
+          <div class="pipe-note">Phase 3<br><span class="dim">ingest metadata<br>+ upload video</span></div>
+        </div>
+      </div>
+
+      <h2>Design decisions</h2>
+      <ul>
+        <li><span class="highlight">Separate Iceberg namespace</span> (<code style="font-size:10px; color:#67e8f9;">nvidia_cosmos</code>)
+            &mdash; droppable without affecting base lakehouse</li>
+        <li><span class="highlight">Read-only dependency on Gold</span>
+            &mdash; never writes to nvidia_bronze/silver/gold</li>
+        <li><span class="highlight">Dual backend</span>
+            &mdash; cloud API avoids GPU requirement during development;
+            NIM container for production with dedicated hardware</li>
+        <li><span class="highlight">Config-driven variations</span>
+            &mdash; new conditions added by editing a dict, no code changes</li>
+      </ul>
+
+    </div>
+
+    <div class="col col-narrow">
+
+      <h2>Variations (6 default, extensible)</h2>
+      <div class="var-grid">
+        <span class="var-chip var-fog">Fog</span>
+        <span class="var-chip var-rain">Rain</span>
+        <span class="var-chip var-night">Night</span>
+        <span class="var-chip var-snow">Snow</span>
+        <span class="var-chip var-golden">Golden hour</span>
+        <span class="var-chip var-over">Overcast</span>
+      </div>
+
+      <h2>End-to-end test results</h2>
+      <table>
+        <thead><tr><th>Metric</th><th class="r">Result</th></tr></thead>
+        <tbody>
+          <tr><td>Clips processed</td><td class="r"><span class="num">3</span></td></tr>
+          <tr><td>Variations per clip</td><td class="r"><span class="num">3</span></td></tr>
+          <tr><td>Videos generated</td><td class="r"><span class="num">9</span></td></tr>
+          <tr><td>Metadata rows (Iceberg)</td><td class="r"><span class="num">9</span></td></tr>
+          <tr><td>Lineage rows (Iceberg)</td><td class="r"><span class="num">9</span></td></tr>
+          <tr><td>Trino queryable</td><td class="r" style="color:#10b981;font-weight:600;">Yes</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Status</h2>
+      <ul class="status-list">
+        <li class="done">Pipeline code complete (5 modules)</li>
+        <li class="done">End-to-end tested with mock server</li>
+        <li class="done">Dual backend (cloud API + NIM)</li>
+        <li class="done">Iceberg metadata + lineage tables</li>
+        <li class="next">Validate with live NVIDIA API Catalog</li>
+        <li class="next">Run at scale on full Gold dataset</li>
+      </ul>
+
+      <h2>Production projection</h2>
+      <p style="font-size:11px; color:#d1d5db; line-height:1.4;">
+        <span class="num">311 K</span> clips &times;
+        <span class="num">6</span> variations =
+        <span class="num">~1.87 M</span> generated videos<br>
+        <span class="dim">Embarrassingly parallel &mdash; scales linearly
+        with API throughput or NIM replica count</span>
+      </p>
+
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>NetAI Digital Twin &mdash; Data Lakehouse</span>
+    <span>April 2026</span>
+  </div>
+</div>
+
+</body>
+</html>
