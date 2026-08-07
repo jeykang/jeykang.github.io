@@ -1,0 +1,158 @@
+[
+  {
+    "experiment": "Three-Workload",
+    "variant": "Gold: Object Detection",
+    "description": "camera_annotations WHERE camera_name='CAM_BACK'",
+    "elapsed_seconds": 0.078828,
+    "row_count": 23150
+  },
+  {
+    "experiment": "Three-Workload",
+    "variant": "Silver JOIN: Object Detection",
+    "description": "6-table join WHERE camera_name='CAM_BACK'",
+    "elapsed_seconds": 0.254652,
+    "row_count": 23150,
+    "speedup": "3.2x"
+  },
+  {
+    "experiment": "Three-Workload",
+    "variant": "Gold: SLAM/Localization",
+    "description": "lidar_with_ego WHERE clip_id='clip_247d50bbdcfc4940848c92be'",
+    "elapsed_seconds": 0.063711,
+    "row_count": 389
+  },
+  {
+    "experiment": "Three-Workload",
+    "variant": "Silver JOIN: SLAM/Localization",
+    "description": "3-table join WHERE clip_id='clip_247d50bbdcfc4940848c92be'",
+    "elapsed_seconds": 0.138159,
+    "row_count": 389,
+    "speedup": "2.2x"
+  },
+  {
+    "experiment": "Three-Workload",
+    "variant": "Gold: Multi-Modal Fusion",
+    "description": "sensor_fusion_frame WHERE clip_id='clip_247d50bbdcfc4940848c92be'",
+    "elapsed_seconds": 0.048552,
+    "row_count": 389
+  },
+  {
+    "experiment": "Three-Workload",
+    "variant": "Silver JOIN: Multi-Modal Fusion",
+    "description": "6-table join + 3 aggregations WHERE clip_id='clip_247d50bbdcfc4940848c92be'",
+    "elapsed_seconds": 0.098955,
+    "row_count": 389,
+    "speedup": "2.0x"
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Full table count (all partitions)",
+    "description": "No filter \u2014 reads all 6 partitions",
+    "elapsed_seconds": 0.047056,
+    "row_count": 140080
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Sensor filter (1 partition)",
+    "description": "camera_name='CAM_BACK'",
+    "elapsed_seconds": 3.376384,
+    "row_count": 23150,
+    "theoretical_pruning": "83.3%",
+    "actual_data_reduction": "83.5%",
+    "partitions_scanned": "1/6"
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Combined filter (sensor + clip)",
+    "description": "camera_name + clip_id \u2014 maximum pruning",
+    "elapsed_seconds": 0.615432,
+    "row_count": 2290,
+    "data_reduction": "98.4%"
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Unpartitioned (equivalent data)",
+    "description": "23150 rows, no partition pruning",
+    "elapsed_seconds": 3.345957,
+    "row_count": 23150
+  },
+  {
+    "experiment": "Partition Pruning",
+    "variant": "Partitioned (equivalent query)",
+    "description": "23150 rows, partition-pruned",
+    "elapsed_seconds": 3.492092,
+    "row_count": 23150,
+    "speedup": "1.0x"
+  },
+  {
+    "experiment": "Temporal Replay",
+    "variant": "Silver: frame sequential",
+    "description": "Sorted by (clip_id, frame_idx), clip_id='clip_28faf6a18996490b9d735d81'",
+    "elapsed_seconds": 0.091868,
+    "row_count": 41
+  },
+  {
+    "experiment": "Temporal Replay",
+    "variant": "Bronze: frame sequential",
+    "description": "Unsorted, requires sort at query time",
+    "elapsed_seconds": 0.083171,
+    "row_count": 41,
+    "speedup": "0.9x"
+  },
+  {
+    "experiment": "Temporal Replay",
+    "variant": "Silver: camera temporal",
+    "description": "Sorted by (clip_id, sensor_timestamp)",
+    "elapsed_seconds": 0.149016,
+    "row_count": 1423
+  },
+  {
+    "experiment": "Temporal Replay",
+    "variant": "Bronze: camera temporal",
+    "description": "Unsorted, requires sort at query time",
+    "elapsed_seconds": 0.116049,
+    "row_count": 1423,
+    "speedup": "0.8x"
+  },
+  {
+    "experiment": "Temporal Replay",
+    "variant": "Gold: lidar+ego temporal",
+    "description": "Pre-joined & pre-sorted Gold table",
+    "elapsed_seconds": 0.080579,
+    "row_count": 398
+  },
+  {
+    "experiment": "Temporal Replay",
+    "variant": "Silver JOIN: lidar+ego temporal",
+    "description": "Runtime join + sort",
+    "elapsed_seconds": 0.142875,
+    "row_count": 398,
+    "speedup": "1.8x"
+  },
+  {
+    "experiment": "Time Travel",
+    "variant": "Snapshot pinned read",
+    "description": "VERSION AS OF 4887488203608402632",
+    "elapsed_seconds": 3.361018,
+    "row_count": 23150,
+    "v1_count": "23150",
+    "v2_count": "46300",
+    "match": "True"
+  },
+  {
+    "experiment": "Column Metrics",
+    "variant": "Narrow timestamp range",
+    "description": "5% window \u2014 0/14008 rows (0.0%)",
+    "elapsed_seconds": 0.018363,
+    "row_count": 0,
+    "selectivity": "0.0%"
+  },
+  {
+    "experiment": "Column Metrics",
+    "variant": "Full scan (no filter)",
+    "description": "All 14008 rows",
+    "elapsed_seconds": 0.087259,
+    "row_count": 14008,
+    "speedup": "4.8x"
+  }
+]
