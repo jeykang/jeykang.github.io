@@ -1,0 +1,92 @@
+{{/* Shared Quarkus/Polaris datasource env. K8s env names cannot contain dots, so use
+     the QUARKUS_ and POLARIS_ underscore forms that Quarkus maps to dotted config. */}}
+{{- define "lakehouse.polarisEnv" -}}
+- name: POLARIS_PERSISTENCE_TYPE
+  value: "relational-jdbc"
+- name: QUARKUS_DATASOURCE_DB_KIND
+  value: "postgresql"
+- name: QUARKUS_DATASOURCE_USERNAME
+  valueFrom: { secretKeyRef: { name: {{ include "lakehouse.secretName" . }}, key: POLARIS_PG_USER } }
+- name: QUARKUS_DATASOURCE_PASSWORD
+  valueFrom: { secretKeyRef: { name: {{ include "lakehouse.secretName" . }}, key: POLARIS_PG_PASSWORD } }
+- name: QUARKUS_DATASOURCE_JDBC_URL
+  value: "jdbc:postgresql://postgres:5432/{{ .Values.postgres.db }}"
+- name: POLARIS_REALM_CONTEXT_REALMS
+  value: {{ .Values.polaris.realm | quote }}
+{{- end -}}
+---
+# One-shot realm/root-principal bootstrap (idempotent; exits non-zero if already done).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-polaris-bootstrap
+  labels: {{- include "lakehouse.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 20
+  template:
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-postgres
+          image: {{ .Values.postgres.image | quote }}
+          command: ["sh", "-c", "until pg_isready -h postgres -p 5432; do sleep 3; done"]
+      containers:
+        - name: bootstrap
+          image: {{ .Values.polaris.adminImage | quote }}
+          env:
+            {{- include "lakehouse.polarisEnv" . | nindent 12 }}
+            - name: POLARIS_REALM
+              value: {{ .Values.polaris.realm | quote }}
+            - name: ROOT_ID
+              valueFrom: { secretKeyRef: { name: {{ include "lakehouse.secretName" . }}, key: POLARIS_ROOT_CLIENT_ID } }
+            - name: ROOT_SECRET
+              valueFrom: { secretKeyRef: { name: {{ include "lakehouse.secretName" . }}, key: POLARIS_ROOT_CLIENT_SECRET } }
+          command: ["sh", "-c"]
+          args:
+            - 'bootstrap -r "$POLARIS_REALM" -c "$POLARIS_REALM,$ROOT_ID,$ROOT_SECRET" || echo "already bootstrapped"'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-polaris
+  labels: {{- include "lakehouse.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: polaris }
+  template:
+    metadata:
+      labels: { app: polaris }
+    spec:
+      initContainers:
+        - name: wait-postgres
+          image: {{ .Values.postgres.image | quote }}
+          command: ["sh", "-c", "until pg_isready -h postgres -p 5432; do sleep 3; done"]
+      containers:
+        - name: polaris
+          image: {{ .Values.polaris.image | quote }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          env:
+            {{- include "lakehouse.polarisEnv" . | nindent 12 }}
+          ports:
+            - { containerPort: 8181 }
+            - { containerPort: 8182 }
+          readinessProbe:
+            httpGet: { path: /q/health/ready, port: 8182 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polaris
+  labels: {{- include "lakehouse.labels" . | nindent 4 }}
+spec:
+  selector: { app: polaris }
+  ports:
+    - { name: api, port: 8181, targetPort: 8181 }
+    - { name: mgmt, port: 8182, targetPort: 8182 }
