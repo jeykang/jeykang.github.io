@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>[[NAME]] — Home</title>
+  <meta name="description" content="Self-introduction and links">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root{
+      --bg: [[THEME_BG]];
+      --fg: [[THEME_FG]];
+      --muted: [[THEME_MUTED]];
+      --accent: [[THEME_ACCENT]];
+    }
+  </style>
+</head>
+<body>
+  <!-- Background typing overlay -->
+  <div class="code-overlay" aria-hidden="true">
+    <pre id="code-stream" class="code-stream"></pre>
+  </div>
+
+  <main class="container">
+    <section class="panel" role="region" aria-label="Profile">
+      <header class="header">
+        [[AVATAR_HTML]]
+        <div class="title">
+          <h1>[[NAME]]</h1>
+          <p class="muted">[[TAGLINE]]</p>
+        </div>
+      </header>
+
+      <p class="about">
+        [[ABOUT]]
+      </p>
+
+      <nav class="links" aria-label="Key links">
+        [[LINKS_HTML]]
+      </nav>
+
+      <footer class="footer">
+        <small>&copy; [[YEAR]] [[NAME]]</small>
+      </footer>
+    </section>
+  </main>
+
+  <script src="typing.js"></script>
+</body>
+</html>
