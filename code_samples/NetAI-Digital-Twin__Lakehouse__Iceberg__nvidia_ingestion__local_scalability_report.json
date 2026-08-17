@@ -1,0 +1,992 @@
+{
+  "timestamp": "2026-04-01T06:13:04",
+  "strategy": "local_nvme_subset_add_files",
+  "source_dir": "/tmp/nvidia-extract/scale_50",
+  "sensors": 14,
+  "scales": [
+    {
+      "scale": 100,
+      "tables": {
+        "egomotion": {
+          "rows": 274470,
+          "register_s": 11.59,
+          "files": 100,
+          "bytes": 38004527
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 5251812,
+          "register_s": 3.39,
+          "files": 100,
+          "bytes": 68292710
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 8883496,
+          "register_s": 2.71,
+          "files": 100,
+          "bytes": 112852338
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 4882880,
+          "register_s": 2.64,
+          "files": 100,
+          "bytes": 64257571
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 7643633,
+          "register_s": 2.33,
+          "files": 100,
+          "bytes": 98457402
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 5383117,
+          "register_s": 2.04,
+          "files": 100,
+          "bytes": 70111482
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 9478457,
+          "register_s": 2.06,
+          "files": 100,
+          "bytes": 119249143
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 5007179,
+          "register_s": 1.18,
+          "files": 100,
+          "bytes": 65413060
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 8421923,
+          "register_s": 1.17,
+          "files": 100,
+          "bytes": 107296367
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 28520809,
+          "register_s": 0.98,
+          "files": 100,
+          "bytes": 308741227
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 14529724,
+          "register_s": 0.86,
+          "files": 100,
+          "bytes": 169301473
+        },
+        "radar_front_center_srr_0": {
+          "rows": 5830043,
+          "register_s": 0.89,
+          "files": 100,
+          "bytes": 77204540
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 13800803,
+          "register_s": 1.33,
+          "files": 100,
+          "bytes": 161320175
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 5519940,
+          "register_s": 1.54,
+          "files": 100,
+          "bytes": 73668601
+        }
+      },
+      "total_rows": 123428286,
+      "total_register_s": 34.6992826461792,
+      "total_files": 1400,
+      "total_bytes": 1534170616,
+      "rss_mb": 223.5,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0822,
+          "min_s": 0.0619,
+          "max_s": 0.1406
+        },
+        "bronze_ego_count": {
+          "median_s": 0.0786,
+          "min_s": 0.0728,
+          "max_s": 0.0878
+        },
+        "silver_radar_count": {
+          "median_s": 0.0667,
+          "min_s": 0.0439,
+          "max_s": 0.073
+        },
+        "silver_radar_sample": {
+          "median_s": 0.0719,
+          "min_s": 0.0572,
+          "max_s": 0.0731
+        },
+        "silver_ego_count": {
+          "median_s": 0.0705,
+          "min_s": 0.0677,
+          "max_s": 0.1146
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.2023,
+          "min_s": 0.1678,
+          "max_s": 0.2254
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.2136,
+          "min_s": 0.1717,
+          "max_s": 0.2166
+        },
+        "gold_egomotion_summary_count": {
+          "median_s": 0.0603,
+          "min_s": 0.0515,
+          "max_s": 0.0955
+        },
+        "gold_egomotion_summary_sample": {
+          "median_s": 0.0586,
+          "min_s": 0.0532,
+          "max_s": 0.0747
+        },
+        "gold_radar_ego_fusion_count": {
+          "median_s": 0.0673,
+          "min_s": 0.0663,
+          "max_s": 0.1117
+        },
+        "gold_radar_ego_fusion_sample": {
+          "median_s": 0.0885,
+          "min_s": 0.0558,
+          "max_s": 0.1107
+        }
+      },
+      "silver_materialize_s": 55.74,
+      "silver_details": {
+        "egomotion": {
+          "rows": 274470,
+          "materialize_s": 2.19
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 5251812,
+          "materialize_s": 3.92
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 8883496,
+          "materialize_s": 4.97
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 4882880,
+          "materialize_s": 2.49
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 7643633,
+          "materialize_s": 3.7
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 5383117,
+          "materialize_s": 2.29
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 9478457,
+          "materialize_s": 4.25
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 5007179,
+          "materialize_s": 2.38
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 8421923,
+          "materialize_s": 2.38
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 28520809,
+          "materialize_s": 10.16
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 14529724,
+          "materialize_s": 5.69
+        },
+        "radar_front_center_srr_0": {
+          "rows": 5830043,
+          "materialize_s": 2.57
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 13800803,
+          "materialize_s": 4.62
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 5519940,
+          "materialize_s": 2.56
+        }
+      },
+      "gold_materialize_s": 13.78,
+      "gold_details": {
+        "egomotion_summary": {
+          "rows": 100,
+          "materialize_s": 1.07
+        },
+        "radar_ego_fusion": {
+          "rows": 32044938,
+          "materialize_s": 12.49
+        }
+      },
+      "wall_clock_s": 130.7
+    },
+    {
+      "scale": 500,
+      "tables": {
+        "egomotion": {
+          "rows": 1400129,
+          "register_s": 2.04,
+          "files": 500,
+          "bytes": 193739716
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 26056369,
+          "register_s": 2.0,
+          "files": 500,
+          "bytes": 338667478
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 44140585,
+          "register_s": 2.97,
+          "files": 500,
+          "bytes": 557241297
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 24078061,
+          "register_s": 2.82,
+          "files": 500,
+          "bytes": 316540185
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 40195525,
+          "register_s": 2.57,
+          "files": 500,
+          "bytes": 512576238
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 26547963,
+          "register_s": 2.58,
+          "files": 500,
+          "bytes": 346009753
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 46913359,
+          "register_s": 2.99,
+          "files": 500,
+          "bytes": 586759309
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 25356305,
+          "register_s": 3.03,
+          "files": 500,
+          "bytes": 329531067
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 42440949,
+          "register_s": 2.42,
+          "files": 500,
+          "bytes": 537817691
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 144941927,
+          "register_s": 2.5,
+          "files": 500,
+          "bytes": 1570663679
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 78154077,
+          "register_s": 2.7,
+          "files": 500,
+          "bytes": 906329297
+        },
+        "radar_front_center_srr_0": {
+          "rows": 29355372,
+          "register_s": 2.65,
+          "files": 500,
+          "bytes": 387832922
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 72635921,
+          "register_s": 2.7,
+          "files": 500,
+          "bytes": 845936285
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 27844620,
+          "register_s": 2.48,
+          "files": 500,
+          "bytes": 372084320
+        }
+      },
+      "total_rows": 630061162,
+      "total_register_s": 36.45731997489929,
+      "total_files": 7000,
+      "total_bytes": 7801729237,
+      "rss_mb": 223.5,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.034,
+          "min_s": 0.032,
+          "max_s": 0.0401
+        },
+        "bronze_ego_count": {
+          "median_s": 0.0371,
+          "min_s": 0.0294,
+          "max_s": 0.046
+        },
+        "silver_radar_count": {
+          "median_s": 0.032,
+          "min_s": 0.0269,
+          "max_s": 0.033
+        },
+        "silver_radar_sample": {
+          "median_s": 0.0417,
+          "min_s": 0.0407,
+          "max_s": 0.0467
+        },
+        "silver_ego_count": {
+          "median_s": 0.0286,
+          "min_s": 0.0277,
+          "max_s": 0.0303
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.0945,
+          "min_s": 0.0842,
+          "max_s": 0.1066
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.0924,
+          "min_s": 0.0918,
+          "max_s": 0.1052
+        },
+        "gold_egomotion_summary_count": {
+          "median_s": 0.0264,
+          "min_s": 0.0242,
+          "max_s": 0.0326
+        },
+        "gold_egomotion_summary_sample": {
+          "median_s": 0.0277,
+          "min_s": 0.0251,
+          "max_s": 0.0303
+        },
+        "gold_radar_ego_fusion_count": {
+          "median_s": 0.0302,
+          "min_s": 0.0256,
+          "max_s": 0.0369
+        },
+        "gold_radar_ego_fusion_sample": {
+          "median_s": 0.0464,
+          "min_s": 0.0421,
+          "max_s": 0.0508
+        }
+      },
+      "silver_materialize_s": 205.25,
+      "silver_details": {
+        "egomotion": {
+          "rows": 1400129,
+          "materialize_s": 2.23
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 26056369,
+          "materialize_s": 10.32
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 44140585,
+          "materialize_s": 17.1
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 24078061,
+          "materialize_s": 9.97
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 40195525,
+          "materialize_s": 16.95
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 26547963,
+          "materialize_s": 10.52
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 46913359,
+          "materialize_s": 18.36
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 25356305,
+          "materialize_s": 11.6
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 42440949,
+          "materialize_s": 17.95
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 144941927,
+          "materialize_s": 47.42
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 78154077,
+          "materialize_s": 14.87
+        },
+        "radar_front_center_srr_0": {
+          "rows": 29355372,
+          "materialize_s": 6.44
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 72635921,
+          "materialize_s": 14.24
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 27844620,
+          "materialize_s": 6.08
+        }
+      },
+      "gold_materialize_s": 28.87,
+      "gold_details": {
+        "egomotion_summary": {
+          "rows": 500,
+          "materialize_s": 0.21
+        },
+        "radar_ego_fusion": {
+          "rows": 161018503,
+          "materialize_s": 28.55
+        }
+      },
+      "wall_clock_s": 279.6
+    },
+    {
+      "scale": 2000,
+      "tables": {
+        "egomotion": {
+          "rows": 5588483,
+          "register_s": 5.7,
+          "files": 2000,
+          "bytes": 773768449
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 105654086,
+          "register_s": 5.68,
+          "files": 2000,
+          "bytes": 1367646674
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 177434153,
+          "register_s": 5.63,
+          "files": 2000,
+          "bytes": 2235633315
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 97629639,
+          "register_s": 5.64,
+          "files": 2000,
+          "bytes": 1278053734
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 161555888,
+          "register_s": 5.62,
+          "files": 2000,
+          "bytes": 2056138136
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 108443645,
+          "register_s": 5.57,
+          "files": 2000,
+          "bytes": 1404976783
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 188059345,
+          "register_s": 5.77,
+          "files": 2000,
+          "bytes": 2348391353
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 102313567,
+          "register_s": 5.76,
+          "files": 2000,
+          "bytes": 1324411526
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 170784806,
+          "register_s": 5.65,
+          "files": 2000,
+          "bytes": 2159204928
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 584676933,
+          "register_s": 5.6,
+          "files": 2000,
+          "bytes": 6339466797
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 316621677,
+          "register_s": 5.67,
+          "files": 2000,
+          "bytes": 3667744414
+        },
+        "radar_front_center_srr_0": {
+          "rows": 119260501,
+          "register_s": 5.6,
+          "files": 2000,
+          "bytes": 1569420134
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 294493651,
+          "register_s": 5.81,
+          "files": 2000,
+          "bytes": 3426340414
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 111792286,
+          "register_s": 5.72,
+          "files": 2000,
+          "bytes": 1490394611
+        }
+      },
+      "total_rows": 2544308660,
+      "total_register_s": 79.40826606750488,
+      "total_files": 28000,
+      "total_bytes": 31441591268,
+      "rss_mb": 223.5,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0908,
+          "min_s": 0.0879,
+          "max_s": 0.0909
+        },
+        "bronze_ego_count": {
+          "median_s": 0.09,
+          "min_s": 0.068,
+          "max_s": 0.0991
+        },
+        "silver_radar_count": {
+          "median_s": 0.054,
+          "min_s": 0.0524,
+          "max_s": 0.0599
+        },
+        "silver_radar_sample": {
+          "median_s": 0.0759,
+          "min_s": 0.0662,
+          "max_s": 0.0784
+        },
+        "silver_ego_count": {
+          "median_s": 0.0561,
+          "min_s": 0.0486,
+          "max_s": 0.0582
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.3041,
+          "min_s": 0.2979,
+          "max_s": 0.3164
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.3524,
+          "min_s": 0.352,
+          "max_s": 0.3732
+        },
+        "gold_egomotion_summary_count": {
+          "median_s": 0.0531,
+          "min_s": 0.0475,
+          "max_s": 0.0539
+        },
+        "gold_egomotion_summary_sample": {
+          "median_s": 0.0569,
+          "min_s": 0.0495,
+          "max_s": 0.0959
+        },
+        "gold_radar_ego_fusion_count": {
+          "median_s": 0.0568,
+          "min_s": 0.0565,
+          "max_s": 0.0699
+        },
+        "gold_radar_ego_fusion_sample": {
+          "median_s": 0.0929,
+          "min_s": 0.0783,
+          "max_s": 0.1243
+        }
+      },
+      "silver_materialize_s": 826.74,
+      "silver_details": {
+        "egomotion": {
+          "rows": 5588483,
+          "materialize_s": 4.44
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 105654086,
+          "materialize_s": 27.85
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 177434153,
+          "materialize_s": 62.64
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 97629639,
+          "materialize_s": 32.68
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 161555888,
+          "materialize_s": 57.15
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 108443645,
+          "materialize_s": 33.9
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 188059345,
+          "materialize_s": 62.53
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 102313567,
+          "materialize_s": 34.62
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 170784806,
+          "materialize_s": 56.26
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 584676933,
+          "materialize_s": 185.31
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 316621677,
+          "materialize_s": 98.37
+        },
+        "radar_front_center_srr_0": {
+          "rows": 119260501,
+          "materialize_s": 38.34
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 294493651,
+          "materialize_s": 92.58
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 111792286,
+          "materialize_s": 38.38
+        }
+      },
+      "gold_materialize_s": 187.94,
+      "gold_details": {
+        "egomotion_summary": {
+          "rows": 2000,
+          "materialize_s": 0.61
+        },
+        "radar_ego_fusion": {
+          "rows": 650717411,
+          "materialize_s": 187.16
+        }
+      },
+      "wall_clock_s": 1117.8
+    },
+    {
+      "scale": 4994,
+      "tables": {
+        "egomotion": {
+          "rows": 13978872,
+          "register_s": 17.11,
+          "files": 4994,
+          "bytes": 1936289006
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 263561772,
+          "register_s": 15.91,
+          "files": 4994,
+          "bytes": 3413883484
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 263660030,
+          "register_s": 9.17,
+          "files": 3000,
+          "bytes": 3324874705
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 242029069,
+          "register_s": 15.57,
+          "files": 4994,
+          "bytes": 3171689939
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 257755881,
+          "register_s": 10.96,
+          "files": 3207,
+          "bytes": 3282511259
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 271364753,
+          "register_s": 17.66,
+          "files": 4994,
+          "bytes": 3515069269
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 292329822,
+          "register_s": 10.63,
+          "files": 3131,
+          "bytes": 3653216983
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 249291197,
+          "register_s": 17.52,
+          "files": 4900,
+          "bytes": 3231574677
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 273892679,
+          "register_s": 12.11,
+          "files": 3219,
+          "bytes": 3464794769
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 883908101,
+          "register_s": 11.31,
+          "files": 3039,
+          "bytes": 9581708863
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 486648078,
+          "register_s": 10.8,
+          "files": 3086,
+          "bytes": 5638869829
+        },
+        "radar_front_center_srr_0": {
+          "rows": 296146106,
+          "register_s": 16.18,
+          "files": 4994,
+          "bytes": 3902341575
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 468380866,
+          "register_s": 10.19,
+          "files": 3200,
+          "bytes": 5451957484
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 221894351,
+          "register_s": 13.11,
+          "files": 3971,
+          "bytes": 2957799785
+        }
+      },
+      "total_rows": 4484841577,
+      "total_register_s": 188.21788811683655,
+      "total_files": 55723,
+      "total_bytes": 56526581627,
+      "rss_mb": 223.5,
+      "queries": {
+        "bronze_radar_count": {
+          "median_s": 0.0379,
+          "min_s": 0.0349,
+          "max_s": 0.0424
+        },
+        "bronze_ego_count": {
+          "median_s": 0.0348,
+          "min_s": 0.0339,
+          "max_s": 0.0407
+        },
+        "silver_radar_count": {
+          "median_s": 0.0238,
+          "min_s": 0.0229,
+          "max_s": 0.0245
+        },
+        "silver_radar_sample": {
+          "median_s": 0.045,
+          "min_s": 0.0434,
+          "max_s": 0.0514
+        },
+        "silver_ego_count": {
+          "median_s": 0.0307,
+          "min_s": 0.025,
+          "max_s": 0.0361
+        },
+        "silver_ego_clip_agg": {
+          "median_s": 0.2765,
+          "min_s": 0.2735,
+          "max_s": 0.2955
+        },
+        "silver_ego_clip_count": {
+          "median_s": 0.2949,
+          "min_s": 0.2942,
+          "max_s": 0.2985
+        },
+        "gold_egomotion_summary_count": {
+          "median_s": 0.0261,
+          "min_s": 0.0246,
+          "max_s": 0.0298
+        },
+        "gold_egomotion_summary_sample": {
+          "median_s": 0.0213,
+          "min_s": 0.0203,
+          "max_s": 0.0253
+        },
+        "gold_radar_ego_fusion_count": {
+          "median_s": 0.0234,
+          "min_s": 0.0209,
+          "max_s": 0.0321
+        },
+        "gold_radar_ego_fusion_sample": {
+          "median_s": 0.0796,
+          "min_s": 0.0674,
+          "max_s": 0.0878
+        }
+      },
+      "silver_materialize_s": 1008.74,
+      "silver_details": {
+        "egomotion": {
+          "rows": 13978872,
+          "materialize_s": 19.12
+        },
+        "radar_corner_front_left_srr_0": {
+          "rows": 263561772,
+          "materialize_s": 98.04
+        },
+        "radar_corner_front_left_srr_3": {
+          "rows": 263660030,
+          "materialize_s": 93.97
+        },
+        "radar_corner_front_right_srr_0": {
+          "rows": 242029069,
+          "materialize_s": 93.04
+        },
+        "radar_corner_front_right_srr_3": {
+          "rows": 257755881,
+          "materialize_s": 96.89
+        },
+        "radar_corner_rear_left_srr_0": {
+          "rows": 271364753,
+          "materialize_s": 58.48
+        },
+        "radar_corner_rear_left_srr_3": {
+          "rows": 292329822,
+          "materialize_s": 51.84
+        },
+        "radar_corner_rear_right_srr_0": {
+          "rows": 249291197,
+          "materialize_s": 46.2
+        },
+        "radar_corner_rear_right_srr_3": {
+          "rows": 273892679,
+          "materialize_s": 48.62
+        },
+        "radar_front_center_imaging_lrr_1": {
+          "rows": 883908101,
+          "materialize_s": 151.85
+        },
+        "radar_front_center_mrr_2": {
+          "rows": 486648078,
+          "materialize_s": 79.93
+        },
+        "radar_front_center_srr_0": {
+          "rows": 296146106,
+          "materialize_s": 53.01
+        },
+        "radar_rear_left_mrr_2": {
+          "rows": 468380866,
+          "materialize_s": 76.17
+        },
+        "radar_rear_left_srr_0": {
+          "rows": 221894351,
+          "materialize_s": 39.85
+        }
+      },
+      "gold_materialize_s": 208.42,
+      "gold_details": {
+        "egomotion_summary": {
+          "rows": 4994,
+          "materialize_s": 0.4
+        },
+        "radar_ego_fusion": {
+          "rows": 1298371505,
+          "materialize_s": 207.93
+        }
+      },
+      "wall_clock_s": 1416.2
+    }
+  ],
+  "regression": {
+    "slope_s_per_file": 0.0028668041765943226,
+    "intercept_s": 18.67103891125528,
+    "files_per_second": 348.8
+  },
+  "projections": {
+    "full_119TB": {
+      "files": 6000000,
+      "projected_register_h": 4.78,
+      "query_latency_ms": "30-50 (constant)"
+    },
+    "petabyte_1PB": {
+      "files": 60000000,
+      "projected_register_h": 47.79,
+      "query_latency_ms": "30-50 (constant)"
+    }
+  },
+  "query_scaling": {
+    "bronze_radar_count": {
+      "small_s": 0.0822,
+      "large_s": 0.0379,
+      "data_scale": 36.3,
+      "latency_ratio": 0.461,
+      "scaling": "constant"
+    },
+    "bronze_ego_count": {
+      "small_s": 0.0786,
+      "large_s": 0.0348,
+      "data_scale": 36.3,
+      "latency_ratio": 0.443,
+      "scaling": "constant"
+    },
+    "silver_radar_count": {
+      "small_s": 0.0667,
+      "large_s": 0.0238,
+      "data_scale": 36.3,
+      "latency_ratio": 0.357,
+      "scaling": "constant"
+    },
+    "silver_radar_sample": {
+      "small_s": 0.0719,
+      "large_s": 0.045,
+      "data_scale": 36.3,
+      "latency_ratio": 0.626,
+      "scaling": "constant"
+    },
+    "silver_ego_count": {
+      "small_s": 0.0705,
+      "large_s": 0.0307,
+      "data_scale": 36.3,
+      "latency_ratio": 0.435,
+      "scaling": "constant"
+    },
+    "silver_ego_clip_agg": {
+      "small_s": 0.2023,
+      "large_s": 0.2765,
+      "data_scale": 36.3,
+      "latency_ratio": 1.367,
+      "scaling": "constant"
+    },
+    "silver_ego_clip_count": {
+      "small_s": 0.2136,
+      "large_s": 0.2949,
+      "data_scale": 36.3,
+      "latency_ratio": 1.381,
+      "scaling": "constant"
+    },
+    "gold_egomotion_summary_count": {
+      "small_s": 0.0603,
+      "large_s": 0.0261,
+      "data_scale": 36.3,
+      "latency_ratio": 0.433,
+      "scaling": "constant"
+    },
+    "gold_egomotion_summary_sample": {
+      "small_s": 0.0586,
+      "large_s": 0.0213,
+      "data_scale": 36.3,
+      "latency_ratio": 0.363,
+      "scaling": "constant"
+    },
+    "gold_radar_ego_fusion_count": {
+      "small_s": 0.0673,
+      "large_s": 0.0234,
+      "data_scale": 36.3,
+      "latency_ratio": 0.348,
+      "scaling": "constant"
+    },
+    "gold_radar_ego_fusion_sample": {
+      "small_s": 0.0885,
+      "large_s": 0.0796,
+      "data_scale": 36.3,
+      "latency_ratio": 0.899,
+      "scaling": "constant"
+    }
+  }
+}
