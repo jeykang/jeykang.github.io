@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T20:51:14Z",
+  "generated_at": "2026-08-21T02:01:18Z",
   "source": {
     "user": "jeykang",
     "max_repos": 8,
@@ -47,132 +47,132 @@
   },
   "files": [
     {
-      "file": "code_samples/gcnnpcr__docs__README.md",
-      "repo": "gcnnpcr",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__csp-resnext.md",
+      "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "docs/README.md",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/csp-resnext.md",
       "branch": "main",
-      "bytes": 129
+      "bytes": 2389
     },
     {
-      "file": "code_samples/NetAI-Digital-Twin__Lakehouse__Iceberg__archive__benchmarks__kaist_scalability_results.json",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__layers__split_attn.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/layers/split_attn.py",
+      "branch": "main",
+      "bytes": 3342
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__autoagents__sensor_interface.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/srunner/autoagents/sensor_interface.py",
+      "branch": "main",
+      "bytes": 3616
+    },
+    {
+      "file": "code_samples/NetAI-Digital-Twin__Lakehouse__Iceberg__nvidia_ingestion__progress__2026-06.md",
       "repo": "NetAI-Digital-Twin",
       "owner": "jeykang",
-      "path": "Lakehouse/Iceberg/archive/benchmarks/kaist_scalability_results.json",
+      "path": "Lakehouse/Iceberg/nvidia_ingestion/progress/2026-06.md",
       "branch": "main",
-      "bytes": 4023
+      "bytes": 31177
     },
     {
-      "file": "code_samples/HPC-CARLA__tools__gpu_hours_audit.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__mobilenet-v3.md",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "tools/gpu_hours_audit.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/mobilenet-v3.md",
       "branch": "main",
-      "bytes": 4247
+      "bytes": 4075
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__tresnet.md",
+      "file": "code_samples/HPC-CARLA__leaderboard__docs__submit.html",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/tresnet.md",
+      "path": "leaderboard/docs/submit.html",
       "branch": "main",
-      "bytes": 10524
+      "bytes": 833
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__inception-v4.md",
+      "file": "code_samples/HPC-CARLA__scenario_runner__Docs__requirements.txt",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/inception-v4.md",
+      "path": "scenario_runner/Docs/requirements.txt",
       "branch": "main",
-      "bytes": 4520
+      "bytes": 48
     },
     {
-      "file": "code_samples/NetAI-Digital-Twin__Lakehouse__Iceberg__cosmos_augmentation__select_easy_clips.py",
-      "repo": "NetAI-Digital-Twin",
-      "owner": "jeykang",
-      "path": "Lakehouse/Iceberg/cosmos_augmentation/select_easy_clips.py",
-      "branch": "main",
-      "bytes": 2843
-    },
-    {
-      "file": "code_samples/NetAI-Digital-Twin__Omniverse__omniverse-extensions__real.time.uwb.exts__config__extension.toml",
-      "repo": "NetAI-Digital-Twin",
-      "owner": "jeykang",
-      "path": "Omniverse/omniverse-extensions/real.time.uwb.exts/config/extension.toml",
-      "branch": "main",
-      "bytes": 1550
-    },
-    {
-      "file": "code_samples/HPC-CARLA__topo_map.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__nasnet.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "topo_map.py",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/nasnet.py",
       "branch": "main",
-      "bytes": 9438
+      "bytes": 29055
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__ecaresnet.md",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__lav__train_bev.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/ecaresnet.md",
+      "path": "leaderboard/team_code/lav/train_bev.py",
       "branch": "main",
-      "bytes": 9318
+      "bytes": 1799
     },
     {
-      "file": "code_samples/cse_neural_recon__scripts__infer.py",
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__docs__models__.templates__models__legacy-senet.md",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/docs/models/.templates/models/legacy-senet.md",
+      "branch": "main",
+      "bytes": 2048
+    },
+    {
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__autoagents__autonomous_agent.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "scenario_runner/srunner/autoagents/autonomous_agent.py",
+      "branch": "main",
+      "bytes": 3485
+    },
+    {
+      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__utils__misc.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "leaderboard/team_code/interfuser/interfuser/timm/utils/misc.py",
+      "branch": "main",
+      "bytes": 644
+    },
+    {
+      "file": "code_samples/HPC-CARLA__tools__validate_config.py",
+      "repo": "HPC-CARLA",
+      "owner": "jeykang",
+      "path": "tools/validate_config.py",
+      "branch": "main",
+      "bytes": 4397
+    },
+    {
+      "file": "code_samples/cse_neural_recon__data__extract_rosbag_universal.py",
       "repo": "cse_neural_recon",
       "owner": "jeykang",
-      "path": "scripts/infer.py",
+      "path": "data/extract_rosbag_universal.py",
       "branch": "main",
-      "bytes": 7642
+      "bytes": 8542
     },
     {
-      "file": "code_samples/cse_neural_recon__src__refinement__point_completion.py",
-      "repo": "cse_neural_recon",
+      "file": "code_samples/fs-indexer__tests__integration__test_data__sample_files__script.py",
+      "repo": "fs-indexer",
       "owner": "jeykang",
-      "path": "src/refinement/point_completion.py",
+      "path": "tests/integration/test_data/sample_files/script.py",
       "branch": "main",
-      "bytes": 9513
+      "bytes": 69
     },
     {
-      "file": "code_samples/HPC-CARLA__leaderboard__team_code__interfuser__interfuser__timm__models__visformer.py",
+      "file": "code_samples/HPC-CARLA__scenario_runner__srunner__scenariomanager__watchdog.py",
       "repo": "HPC-CARLA",
       "owner": "jeykang",
-      "path": "leaderboard/team_code/interfuser/interfuser/timm/models/visformer.py",
+      "path": "scenario_runner/srunner/scenariomanager/watchdog.py",
       "branch": "main",
-      "bytes": 17947
-    },
-    {
-      "file": "code_samples/HPC-CARLA__leaderboard__docs__assets__vendor__fontawesome-free__js__solid.min.js",
-      "repo": "HPC-CARLA",
-      "owner": "jeykang",
-      "path": "leaderboard/docs/assets/vendor/fontawesome-free/js/solid.min.js",
-      "branch": "main",
-      "bytes": 65536
-    },
-    {
-      "file": "code_samples/NetAI-Digital-Twin__Lakehouse__DeltaLake__workspace_dir__uwb_sample.json",
-      "repo": "NetAI-Digital-Twin",
-      "owner": "jeykang",
-      "path": "Lakehouse/DeltaLake/workspace_dir/uwb_sample.json",
-      "branch": "main",
-      "bytes": 1470
-    },
-    {
-      "file": "code_samples/NetAI-Digital-Twin__Lakehouse__DeltaLake__workspace_dir__tefo__kafka.py",
-      "repo": "NetAI-Digital-Twin",
-      "owner": "jeykang",
-      "path": "Lakehouse/DeltaLake/workspace_dir/tefo/kafka.py",
-      "branch": "main",
-      "bytes": 1582
-    },
-    {
-      "file": "code_samples/NetAI-Digital-Twin__Lakehouse__Iceberg__evaluation__harness.py",
-      "repo": "NetAI-Digital-Twin",
-      "owner": "jeykang",
-      "path": "Lakehouse/Iceberg/evaluation/harness.py",
-      "branch": "main",
-      "bytes": 5762
+      "bytes": 2047
     }
   ]
 }
