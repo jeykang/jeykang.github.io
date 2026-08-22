@@ -1,0 +1,88 @@
+# CSE Warehouse Full - ALL Sequences
+# Uses all 6 warehouse sequences (static + dynamic) = ~115K frames
+# This provides 6x more data than single-sequence training
+
+experiment_name: "cse_warehouse_full"
+
+data:
+  # Multi-sequence training - all warehouse data
+  multi_sequence: true
+  base_dir: "data/warehouse_extracted"
+  sequence_pattern: "*_warehouse_*"  # Matches static_warehouse_* and dynamic_warehouse_*
+  
+  # Explicit list (alternative to pattern):
+  # sequences:
+  #   - static_warehouse_robot1
+  #   - static_warehouse_robot2
+  #   - static_warehouse_robot3
+  #   - dynamic_warehouse_robot1
+  #   - dynamic_warehouse_robot2
+  #   - dynamic_warehouse_robot3
+  
+  dataset_type: "cse"
+  depth_scale: 0.001  # mm to meters
+  
+  img_width: 640
+  img_height: 360
+  
+  min_depth: 0.1
+  max_depth: 30.0
+
+model:
+  neural_sdf:
+    encoding_type: "hashgrid"
+    
+    hashgrid:
+      num_levels: 16
+      base_resolution: 16
+      max_resolution: 4096
+      features_per_level: 2
+      log2_hashmap_size: 20  # Larger hash table for more data
+    
+    hidden_features: 256
+    hidden_layers: 6
+    
+    geometric_init: true
+    sphere_init_radius: 0.5
+    use_weight_norm: true
+    output_color: true
+
+training:
+  epochs: 100
+  batch_size: 8  # Will be auto-scaled with --auto-batch-size
+  
+  optimizer: "adamw"
+  learning_rate: 5e-4
+  weight_decay: 1e-4
+  
+  scheduler: "cosine"
+  warmup_epochs: 5
+  min_lr: 1e-6
+  
+  use_amp: true
+  gradient_clip: 1.0
+  
+  # Sampling
+  num_surface_samples: 8192
+  num_freespace_samples: 8192
+  num_random_samples: 4096
+  
+  # TSDF supervision
+  use_tsdf_supervision: true
+  truncation_dist: 0.2  # 20cm
+  tsdf_weight: 5.0
+  
+  # Other losses
+  surface_weight: 1.0
+  freespace_weight: 2.0
+  eikonal_weight: 0.1
+  random_space_weight: 1.5
+  
+  # Logging
+  log_every: 50
+  val_every: 1
+  save_every: 5
+  visualize_every: 5
+
+output:
+  output_dir: "output/warehouse_full"
