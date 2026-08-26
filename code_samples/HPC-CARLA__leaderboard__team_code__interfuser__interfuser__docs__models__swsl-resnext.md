@@ -1,8 +1,8 @@
-# Instagram ResNeXt WSL
+# SWSL ResNeXt
 
 A **ResNeXt** repeats a [building block](https://paperswithcode.com/method/resnext-block) that aggregates a set of transformations with the same topology. Compared to a [ResNet](https://paperswithcode.com/method/resnet), it exposes a new dimension,  *cardinality* (the size of the set of transformations) $C$, as an essential factor in addition to the dimensions of depth and width. 
 
-This model was trained on billions of Instagram images using thousands of distinct hashtags as labels exhibit excellent transfer learning performance. 
+The models in this collection utilise semi-weakly supervised learning to improve the performance of the model. The approach brings important gains to standard architectures for image, video and fine-grained classification. 
 
 Please note the CC-BY-NC 4.0 license on theses weights, non-commercial use only.
 
@@ -11,7 +11,7 @@ To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('ig_resnext101_32x16d', pretrained=True)
+model = timm.create_model('swsl_resnext101_32x16d', pretrained=True)
 model.eval()
 ```
 
@@ -57,14 +57,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `ig_resnext101_32x16d`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `swsl_resnext101_32x16d`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('ig_resnext101_32x16d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('swsl_resnext101_32x16d', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -76,26 +76,35 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{mahajan2018exploring,
-      title={Exploring the Limits of Weakly Supervised Pretraining}, 
-      author={Dhruv Mahajan and Ross Girshick and Vignesh Ramanathan and Kaiming He and Manohar Paluri and Yixuan Li and Ashwin Bharambe and Laurens van der Maaten},
-      year={2018},
-      eprint={1805.00932},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{DBLP:journals/corr/abs-1905-00546,
+  author    = {I. Zeki Yalniz and
+               Herv{\'{e}} J{\'{e}}gou and
+               Kan Chen and
+               Manohar Paluri and
+               Dhruv Mahajan},
+  title     = {Billion-scale semi-supervised learning for image classification},
+  journal   = {CoRR},
+  volume    = {abs/1905.00546},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1905.00546},
+  archivePrefix = {arXiv},
+  eprint    = {1905.00546},
+  timestamp = {Mon, 28 Sep 2020 08:19:37 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-1905-00546.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 
 <!--
 Type: model-index
 Collections:
-- Name: IG ResNeXt
+- Name: SWSL ResNext
   Paper:
-    Title: Exploring the Limits of Weakly Supervised Pretraining
-    URL: https://paperswithcode.com/paper/exploring-the-limits-of-weakly-supervised
+    Title: Billion-scale semi-supervised learning for image classification
+    URL: https://paperswithcode.com/paper/billion-scale-semi-supervised-learning-for
 Models:
-- Name: ig_resnext101_32x16d
-  In Collection: IG ResNeXt
+- Name: swsl_resnext101_32x16d
+  In Collection: SWSL ResNext
   Metadata:
     FLOPs: 46623691776
     Parameters: 194030000
@@ -114,35 +123,35 @@ Models:
     Tasks:
     - Image Classification
     Training Techniques:
-    - Nesterov Accelerated Gradient
+    - SGD with Momentum
     - Weight Decay
     Training Data:
-    - IG-3.5B-17k
+    - IG-1B-Targeted
     - ImageNet
-    Training Resources: 336x GPUs
-    ID: ig_resnext101_32x16d
-    Epochs: 100
+    Training Resources: 64x GPUs
+    ID: swsl_resnext101_32x16d
+    LR: 0.0015
+    Epochs: 30
     Layers: 101
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 8064
+    Batch Size: 1536
     Image Size: '224'
-    Weight Decay: 0.001
+    Weight Decay: 0.0001
     Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/resnet.py#L874
-  Weights: https://download.pytorch.org/models/ig_resnext101_32x16-c6f796b0.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L1009
+  Weights: https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnext101_32x16-f3559a9c.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 84.16%
-      Top 5 Accuracy: 97.19%
-- Name: ig_resnext101_32x32d
-  In Collection: IG ResNeXt
+      Top 1 Accuracy: 83.34%
+      Top 5 Accuracy: 96.84%
+- Name: swsl_resnext101_32x4d
+  In Collection: SWSL ResNext
   Metadata:
-    FLOPs: 112225170432
-    Parameters: 468530000
-    File Size: 1876573776
+    FLOPs: 10298145792
+    Parameters: 44180000
+    File Size: 177341913
     Architecture:
     - 1x1 Convolution
     - Batch Normalization
@@ -157,75 +166,31 @@ Models:
     Tasks:
     - Image Classification
     Training Techniques:
-    - Nesterov Accelerated Gradient
+    - SGD with Momentum
     - Weight Decay
     Training Data:
-    - IG-3.5B-17k
+    - IG-1B-Targeted
     - ImageNet
-    Training Resources: 336x GPUs
-    ID: ig_resnext101_32x32d
-    Epochs: 100
+    Training Resources: 64x GPUs
+    ID: swsl_resnext101_32x4d
+    LR: 0.0015
+    Epochs: 30
     Layers: 101
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 8064
+    Batch Size: 1536
     Image Size: '224'
-    Weight Decay: 0.001
+    Weight Decay: 0.0001
     Interpolation: bilinear
-    Minibatch Size: 8064
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/resnet.py#L885
-  Weights: https://download.pytorch.org/models/ig_resnext101_32x32-e4b90b00.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L987
+  Weights: https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnext101_32x4-3f87e46b.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 85.09%
-      Top 5 Accuracy: 97.44%
-- Name: ig_resnext101_32x48d
-  In Collection: IG ResNeXt
-  Metadata:
-    FLOPs: 197446554624
-    Parameters: 828410000
-    File Size: 3317136976
-    Architecture:
-    - 1x1 Convolution
-    - Batch Normalization
-    - Convolution
-    - Global Average Pooling
-    - Grouped Convolution
-    - Max Pooling
-    - ReLU
-    - ResNeXt Block
-    - Residual Connection
-    - Softmax
-    Tasks:
-    - Image Classification
-    Training Techniques:
-    - Nesterov Accelerated Gradient
-    - Weight Decay
-    Training Data:
-    - IG-3.5B-17k
-    - ImageNet
-    Training Resources: 336x GPUs
-    ID: ig_resnext101_32x48d
-    Epochs: 100
-    Layers: 101
-    Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 8064
-    Image Size: '224'
-    Weight Decay: 0.001
-    Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/resnet.py#L896
-  Weights: https://download.pytorch.org/models/ig_resnext101_32x48-3e41cc8a.pth
-  Results:
-  - Task: Image Classification
-    Dataset: ImageNet
-    Metrics:
-      Top 1 Accuracy: 85.42%
-      Top 5 Accuracy: 97.58%
-- Name: ig_resnext101_32x8d
-  In Collection: IG ResNeXt
+      Top 1 Accuracy: 83.22%
+      Top 5 Accuracy: 96.77%
+- Name: swsl_resnext101_32x8d
+  In Collection: SWSL ResNext
   Metadata:
     FLOPs: 21180417024
     Parameters: 88790000
@@ -244,27 +209,70 @@ Models:
     Tasks:
     - Image Classification
     Training Techniques:
-    - Nesterov Accelerated Gradient
+    - SGD with Momentum
     - Weight Decay
     Training Data:
-    - IG-3.5B-17k
+    - IG-1B-Targeted
     - ImageNet
-    Training Resources: 336x GPUs
-    ID: ig_resnext101_32x8d
-    Epochs: 100
+    Training Resources: 64x GPUs
+    ID: swsl_resnext101_32x8d
+    LR: 0.0015
+    Epochs: 30
     Layers: 101
     Crop Pct: '0.875'
-    Momentum: 0.9
-    Batch Size: 8064
+    Batch Size: 1536
     Image Size: '224'
-    Weight Decay: 0.001
+    Weight Decay: 0.0001
     Interpolation: bilinear
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/resnet.py#L863
-  Weights: https://download.pytorch.org/models/ig_resnext101_32x8-c38310e5.pth
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L998
+  Weights: https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnext101_32x8-b4712904.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 82.7%
-      Top 5 Accuracy: 96.64%
+      Top 1 Accuracy: 84.27%
+      Top 5 Accuracy: 97.17%
+- Name: swsl_resnext50_32x4d
+  In Collection: SWSL ResNext
+  Metadata:
+    FLOPs: 5472648192
+    Parameters: 25030000
+    File Size: 100428550
+    Architecture:
+    - 1x1 Convolution
+    - Batch Normalization
+    - Convolution
+    - Global Average Pooling
+    - Grouped Convolution
+    - Max Pooling
+    - ReLU
+    - ResNeXt Block
+    - Residual Connection
+    - Softmax
+    Tasks:
+    - Image Classification
+    Training Techniques:
+    - SGD with Momentum
+    - Weight Decay
+    Training Data:
+    - IG-1B-Targeted
+    - ImageNet
+    Training Resources: 64x GPUs
+    ID: swsl_resnext50_32x4d
+    LR: 0.0015
+    Epochs: 30
+    Layers: 50
+    Crop Pct: '0.875'
+    Batch Size: 1536
+    Image Size: '224'
+    Weight Decay: 0.0001
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/resnet.py#L976
+  Weights: https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnext50_32x4-72679e44.pth
+  Results:
+  - Task: Image Classification
+    Dataset: ImageNet
+    Metrics:
+      Top 1 Accuracy: 82.17%
+      Top 5 Accuracy: 96.23%
 -->
