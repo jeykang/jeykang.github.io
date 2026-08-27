@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EAD-Data Lakehouse — Live Data Flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ambient particle flow along the pipeline spine -->
+  <canvas id="flow-canvas"></canvas>
+
+  <div id="stage-wrap">
+    <!-- ───────────────────────── HEADER ───────────────────────── -->
+    <header id="topbar">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <span class="brand-name"><b>EAD</b>-Data Lakehouse</span>
+      </div>
+      <div class="brand-sub">Evolutionary Autonomous Driving&nbsp;·&nbsp;Ingest → Curate → Score → Serve</div>
+      <div class="clock" id="clock">--:--:--</div>
+    </header>
+
+    <!-- ───────────────────────── PIPELINE ──────────────────────── -->
+    <main id="pipeline">
+
+      <!-- STAGE 1 — INGEST -->
+      <section class="stage" data-stage="0">
+        <div class="stage-head">
+          <span class="stage-idx">01</span>
+          <h2>Ingest</h2>
+          <span class="stage-time" id="time-0">⏱</span>
+          <span class="stage-tag">Dataset upload → Lakehouse</span>
+        </div>
+        <div class="stage-body" id="body-ingest">
+          <div class="dataset-banner">
+            <div class="db-label">Incoming dataset</div>
+            <div class="db-name" id="ds-name">NVIDIA PhysicalAI</div>
+            <div class="db-sub">uploaded by <span id="ds-uploader">NVIDIA · Hugging Face</span> · <span id="ds-raw">13 TB</span> raw</div>
+          </div>
+          <div class="src-row">
+            <div class="src-chip"><span class="src-ico">🤗</span><span id="ds-source">Hugging Face</span></div>
+            <div class="src-arrow">⇒</div>
+            <div class="src-chip nfs"><span class="src-ico">🗄️</span>NFS · 10 TB subset</div>
+          </div>
+          <div class="bigstat">
+            <div class="bigstat-num" data-count="310895" data-suffix=" clips">0</div>
+            <div class="bigstat-lbl">driving clips in this dataset · <span id="ds-countries">30</span> countries</div>
+          </div>
+          <div class="dl-bar"><div class="dl-fill" id="dl-fill"></div><span class="dl-txt" id="dl-txt"></span></div>
+          <div class="sensor-grid" id="sensor-grid"><!-- filled by app.js --></div>
+        </div>
+      </section>
+
+      <div class="connector"><span class="pulse"></span></div>
+
+      <!-- STAGE 2 — PROCESS -->
+      <section class="stage" data-stage="1">
+        <div class="stage-head">
+          <span class="stage-idx">02</span>
+          <h2>Curate</h2>
+          <span class="stage-time" id="time-1">⏱</span>
+          <span class="stage-tag">Trim the fat · Medallion / Iceberg</span>
+        </div>
+        <div class="stage-body" id="body-process">
+          <div class="bigstat">
+            <div class="bigstat-num" data-count="12206108151" data-suffix=" rows">0</div>
+            <div class="bigstat-lbl"><span id="pr-tables">16</span> canonical tables · <span id="pr-storage">16&nbsp;GB</span> metadata <span class="dim">(0.12% of source)</span></div>
+          </div>
+          <div class="trim-stat" id="trim-stat"><!-- filled by app.js --></div>
+          <div class="time-steps" id="time-steps"><!-- filled by app.js --></div>
+          <div class="funnel" id="funnel"><!-- filled by app.js --></div>
+          <div class="bar-rows" id="table-bars"><!-- filled by app.js --></div>
+        </div>
+      </section>
+
+      <div class="connector"><span class="pulse"></span></div>
+
+      <!-- STAGE 3 — GPU -->
+      <section class="stage" data-stage="2">
+        <div class="stage-head">
+          <span class="stage-idx">03</span>
+          <h2>GPU&nbsp;Perception</h2>
+          <span class="stage-time" id="time-2">⏱</span>
+          <span class="stage-tag">BEVFusion + YOLO · 2× GPU</span>
+        </div>
+        <div class="stage-body" id="body-gpu">
+          <div class="gpu-cols">
+            <div class="gpu-lidar">
+              <canvas id="lidar-canvas"></canvas>
+              <div class="canvas-cap">LiDAR · 360° sweep</div>
+            </div>
+            <div class="gpu-cam">
+              <div class="cam-frame">
+                <img id="gpu-cam-img" src="assets/cam1.jpg" alt="camera frame" />
+                <canvas id="bbox-canvas"></canvas>
+              </div>
+              <div class="canvas-cap">Front camera · detections</div>
+            </div>
+          </div>
+          <div class="gpu-meta">
+            <div class="gpu-gauges" id="gpu-gauges"><!-- filled by app.js --></div>
+            <div class="score-meter">
+              <div class="score-meter-lbl">Difficulty score</div>
+              <div class="score-track"><div class="score-fill" id="score-fill"></div></div>
+              <div class="score-val" id="score-val">0.00</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="connector"><span class="pulse"></span></div>
+
+      <!-- STAGE 4 — SERVE -->
+      <section class="stage" data-stage="3">
+        <div class="stage-head">
+          <span class="stage-idx">04</span>
+          <h2>Serve</h2>
+          <span class="stage-time" id="time-3">⏱</span>
+          <span class="stage-tag">Dataset catalog · Dashboards · SQL</span>
+        </div>
+        <div class="stage-body" id="body-serve">
+          <div class="catalog-title">Processed datasets in the lakehouse</div>
+          <div class="dataset-catalog" id="dataset-catalog"><!-- filled by app.js --></div>
+          <div class="hist-block">
+            <div class="hist-title">Active dataset — difficulty distribution (Gold, 33,719 clips)</div>
+            <canvas id="hist-canvas"></canvas>
+          </div>
+          <div class="serve-services" id="serve-services"><!-- filled by app.js --></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ───────────────────────── FOOTER ───────────────────────── -->
+    <footer id="botbar">
+      <div class="env-strip" id="env-strip"><!-- hardware/runtime context, filled by app.js --></div>
+      <div class="stack-strip" id="stack-strip"><!-- filled by app.js --></div>
+      <div class="stage-dots" id="stage-dots">
+        <span data-dot="0"></span><span data-dot="1"></span><span data-dot="2"></span><span data-dot="3"></span>
+      </div>
+      <img class="org-logo" src="assets/gist_logo.png" alt="GIST" />
+    </footer>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/lidar.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
