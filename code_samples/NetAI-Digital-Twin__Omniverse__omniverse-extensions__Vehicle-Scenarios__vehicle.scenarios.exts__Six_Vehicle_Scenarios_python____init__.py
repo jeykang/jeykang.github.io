@@ -12,7 +12,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-EXTENSION_TITLE = "FPS Measure"
-
-EXTENSION_DESCRIPTION = "FPS Measurement based on Custom Camera Trajectory"
+from .extension import *
