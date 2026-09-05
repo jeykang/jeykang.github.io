@@ -1,15 +1,15 @@
-# (Gluon) Xception
+# FBNet
 
-**Xception** is a convolutional neural network architecture that relies solely on [depthwise separable convolution](https://paperswithcode.com/method/depthwise-separable-convolution) layers.
+**FBNet** is a type of convolutional neural architectures discovered through [DNAS](https://paperswithcode.com/method/dnas) neural architecture search. It utilises a basic type of image model block inspired by [MobileNetv2](https://paperswithcode.com/method/mobilenetv2) that utilises depthwise convolutions and an inverted residual structure (see components).
 
-The weights from this model were ported from [Gluon](https://cv.gluon.ai/model_zoo/classification.html).
+The principal building block is the [FBNet Block](https://paperswithcode.com/method/fbnet-block).
 
 ## How do I use this model on an image?
 To load a pretrained model:
 
 ```python
 import timm
-model = timm.create_model('gluon_xception65', pretrained=True)
+model = timm.create_model('fbnetc_100', pretrained=True)
 model.eval()
 ```
 
@@ -55,14 +55,14 @@ for i in range(top5_prob.size(0)):
 # [('Samoyed', 0.6425196528434753), ('Pomeranian', 0.04062102362513542), ('keeshond', 0.03186424449086189), ('white wolf', 0.01739676296710968), ('Eskimo dog', 0.011717947199940681)]
 ```
 
-Replace the model name with the variant you want to use, e.g. `gluon_xception65`. You can find the IDs in the model summaries at the top of this page.
+Replace the model name with the variant you want to use, e.g. `fbnetc_100`. You can find the IDs in the model summaries at the top of this page.
 
 To extract image features with this model, follow the [timm feature extraction examples](https://rwightman.github.io/pytorch-image-models/feature_extraction/), just change the name of the model you want to use.
 
 ## How do I finetune this model?
 You can finetune any of the pre-trained models just by changing the classifier (the last layer).
 ```python
-model = timm.create_model('gluon_xception65', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
+model = timm.create_model('fbnetc_100', pretrained=True, num_classes=NUM_FINETUNE_CLASSES)
 ```
 To finetune on your own dataset, you have to write a training loop or adapt [timm's training
 script](https://github.com/rwightman/pytorch-image-models/blob/master/train.py) to use your dataset.
@@ -74,11 +74,11 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 ## Citation
 
 ```BibTeX
-@misc{chollet2017xception,
-      title={Xception: Deep Learning with Depthwise Separable Convolutions}, 
-      author={François Chollet},
-      year={2017},
-      eprint={1610.02357},
+@misc{wu2019fbnet,
+      title={FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural Architecture Search}, 
+      author={Bichen Wu and Xiaoliang Dai and Peizhao Zhang and Yanghan Wang and Fei Sun and Yiming Wu and Yuandong Tian and Peter Vajda and Yangqing Jia and Kurt Keutzer},
+      year={2019},
+      eprint={1812.03443},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
@@ -87,41 +87,51 @@ You can follow the [timm recipe scripts](https://rwightman.github.io/pytorch-ima
 <!--
 Type: model-index
 Collections:
-- Name: Gloun Xception
+- Name: FBNet
   Paper:
-    Title: 'Xception: Deep Learning with Depthwise Separable Convolutions'
-    URL: https://paperswithcode.com/paper/xception-deep-learning-with-depthwise
+    Title: 'FBNet: Hardware-Aware Efficient ConvNet Design via Differentiable Neural
+      Architecture Search'
+    URL: https://paperswithcode.com/paper/fbnet-hardware-aware-efficient-convnet-design
 Models:
-- Name: gluon_xception65
-  In Collection: Gloun Xception
+- Name: fbnetc_100
+  In Collection: FBNet
   Metadata:
-    FLOPs: 17594889728
-    Parameters: 39920000
-    File Size: 160551306
+    FLOPs: 508940064
+    Parameters: 5570000
+    File Size: 22525094
     Architecture:
     - 1x1 Convolution
     - Convolution
     - Dense Connections
-    - Depthwise Separable Convolution
+    - Dropout
+    - FBNet Block
     - Global Average Pooling
-    - Max Pooling
-    - ReLU
-    - Residual Connection
     - Softmax
     Tasks:
     - Image Classification
+    Training Techniques:
+    - SGD with Momentum
+    - Weight Decay
     Training Data:
     - ImageNet
-    ID: gluon_xception65
-    Crop Pct: '0.903'
-    Image Size: '299'
-    Interpolation: bicubic
-  Code: https://github.com/rwightman/pytorch-image-models/blob/d8e69206be253892b2956341fea09fdebfaae4e3/timm/models/gluon_xception.py#L241
-  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/gluon_xception-7015a15c.pth
+    Training Resources: 8x GPUs
+    ID: fbnetc_100
+    LR: 0.1
+    Epochs: 360
+    Layers: 22
+    Dropout: 0.2
+    Crop Pct: '0.875'
+    Momentum: 0.9
+    Batch Size: 256
+    Image Size: '224'
+    Weight Decay: 0.0005
+    Interpolation: bilinear
+  Code: https://github.com/rwightman/pytorch-image-models/blob/9a25fdf3ad0414b4d66da443fe60ae0aa14edc84/timm/models/efficientnet.py#L985
+  Weights: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/fbnetc_100-c345b898.pth
   Results:
   - Task: Image Classification
     Dataset: ImageNet
     Metrics:
-      Top 1 Accuracy: 79.7%
-      Top 5 Accuracy: 94.87%
+      Top 1 Accuracy: 75.12%
+      Top 5 Accuracy: 92.37%
 -->
