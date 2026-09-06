@@ -1,0 +1,138 @@
+services:
+  desktop-user1:
+    image: accetto/ubuntu-vnc-xfce-firefox-g3:24.04
+    container_name: novnc-desktop-user1
+    privileged: true
+    ports:
+      - "6910:6901"
+    environment:
+      - VNC_PW=${VNC_PW_user1}
+      - VNC_RESOLUTION=1920x1080
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - USER=headless
+      - DOCKER_GID=999
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - /mnt:/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - novnc-home-user1:/home/headless
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+    shm_size: "16g"
+    restart: unless-stopped
+
+  desktop-user2:
+    image: accetto/ubuntu-vnc-xfce-firefox-g3:24.04
+    container_name: novnc-desktop-user2
+    privileged: true
+    ports:
+      - "6911:6901"
+    environment:
+      - VNC_PW=${VNC_PW_user2}
+      - VNC_RESOLUTION=1920x1080
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - USER=headless
+      - DOCKER_GID=999
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - /mnt:/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - novnc-home-user2:/home/headless
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+    shm_size: "16g"
+    restart: unless-stopped
+
+  desktop-user3:
+    image: accetto/ubuntu-vnc-xfce-firefox-g3:24.04
+    container_name: novnc-desktop-user3
+    privileged: true
+    ports:
+      - "6912:6901"
+    environment:
+      - VNC_PW=${VNC_PW_user3}
+      - VNC_RESOLUTION=1920x1080
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - USER=headless
+      - DOCKER_GID=999
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - /mnt:/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - novnc-home-user3:/home/headless
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+    shm_size: "16g"
+    restart: unless-stopped
+
+  desktop-user4:
+    image: accetto/ubuntu-vnc-xfce-firefox-g3:24.04
+    container_name: novnc-desktop-user4
+    privileged: true
+    ports:
+      - "6913:6901"
+    environment:
+      - VNC_PW=${VNC_PW_user4}
+      - VNC_RESOLUTION=1920x1080
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - USER=headless
+      - DOCKER_GID=999
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - /mnt:/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - novnc-home-user4:/home/headless
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+    shm_size: "16g"
+    restart: unless-stopped
+
+volumes:
+  novnc-home-user1:
+  novnc-home-user2:
+  novnc-home-user3:
+  novnc-home-user4:
