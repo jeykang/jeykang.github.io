@@ -1,0 +1,46 @@
+{{- if not .Values.rawData.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-rawdata
+  labels: {{- include "lakehouse.labels" . | nindent 4 }}
+spec:
+  accessModes: [{{ .Values.rawData.accessMode | quote }}]
+  {{- if .Values.global.storageClass }}
+  storageClassName: {{ .Values.global.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests: { storage: {{ .Values.rawData.size | quote }} }
+---
+{{- end }}
+# Long-running Spark pod with the ingestion code baked in. `kubectl exec` into it to
+# run the pipeline (register_bronze -> pipeline -> run_gold_score) against the raw data
+# mounted read-only — the K8s analogue of `docker exec spark-iceberg spark-submit ...`.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-spark
+  labels: {{- include "lakehouse.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.spark.replicas }}
+  selector:
+    matchLabels: { app: spark }
+  template:
+    metadata:
+      labels: { app: spark }
+    spec:
+      containers:
+        - name: spark
+          image: {{ .Values.spark.image | quote }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          command: ["sleep", "infinity"]
+          envFrom: {{- include "lakehouse.envFrom" . | nindent 12 }}
+          resources: {{- toYaml .Values.spark.resources | nindent 12 }}
+          volumeMounts:
+            - name: rawdata
+              mountPath: {{ .Values.rawData.mountPath | quote }}
+              readOnly: true
+      volumes:
+        - name: rawdata
+          persistentVolumeClaim:
+            claimName: {{ include "lakehouse.rawDataClaim" . }}
