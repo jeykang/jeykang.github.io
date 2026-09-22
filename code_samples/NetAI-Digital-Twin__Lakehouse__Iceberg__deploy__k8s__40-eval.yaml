@@ -1,0 +1,132 @@
+# 8-way parallel Alpamayo-R1 evaluation -- one whole L40 per pod.
+#
+# Indexed Job rather than one 8-GPU pod, because `enforce-partridge-l40-gpu-jobs`
+# caps a Pod at exactly one GPU. That cap is the reason Alpamayo2-Super (~68 GB,
+# needs >=2 GPUs) cannot run on this box at all and stays on the A100 cluster;
+# R1 (~22 GB weights, 25.83 GB measured peak) fits one 46068 MiB L40 comfortably.
+#
+# Fanning out to 8 single-GPU pods is both the "use every GPU" goal and the node
+# burn-in: the s/clip it reports is directly comparable to the existing ladder
+# (22-24 s/clip on A100-40GB, 26.9 s/clip on the local A10).
+#
+# NOTE the node is also the designated rsync runner for the netai-e2e
+# Performance->Standard migration. That copy is currently Suspended, so the box is
+# free -- but if it is resumed, this run and its pinned 200 MiB/s stream contend for
+# the same NIC and CPU. Coordinate before launching.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: l40-eval-r1
+  namespace: netai-l40-test
+spec:
+  completions: 8
+  parallelism: 8
+  completionMode: Indexed
+  backoffLimit: 0
+  template:
+    metadata:
+      labels: { app: l40-eval-r1 }
+    spec:
+      restartPolicy: Never
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: datax.dreamai.kr/partridge-placement
+                    operator: In
+                    values: ["gpu"]
+      containers:
+        - name: eval
+          image: nvidia/cuda:12.8.1-cudnn-devel-ubuntu22.04
+          env:
+            - name: E
+              value: /work
+            - name: AV_ROOT
+              value: /work/av_root
+            - name: HF_HOME
+              value: /work/hf_cache
+            - name: HF_TOKEN
+              valueFrom:
+                secretKeyRef: { name: hf-token, key: HF_TOKEN }
+            - name: PYTHONNOUSERSITE
+              value: "1"
+            - name: PYTHONPATH
+              value: /harness:/work/src/alpamayo_r1/src
+            - name: PYTORCH_CUDA_ALLOC_CONF
+              value: expandable_segments:True
+            - name: SHARDS
+              value: "8"
+            # Load is extended by REPLAYING a deliberately tiny slice, not by staging a
+            # big one -- the CephFS pool is shared and not ours to fill. Raise PASSES to
+            # lengthen the burn-in at zero storage cost.
+            - name: PASSES
+              value: "10"
+          command: ["bash", "-lc"]
+          args:
+            - |
+              set -euo pipefail
+              apt-get update -qq && apt-get install -y -qq \
+                libglib2.0-0 libgl1-mesa-glx libsm6 libxext6 libgomp1 >/dev/null
+              IDX="${JOB_COMPLETION_INDEX:-0}"
+              echo "[shard $IDX/$SHARDS] $(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader)"
+
+              # Deterministic stride shard of the cached clip list, so the 8 pods
+              # partition the slice without coordinating.
+              # Read the list the prep Job staged alongside the data, NOT the copy in
+              # the ConfigMap -- that one describes whichever slice was planned locally.
+              "$E/venv/bin/python" - <<PY
+              import json, os
+              idx, n = int("$IDX"), int(os.environ["SHARDS"])
+              clips = json.load(open(os.environ["AV_ROOT"] + "/.clip_list.json"))
+              mine = clips[idx::n]
+              open("/tmp/shard.txt", "w").write("\n".join(mine))
+              print(f"[shard {idx}] {len(mine)} of {len(clips)} clips")
+              PY
+
+              # Pass 1 alone, on a cold page cache -- this is the ONLY comparable
+              # throughput figure. Everything after it reads from RAM (the slice is
+              # ~1 GB against 377 GiB of node memory), so its s/clip is inflated and
+              # must not be quoted against the 22-24 s/clip A100 / 26.9 s/clip A10 ladder.
+              echo "=== PASS 1 (cold — throughput measurement) ==="
+              "$E/venv/bin/python" /harness/run_eval.py \
+                --dataset nvidia \
+                --policy policy_alpamayo:AlpamayoR1Policy \
+                --clips-file /tmp/shard.txt \
+                --out "$E/results/r1_shard${IDX}.parquet"
+
+              # Remaining passes: one invocation over the shard repeated PASSES-1 times.
+              # select_clips() does not dedupe, so duplicates are evaluated again while
+              # the model loads exactly once -- far cheaper than re-invoking per pass.
+              # Results are discarded to /tmp; this segment is sustained-load evidence
+              # (thermals, power, ECC, driver stability), not a measurement.
+              if [ "${PASSES:-1}" -gt 1 ]; then
+                for _ in $(seq 2 "$PASSES"); do cat /tmp/shard.txt; echo; done \
+                  | grep -v '^$' > /tmp/loop.txt
+                echo "=== PASSES 2-$PASSES (warm — sustained load, $(wc -l < /tmp/loop.txt) evaluations) ==="
+                "$E/venv/bin/python" /harness/run_eval.py \
+                  --dataset nvidia \
+                  --policy policy_alpamayo:AlpamayoR1Policy \
+                  --clips-file /tmp/loop.txt \
+                  --out /tmp/r1_shard${IDX}_loop.parquet
+              fi
+              echo ">>> SHARD $IDX DONE"
+          resources:
+            requests: { nvidia.com/gpu: "1", cpu: "6", memory: "24Gi", ephemeral-storage: "8Gi" }
+            limits: { nvidia.com/gpu: "1", cpu: "10", memory: "32Gi", ephemeral-storage: "16Gi" }
+          volumeMounts:
+            - { name: work, mountPath: /work }
+            - { name: harness, mountPath: /harness }
+            - { name: dshm, mountPath: /dev/shm }
+      volumes:
+        - name: work
+          persistentVolumeClaim: { claimName: netai-l40-work }
+        - name: harness
+          configMap: { name: eval-harness }
+        - name: dshm
+          emptyDir: { medium: Memory, sizeLimit: 8Gi }
