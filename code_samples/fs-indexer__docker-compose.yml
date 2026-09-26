@@ -1,0 +1,142 @@
+version: "3.9"
+
+volumes:
+  meilisearch_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${MEILISEARCH_DATA_PATH:-./data/meilisearch}
+  config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./config
+
+networks:
+  fs-indexer:
+    driver: bridge
+
+services:
+  meilisearch:
+    image: getmeili/meilisearch:v1.11
+    container_name: fs-meilisearch
+    restart: unless-stopped
+    ports:
+      - "${MEILISEARCH_PORT:-7700}:7700"
+    environment:
+      - MEILI_ENV=${MEILI_ENV:-development}
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-}
+      - MEILI_NO_ANALYTICS=true
+      - MEILI_DB_PATH=/meili_data
+      - MEILI_DUMP_DIR=/dumps
+      - MEILI_LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MEILI_MAX_INDEXING_MEMORY=2147483648  # 2GB for large datasets
+      - MEILI_MAX_INDEXING_THREADS=4
+    volumes:
+      - meilisearch_data:/meili_data
+      - meilisearch_data:/dumps
+    networks:
+      - fs-indexer
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:7700/health 2>/dev/null | grep -q 'available'"]
+      interval: 5s
+      timeout: 3s
+      start_period: 10s
+      retries: 10
+
+  bootstrap:
+    image: python:3.12-slim
+    depends_on:
+      meilisearch:
+        condition: service_healthy
+    networks:
+      - fs-indexer
+    environment:
+      - MEILISEARCH_URL=http://meilisearch:7700
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-}
+    volumes:
+      - ./scripts/bootstrap.py:/bootstrap.py:ro
+    command: ["python", "/bootstrap.py"]
+    restart: "no"
+
+  indexer:
+    build: ./indexer
+    image: local/fs-indexer:latest
+    container_name: fs-indexer
+    depends_on:
+      meilisearch:
+        condition: service_healthy
+      bootstrap:
+        condition: service_completed_successfully
+    environment:
+      - MEILISEARCH_URL=http://meilisearch:7700
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-}
+      - SCAN_ROOTS=${SCAN_ROOTS:-/data}
+      - ROOT_NAME=${ROOT_NAME:-data}
+      - EXCLUDES_FILE=/app/config/excludes.txt
+      - STABILITY_SEC=${STABILITY_SEC:-30}
+      - BATCH_SIZE=${BATCH_SIZE:-10000}  # Meilisearch handles larger batches well
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - type: bind
+        source: ${HOST_PATH:-/home}
+        target: /data
+        read_only: true
+      - config:/app/config:ro
+    networks:
+      - fs-indexer
+    restart: "no"
+
+  scheduler:
+    image: mcuadros/ofelia:latest
+    container_name: fs-scheduler
+    depends_on:
+      - indexer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./cron/config.ini:/etc/ofelia/config.ini:ro
+    networks:
+      - fs-indexer
+    restart: unless-stopped
+
+  search-api:
+    build: ./api
+    image: local/fs-search-api:latest
+    container_name: fs-search-api
+    depends_on:
+      meilisearch:
+        condition: service_healthy
+      bootstrap:
+        condition: service_completed_successfully
+    environment:
+      - MEILISEARCH_URL=http://meilisearch:7700
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-}
+      - DEFAULT_PAGE_SIZE=${DEFAULT_PAGE_SIZE:-50}
+      - MAX_PAGE_SIZE=${MAX_PAGE_SIZE:-500}
+      - API_PORT=8080
+    ports:
+      - "${API_PORT:-8080}:8080"
+    networks:
+      - fs-indexer
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  web:
+    build: ./web
+    image: local/fs-web:latest
+    container_name: fs-web
+    depends_on:
+      - search-api
+    ports:
+      - "${WEB_PORT:-8081}:80"
+    networks:
+      - fs-indexer
+    restart: unless-stopped
+    environment:
+      - API_URL=http://localhost:${API_PORT:-8080}
