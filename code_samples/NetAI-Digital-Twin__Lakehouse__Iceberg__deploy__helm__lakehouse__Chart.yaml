@@ -1,0 +1,8 @@
+apiVersion: v2
+name: lakehouse
+description: NVIDIA PhysicalAI medallion lakehouse — Polaris (Iceberg REST catalog) +
+  Postgres + MinIO + Spark. Register-in-place ingestion over data-at-rest; deploy
+  before or after the raw data lands (see progress/2026-06.md, FINDINGS).
+type: application
+version: 0.1.0
+appVersion: "1.0"

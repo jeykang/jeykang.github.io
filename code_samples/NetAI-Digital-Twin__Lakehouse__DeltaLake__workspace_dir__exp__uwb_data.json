@@ -1,0 +1,66 @@
+{
+    "body": {
+        "id": "16",
+        "datastreams": [
+            {
+                "id": "posX",
+                "current_value": "22.62",
+                "at": "2024-07-10 06:22:09.804"
+            },
+            {
+                "id": "posY",
+                "current_value": "-21.40",
+                "at": "2024-07-10 06:22:09.804"
+            },
+            {
+                "id": "clr",
+                "current_value": "0.36",
+                "at": "2024-07-10 06:22:09.804"
+            },
+            {
+                "id": "numberOfAnchors",
+                "current_value": "6",
+                "at": "2024-07-10 06:22:09.804"
+            }
+        ],
+        "uuid": "ecb96332-f4b2-11ed-af60-230463e1fe65",
+        "address": "0x230463E1FE65",
+        "extended_tag_position": {
+            "master": "E8EB1B3BD8A8",
+            "corrected": true,
+            "slaves": [
+                {
+                    "address": "8034282787E9",
+                    "time": 0.806366695305684,
+                    "fp": -85.3,
+                    "rssi": -83.9
+                },
+                {
+                    "address": "803428275EA7",
+                    "time": 0.806366678215719,
+                    "fp": -85.71,
+                    "rssi": -81.5
+                },
+                {
+                    "address": "80342828007E",
+                    "time": 0.806366706818745,
+                    "fp": -97.08,
+                    "rssi": -90.36
+                },
+                {
+                    "address": "80342827FDF2",
+                    "time": 0.806366700821338,
+                    "fp": -96.99,
+                    "rssi": -88.11
+                },
+                {
+                    "address": "E8EB1B3BD8A8",
+                    "time": 0.806366678858048,
+                    "fp": -96.77,
+                    "rssi": -83.7
+                }
+            ]
+        }
+    },
+    "resource": "/feeds/16"
+}
