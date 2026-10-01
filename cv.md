@@ -1,13 +1,12 @@
 # Jey Kang
 
 *Curriculum Vitae*
-*Updated: August 21, 2025*
+*Updated: October 1, 2026*
 
 ---
 
 ## General Information
 
-* **Date of Birth:** 4 November 2002
 * **Languages:** English, Korean
 
 ## Education
@@ -25,9 +24,11 @@
 
 ## Publications
 
-* **Kang, J.** and **Kim, J.** (2024). *A Method for Neural Network-based Sensor Augmentation via Sensor Data Intercept in CARLA Simulator.* *한국통신학회 학술대회논문집*, pp. 745–746.
+* **Kang, J.**, Kim, K., Mok, J., Kim, H., Sung, H., Park, S., and Kim, J. (2026). *멀티모달 자율주행 데이터 관리를 위한 메달리온 아키텍처 데이터 레이크하우스* [A Medallion-Architecture Data Lakehouse for Multimodal Autonomous Driving Data Management]. *제36회 통신정보 합동학술대회 (JCCI 2026)*.
 
-* **Kang, J.** and **Kim, J.** (2023). *GAN-Based Style Transfer for Visual Clarity in Driving Simulations employing Deep Q-Learning.* *한국통신학회 학술대회논문집*, pp. 1798–1800.
+* **Kang, J.** and Kim, J. (2024). *A Method for Neural Network-based Sensor Augmentation via Sensor Data Intercept in CARLA Simulator.* *한국통신학회 학술대회논문집*, pp. 745–746.
+
+* **Kang, J.** and Kim, J. (2023). *GAN-Based Style Transfer for Visual Clarity in Driving Simulations employing Deep Q-Learning.* *한국통신학회 학술대회논문집*, pp. 1798–1800.
 
 ## Experience
 
