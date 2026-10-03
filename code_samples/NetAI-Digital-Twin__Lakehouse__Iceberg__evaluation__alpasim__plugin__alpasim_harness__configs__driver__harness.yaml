@@ -1,0 +1,47 @@
+# Driver preset routing AlpaSim to a harness `Policy`.
+#
+# Modelled on the in-tree vavam.yaml (single front camera, 2 Hz), because that is the
+# shape our locally-runnable policies take. The earlier minimal version failed at
+# container start with "Could not override 'host' / Key 'host' is not in struct": the
+# driver service is launched with host/port overrides, so a driver config must declare
+# the full structure, not just a model target.
+#
+# Selection is by environment, so one string names the same policy here and in
+# run_eval.py:
+#   HARNESS_DIR    absolute path to evaluation/ (mounted into the driver container)
+#   HARNESS_POLICY policy spec, e.g. constant_velocity | policy_vavam:VaVAMPolicy
+
+defaults:
+  - vavam_configs       # reuse the 1-cam 2 Hz camera/simulation block
+  - _self_
+
+log_level: ${wizard.log_level}
+
+model:
+  model_type: harness                       # entry-point name in alpasim.models
+  # The bridge reads HARNESS_POLICY; checkpoint_path is the fallback carrier for it
+  # so the model resolves even when the env var is unset.
+  checkpoint_path: ${oc.env:HARNESS_POLICY,constant_velocity}
+  device: "cuda"
+
+host: "0.0.0.0"
+port: ???
+
+inference:
+  use_cameras: ["camera_front_wide_120fov"]
+  max_batch_size: 32
+  subsample_factor: 1
+  context_length: 8                         # VaVAM wants 8 frames; ego-only ignore it
+
+route:
+  default_command: 2                        # straight; harness policies have no route
+  use_waypoint_commands: true
+  command_distance_threshold: 3.0
+  min_lookahead_distance: 20.0
+
+output_dir: "/mnt/output/driver"
+
+trajectory_optimizer:
+  enabled: false
+
+plot_debug_images: false
