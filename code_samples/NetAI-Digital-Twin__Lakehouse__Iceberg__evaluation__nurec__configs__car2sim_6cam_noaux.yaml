@@ -1,0 +1,57 @@
+# @package _global_
+# car2sim_6cam without NuRec auxiliary data (no nre-tools semantic side-store):
+# the production config's road-semantic base is replaced by the plain dynamic
+# 3DGUT base, everything else follows configs/apps/prod/Hyperion-8.1/car2sim*.yaml.
+defaults:
+  - /apps/AV/_base_3dgut_dynamic.yaml
+  - /apps/prod/options/artifact: default
+  - /apps/prod/options/nrend: disabled
+  - /apps/prod/options/difix/3dgut: disabled
+  - /apps/prod/options/mesh: disabled
+  - /apps/prod/options/ground: enabled
+  - /apps/prod/options/subsampling/3dgut: batch_sampler_4
+  - /apps/prod/Hyperion-8.1/options/sensors: hyperion8.1_6cam_1lidar
+  - /apps/prod/Hyperion-8.1/options/validation: default
+  - /apps/prod/options/calib: enabled
+  - /apps/prod/options/temporal_appearance@model.layers.dynamic_rigids: fourier_features_dim_20
+  - /apps/AV/module_mixins/_mcmc_mixin.yaml
+  - override /model/gaussians/strategy@model.strategy: mcmc
+  - override /model/post_processing@model.post_processing.b: ppisp
+  - override /model/post_processing@model.post_processing.c: null
+  - override /logger: dummy
+
+dataset:
+  aux_data: false
+  n_samples_per_epoch: 30_000
+  n_train_sample_lidar_rays: 2048
+  cuboid_tracks_params:
+    track_label_sources:
+      - AUTOLABEL
+
+checkpoint:
+  every_n_train_steps: ${mul:${trainer.max_epochs},${dataset.n_samples_per_epoch}}
+
+model:
+  calib:
+    lidar:
+      enabled: false
+  strategy:
+    add:
+      max_n_gaussians: 2_000_000
+  layers:
+    dynamic_rigids:
+      initialization:
+        num_point_cloud_points_in_layer: 300_000
+    dynamic_deformables:
+      initialization:
+        num_point_cloud_points_in_layer: 300_000
+    background:
+      fourier_features_dim: 5
+      initialization:
+        num_point_cloud_points: 800_000
+        num_near_points: 100_000
+        num_far_points: 100_000
+  renderer:
+    culling:
+      far_clip_distance_lidar: 200.0
+      far_clip_distance_camera: 1000.0
