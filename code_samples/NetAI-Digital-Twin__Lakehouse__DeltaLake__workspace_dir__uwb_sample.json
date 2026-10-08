@@ -1,0 +1,41 @@
+{
+    "body": {
+        "id": "16",
+        "datastreams": [
+            {
+                "id": "posX",
+                "current_value": "14.55",
+                "at": "2024-12-19 20:16:23.735"
+            },
+            {
+                "id": "posY",
+                "current_value": "-24.51",
+                "at": "2024-12-19 20:16:23.735"
+            },
+            {
+                "id": "clr",
+                "current_value": " 0.96",
+                "at": "2024-12-19 20:16:23.735"
+            },
+            {
+                "id": "numberOfAnchors",
+                "current_value": "5",
+                "at": "2024-12-19 20:16:23.735"
+            }
+        ],
+        "uuid": "ecb96332-f4b2-11ed-af60-230463e1fe65",
+        "address": "0x230463E1FE65",
+        "extended_tag_position": {
+            "master": "E8EB1B3BD607",
+            "corrected": false,
+            "slaves": [
+                {"address": "E8EB1B3C2EBB", "time": 0.960173234278106, "fp": -96.07, "rssi": -94.14}, 
+                {"address": "80342827FF40", "time": 0.960173252565133, "fp": -98.88, "rssi": -96.19}, 
+                {"address": "80342827FFC6", "time": 0.96017323009146, "fp": -96.42, "rssi": -93.4}, 
+                {"address": "E8EB1B3BD607", "time": 0.960173208571214, "fp": -101.95, "rssi": -95.94}, 
+                {"address": "80342827E55B", "time": 0.960173186932758, "fp": -102.54, "rssi": -91.79}
+            ]
+        }
+    },
+    "resource": "/feeds/16"
+}
