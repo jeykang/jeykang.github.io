@@ -1,0 +1,370 @@
+# Default Configuration for Neural 3D Reconstruction Pipeline
+# Override these settings in experiment-specific configs
+
+# =============================================================================
+# DATA CONFIGURATION
+# =============================================================================
+data:
+  # Dataset settings
+  dataset_type: "cse"  # cse, custom
+  data_path: "data/warehouse_extracted/static_warehouse_robot1"
+  
+  # Image settings
+  img_width: 640
+  img_height: 360
+  
+  # Camera settings
+  side: "left"  # left, right, both
+  use_stereo: false
+  
+  # Synchronization
+  sync_tolerance_ms: 50  # Maximum time difference for frame sync
+  
+  # Depth filtering
+  min_depth: 0.1  # meters
+  max_depth: 20.0  # meters
+  depth_scale: 0.001  # CSE depth is in mm, scale to meters
+  
+  # Data loading
+  num_workers: 4
+  prefetch_factor: 2
+  
+  # Augmentation
+  augmentation:
+    enabled: true
+    random_rotation: true
+    rotation_range: [-15, 15]  # degrees around z-axis
+    random_translation: true
+    translation_range: [-0.2, 0.2]  # meters
+    depth_noise_std: 0.01  # meters
+    color_jitter: true
+
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+model:
+  # Neural SDF Architecture
+  neural_sdf:
+    # Positional encoding
+    encoding_type: "hashgrid"  # hashgrid, positional, none
+    
+    # Hash grid settings (if encoding_type == hashgrid)
+    hashgrid:
+      num_levels: 16         # Stable default
+      base_resolution: 16
+      max_resolution: 4096   # Good balance of detail and stability
+      features_per_level: 2
+      log2_hashmap_size: 19
+    
+    # Positional encoding settings (if encoding_type == positional)
+    positional:
+      num_frequencies: 10
+      include_input: true
+    
+    # SIREN backbone - balanced for stability
+    hidden_features: 256
+    hidden_layers: 6
+    omega_0: 30.0
+    
+    # Output heads
+    output_sdf: true
+    output_color: true
+    output_semantics: false
+    num_semantic_classes: 10
+    
+  # Planar attention module
+  planar_attention:
+    enabled: true
+    num_heads: 4
+    embed_dim: 256
+    max_planes: 20
+    
+  # Point filtering network (3DMambaIPF-style)
+  point_filter:
+    enabled: true
+    encoder: "pointnet2"  # pointnet2, dgcnn
+    hidden_dim: 256
+    num_iterations: 15
+    step_size: 0.5
+    use_ssm: false  # State space model (requires mamba-ssm)
+    
+  # Score-based denoising
+  score_network:
+    enabled: true
+    encoder: "pointnet2"
+    hidden_dim: 256
+    num_noise_levels: 5
+    noise_levels: [0.1, 0.05, 0.02, 0.01, 0.005]
+    langevin_steps: 10
+    step_size: 0.01
+
+# =============================================================================
+# LOSS CONFIGURATION
+# =============================================================================
+losses:
+  # SDF losses
+  surface_weight: 1.0
+  freespace_weight: 0.5
+  eikonal_weight: 0.1
+  
+  # Planar losses
+  planar_weight: 0.3
+  normal_weight: 0.2
+  manhattan_weight: 0.1
+  
+  # Regularization
+  smoothness_weight: 0.01
+  sparsity_weight: 0.0
+  
+  # Color reconstruction (if enabled)
+  color_weight: 0.1
+  
+  # Point filter losses
+  chamfer_weight: 1.0
+  emd_weight: 0.5  # Earth Mover's Distance
+
+# =============================================================================
+# TRAINING CONFIGURATION
+# =============================================================================
+training:
+  # Basic settings
+  epochs: 50  # More epochs for better convergence
+  batch_size: 8  # Increased for DGX Spark
+  
+  # Optimizer - conservative for stability
+  optimizer: "adam"
+  learning_rate: 1e-4
+  weight_decay: 0          # Disabled for hash grid stability
+  betas: [0.9, 0.999]
+  
+  # Learning rate scheduler
+  scheduler: "cosine"  # cosine, step, plateau, none
+  warmup_epochs: 3
+  min_lr: 1e-6
+  
+  # Step scheduler settings
+  step_size: 10
+  gamma: 0.5
+  
+  # Sampling - increased for better coverage
+  num_surface_samples: 8192
+  num_freespace_samples: 8192
+  num_random_samples: 4096    # Random space points
+  freespace_jitter_min: 0.1   # meters
+  freespace_jitter_max: 3.0   # meters - increased for large scenes
+  
+  # Loss weights - stable defaults
+  surface_weight: 1.0
+  freespace_weight: 1.0
+  eikonal_weight: 0.001       # Very small to avoid instability
+  random_space_weight: 0.5
+  
+  # Multi-stage training
+  stages:
+    - name: "coarse"
+      epochs: 10
+      grid_resolution: 64
+      losses: ["surface", "freespace"]
+      lr: 1e-3
+      
+    - name: "fine"
+      epochs: 15
+      grid_resolution: 256
+      losses: ["surface", "freespace", "eikonal", "planar", "manhattan"]
+      lr: 1e-4
+      
+    - name: "refinement"
+      epochs: 5
+      grid_resolution: 256
+      losses: ["all"]
+      lr: 1e-5
+      freeze_backbone: false
+  
+  # Checkpointing
+  save_every: 5  # epochs
+  keep_last_k: 3  # checkpoints
+  
+  # Logging
+  log_every: 100  # iterations
+  val_every: 1  # epochs
+  
+  # Mixed precision
+  use_amp: true
+  
+  # Gradient clipping
+  grad_clip: 1.0
+  
+  # Distributed training
+  distributed: false
+  world_size: 1
+  
+# =============================================================================
+# INFERENCE CONFIGURATION
+# =============================================================================
+inference:
+  # Mesh extraction
+  mesh_resolution: 512  # Grid resolution for marching cubes
+  mesh_threshold: 0.0   # SDF threshold (0 = surface)
+  
+  # Bounds (auto-detect if null)
+  bounds:
+    x_min: -5.0
+    x_max: 5.0
+    y_min: -5.0
+    y_max: 5.0
+    z_min: -1.0
+    z_max: 3.0
+  
+  # Dense point cloud sampling
+  num_points: 10000000  # 10M points
+  sampling_method: "poisson_disk"  # uniform, poisson_disk
+  
+  # Chunk processing (for memory efficiency)
+  chunk_size: 100000
+
+# =============================================================================
+# REFINEMENT CONFIGURATION
+# =============================================================================
+refinement:
+  # Classical filtering
+  statistical_outlier_removal:
+    enabled: true
+    nb_neighbors: 50
+    std_ratio: 2.0
+    
+  radius_outlier_removal:
+    enabled: true
+    radius: 0.05  # meters
+    min_neighbors: 10
+  
+  # Neural point filtering
+  neural_filter:
+    enabled: true
+    checkpoint: null  # Path to pretrained filter model
+    iterations: 15
+    step_size: 0.5
+    
+  # Score-based denoising
+  score_denoise:
+    enabled: true
+    checkpoint: null  # Path to pretrained score model
+    
+  # Voxel downsampling (between stages)
+  voxel_downsample:
+    enabled: true
+    voxel_size: 0.02  # meters
+
+# =============================================================================
+# COMPLETION CONFIGURATION
+# =============================================================================
+completion:
+  enabled: true
+  
+  # Hole detection
+  hole_detection:
+    method: "visibility"  # visibility, density
+    min_hole_size: 100  # minimum points to consider a hole
+    
+  # Planar completion
+  planar_completion:
+    enabled: true
+    classes: ["wall", "floor", "ceiling"]
+    extension_distance: 0.5  # meters
+    
+  # Neural completion (if planar fails)
+  neural_completion:
+    enabled: false
+    checkpoint: null
+
+# =============================================================================
+# EVALUATION CONFIGURATION  
+# =============================================================================
+evaluation:
+  metrics:
+    - chamfer_distance
+    - f_score
+    - normal_consistency
+    
+  f_score_thresholds: [0.01, 0.02, 0.05]  # meters
+  
+  # Coverage analysis
+  coverage:
+    enabled: true
+    floor_height: 0.0  # meters
+    grid_resolution: 0.1  # meters
+    camera_height: 1.5  # meters
+
+# =============================================================================
+# OUTPUT CONFIGURATION
+# =============================================================================
+output:
+  output_dir: "output"
+  
+  # Subdirectories
+  checkpoint_dir: "checkpoints"
+  log_dir: "logs"
+  result_dir: "results"
+  
+  # Output formats
+  save_mesh: true
+  mesh_format: "ply"  # ply, obj, glb
+  
+  save_point_cloud: true
+  point_cloud_format: "ply"
+  
+  # Visualization
+  save_renders: true
+  render_resolution: [1920, 1080]
+  
+  # Logging
+  use_tensorboard: true
+  use_wandb: false
+  wandb_project: "neural_3d_recon"
+  wandb_entity: null
+
+# =============================================================================
+# FEATURE EXTRACTION CONFIGURATION
+# =============================================================================
+features:
+  # Semantic segmentation
+  semantic:
+    enabled: false
+    model: "segformer"  # segformer, deeplabv3
+    checkpoint: null
+    classes:
+      - background
+      - wall
+      - floor
+      - ceiling
+      - door
+      - window
+      - furniture
+      - dynamic
+      
+  # Plane detection
+  plane_detection:
+    enabled: true
+    method: "ransac"  # ransac, neural, hybrid
+    ransac:
+      distance_threshold: 0.02
+      num_iterations: 1000
+      min_points: 500
+    max_planes: 20
+    
+  # Normal estimation  
+  normal_estimation:
+    enabled: true
+    method: "depth"  # depth, neural
+    search_radius: 0.05  # for depth-based method
+    neural_checkpoint: null
+
+# =============================================================================
+# HARDWARE CONFIGURATION
+# =============================================================================
+hardware:
+  device: "cuda"  # cuda, cpu
+  gpu_id: 0
+  
+  # Memory optimization
+  gradient_checkpointing: false
+  empty_cache_freq: 100  # iterations
