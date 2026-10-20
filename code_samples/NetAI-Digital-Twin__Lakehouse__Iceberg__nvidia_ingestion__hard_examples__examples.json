@@ -1,0 +1,68 @@
+[
+  {
+    "rank": 1,
+    "clip_id": "b1ef9ae7-5045-49b3-8c7b-66615d070f52",
+    "difficulty_score": 0.6674,
+    "dominant_factor": "time_of_day",
+    "sub_scores": {
+      "time_of_day": 1.0,
+      "season_geography": 0.9,
+      "sensor_coverage": 1.0,
+      "ego_dynamics": 0.614,
+      "obstacle_density": null,
+      "perception": 0.127
+    },
+    "hour_of_day": 5,
+    "country": "United States",
+    "month": 8,
+    "season": "summer",
+    "chunk": 2890,
+    "mp4": "/work/netai-e2e/nvidia-physicalai-av-subset/camera/camera_front_wide_120fov/camera_front_wide_120fov.chunk_2890/b1ef9ae7-5045-49b3-8c7b-66615d070f52.camera_front_wide_120fov.mp4",
+    "frame_jpg": "/work/nvidia_ingestion/hard_examples/example_1_time_of_day.jpg",
+    "why_hard": "night driving (hour=5); rare region+season (United States, summer); degraded sensor coverage; aggressive ego motion"
+  },
+  {
+    "rank": 2,
+    "clip_id": "1b820c38-910b-4879-8537-ba0ef0537730",
+    "difficulty_score": 0.6903,
+    "dominant_factor": "sensor_coverage",
+    "sub_scores": {
+      "time_of_day": 0.8,
+      "season_geography": 0.9,
+      "sensor_coverage": 1.0,
+      "ego_dynamics": 0.587,
+      "obstacle_density": null,
+      "perception": 0.414
+    },
+    "hour_of_day": 21,
+    "country": "Spain",
+    "month": 2,
+    "season": "winter",
+    "chunk": 762,
+    "mp4": "/work/netai-e2e/nvidia-physicalai-av-subset/camera/camera_front_wide_120fov/camera_front_wide_120fov.chunk_0762/1b820c38-910b-4879-8537-ba0ef0537730.camera_front_wide_120fov.mp4",
+    "frame_jpg": "/work/nvidia_ingestion/hard_examples/example_2_sensor_coverage.jpg",
+    "why_hard": "night driving (hour=21); rare region+season (Spain, winter); degraded sensor coverage; aggressive ego motion"
+  },
+  {
+    "rank": 3,
+    "clip_id": "cd0ccddc-5d30-4b2a-9259-d47b22a74aa1",
+    "difficulty_score": 0.6949,
+    "dominant_factor": "season_geography",
+    "sub_scores": {
+      "time_of_day": 0.7,
+      "season_geography": 1.0,
+      "sensor_coverage": 1.0,
+      "ego_dynamics": 0.551,
+      "obstacle_density": null,
+      "perception": 0.497
+    },
+    "hour_of_day": 6,
+    "country": "Finland",
+    "month": 3,
+    "season": "spring",
+    "chunk": 1185,
+    "mp4": "/work/netai-e2e/nvidia-physicalai-av-subset/camera/camera_front_wide_120fov/camera_front_wide_120fov.chunk_1185/cd0ccddc-5d30-4b2a-9259-d47b22a74aa1.camera_front_wide_120fov.mp4",
+    "frame_jpg": "/work/nvidia_ingestion/hard_examples/example_3_season_geography.jpg",
+    "why_hard": "night driving (hour=6); rare region+season (Finland, spring); degraded sensor coverage; aggressive ego motion"
+  }
+]
