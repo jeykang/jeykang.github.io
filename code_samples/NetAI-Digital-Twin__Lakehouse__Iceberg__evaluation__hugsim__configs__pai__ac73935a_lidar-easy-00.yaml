@@ -1,0 +1,24 @@
+# same as ac73935a-easy-00.yaml on the LiDAR-seeded reconstruction (pai/lidar_points.py → data/scenes/pai/ac73935a_lidar)
+mode: easy_00
+plan_list: []
+iteration: 30000
+sh_degree: 3
+load_HD_map: false
+white_background: false
+data_device: cpu
+data_type: nuscenes
+start_euler:
+- 0.0
+- 0.0
+- 0.0
+start_ab:
+- 0.0
+- 0.0
+start_velo: 1
+start_steer: 0
+target: 60
+scene_name: ac73935a_lidar
+affine: false
+quiet: false
+ignore_dynamic: false
+unicycle: false
