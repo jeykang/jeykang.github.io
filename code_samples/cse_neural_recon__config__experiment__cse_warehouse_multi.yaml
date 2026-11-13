@@ -1,0 +1,99 @@
+# CSE Warehouse Multi-Sequence Experiment Configuration
+# IMPROVED VERSION: Uses all static sequences for better coverage
+# Fixes TSDF scale mismatch for proper SDF learning
+
+experiment_name: "cse_warehouse_multi"
+
+data:
+  # Multi-sequence training for better scene coverage
+  multi_sequence: true
+  base_dir: "data/warehouse_extracted"
+  sequence_pattern: "static_*"  # Use all static sequences (robot1, robot2, robot3)
+  # Can also specify explicit list:
+  # sequences:
+  #   - static_warehouse_robot1
+  #   - static_warehouse_robot2
+  #   - static_warehouse_robot3
+  
+  dataset_type: "cse"
+  depth_scale: 0.001  # mm to meters
+  
+  # Warehouse-specific settings
+  img_width: 640
+  img_height: 360
+  
+  # Larger space requires different depth bounds
+  min_depth: 0.1
+  max_depth: 30.0
+
+model:
+  neural_sdf:
+    encoding_type: "hashgrid"
+    
+    # Hash grid configuration for HashGridSDF
+    hashgrid:
+      num_levels: 16
+      base_resolution: 16
+      max_resolution: 4096
+      features_per_level: 2
+      log2_hashmap_size: 19
+    
+    # HashGridSDF uses ReLU MLP, not SIREN
+    hidden_features: 256
+    hidden_layers: 6
+    
+    # Geometric initialization for SDF (critical!)
+    geometric_init: true
+    sphere_init_radius: 0.5  # Initialize as sphere with this radius in normalized space
+    use_weight_norm: true
+    
+    output_color: true
+    
+  planar_attention:
+    enabled: false  # Disabled - simpler model first
+
+training:
+  epochs: 50  # Fewer epochs since we have 3x more data
+  batch_size: 8  # Higher batch size for DGX Spark
+  
+  # Optimizer
+  optimizer: "adam"
+  learning_rate: 1e-4
+  weight_decay: 0  # No weight decay for hash grid
+  
+  # Sampling
+  num_surface_samples: 8192
+  num_freespace_samples: 8192
+  num_random_samples: 4096
+  freespace_jitter_min: 0.1
+  freespace_jitter_max: 3.0
+  
+  # Loss weights (adjusted for TSDF supervision)
+  # TSDF loss is now primary, surface loss is regularization
+  surface_weight: 1.0
+  eikonal_weight: 0.01
+  
+  # Stability settings
+  use_amp: true
+  grad_clip: 1.0
+  
+  # Visualization
+  save_every: 5
+  visualize_every: 5
+  
+  # Metrics collection (enabled by default for cross-device comparison)
+  collect_metrics: true
+  metrics_sample_rate: 10  # Sample GPU metrics every N batches
+  
+inference:
+  # Larger bounds for warehouse (computed from data)
+  bounds:
+    x_min: -70.0
+    x_max: 30.0
+    y_min: -90.0
+    y_max: 25.0
+    z_min: -25.0
+    z_max: 26.0
+
+output:
+  output_dir: "output/warehouse_multi"
