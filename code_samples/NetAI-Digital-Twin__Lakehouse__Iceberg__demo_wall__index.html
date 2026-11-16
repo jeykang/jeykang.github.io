@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EAD Proving Ground</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <canvas id="ambient"></canvas>
+
+  <div id="wall">
+    <header id="top">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <div>
+          <div class="brand-name" id="brand-name"></div>
+          <div class="brand-sub"><span id="brand-sub"></span><span class="ko" id="brand-ko"></span></div>
+        </div>
+      </div>
+      <div class="loop-line" id="loop-line"></div>
+      <div class="clock"><span id="clock">--:--:--</span><span id="date"></span></div>
+    </header>
+
+    <nav id="rail"><!-- six chapter nodes, built by app.js --></nav>
+
+    <main id="stage">
+
+      <!-- 01 COLLECT: a real clip from the on-disk sample -->
+      <section class="chapter" data-ch="collect">
+        <div class="media">
+          <div class="frame cam">
+            <img id="collect-img" src="assets/cam1.jpg" alt="" />
+            <canvas id="collect-boxes"></canvas>
+            <div class="chips" id="collect-chips"></div>
+            <div class="pip">
+              <canvas id="collect-lidar"></canvas>
+              <span class="pip-cap">LiDAR · one 360° sweep</span>
+            </div>
+            <div class="frame-cap" id="collect-cap"></div>
+          </div>
+        </div>
+        <div class="info"></div>
+      </section>
+
+      <!-- 02 CURATE: the medallion funnel, and where this clip lands -->
+      <section class="chapter" data-ch="curate">
+        <div class="media curate-media">
+          <div class="panel">
+            <div class="panel-title">Medallion tiers in Apache Iceberg <span class="ko">금 · 은 · 동</span></div>
+            <div id="funnel"></div>
+          </div>
+          <div class="panel this-clip">
+            <img id="curate-thumb" src="assets/cam1.jpg" alt="" />
+            <div class="this-clip-body">
+              <div class="panel-title">This clip <span id="curate-id" class="mono"></span></div>
+              <div id="curate-axes"></div>
+              <div id="curate-meter"></div>
+            </div>
+          </div>
+        </div>
+        <div class="info"></div>
+      </section>
+
+      <!-- 03 SERVE: Cosmos-Transfer variants + the scenario x serving-mode space -->
+      <section class="chapter" data-ch="serve">
+        <div class="media serve-media">
+          <div class="frame duo">
+            <video id="serve-video" muted playsinline loop preload="auto"></video>
+            <span class="tag tl">Recorded</span>
+            <span class="tag tr" id="serve-cond">Cosmos-Transfer</span>
+            <div class="frame-cap" id="serve-cap"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Episodes per scenario class · <span class="mono">nvidia_gold.scenario</span></div>
+            <div id="scenario-grid"></div>
+          </div>
+        </div>
+        <div class="info"></div>
+      </section>
+
+      <!-- 04 RECONSTRUCT: real camera vs NuRec twin vs twin depth, one video wiped -->
+      <section class="chapter" data-ch="reconstruct">
+        <div class="media">
+          <div class="frame wipe">
+            <canvas id="wipe-canvas"></canvas>
+            <span class="tag tl" id="wipe-left">Real camera</span>
+            <span class="tag tr" id="wipe-right">Twin render</span>
+            <div class="frame-cap" id="wipe-cap"></div>
+          </div>
+          <div id="build-bar"></div>
+          <video id="wipe-video" muted playsinline loop preload="auto"></video>
+        </div>
+        <div class="info"></div>
+      </section>
+
+      <!-- 05 VALIDATE: VaVAM closed-loop, our twin vs NVIDIA's scene (full width) -->
+      <section class="chapter cinema" data-ch="validate">
+        <div class="media">
+          <div class="frame pair">
+            <video id="pair-video" muted playsinline preload="auto"></video>
+            <span class="tag tl">Our twin</span>
+            <span class="tag tc">Same clip · same policy</span>
+            <span class="tag tr">NVIDIA's reconstruction</span>
+            <div class="verdict left" id="verdict-ours"></div>
+            <div class="verdict right" id="verdict-nvidia"></div>
+          </div>
+        </div>
+        <div class="info"></div>
+      </section>
+
+      <!-- 06 TRIAGE: which clips earn a rollout -->
+      <section class="chapter" data-ch="triage">
+        <div class="media triage-media">
+          <div class="panel">
+            <div class="panel-title">80 closed-loop scenes, in the order the screen would run them</div>
+            <div id="waffle"></div>
+            <div class="waffle-readout" id="waffle-readout"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">At-fault failures found vs rollout budget</div>
+            <div id="recall-chart"></div>
+          </div>
+        </div>
+        <div class="info"></div>
+      </section>
+
+    </main>
+
+    <footer id="foot">
+      <div class="foot-stack" id="foot-stack"></div>
+      <div class="foot-snap" id="foot-snap"></div>
+      <img class="foot-logo" src="assets/gist_logo.png" alt="GIST" />
+    </footer>
+  </div>
+
+  <script src="js/data.js"></script>
+  <!-- generated by build_media.py; the wall still runs without it -->
+  <script src="assets/media/media.js"></script>
+  <script src="js/lidar.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
