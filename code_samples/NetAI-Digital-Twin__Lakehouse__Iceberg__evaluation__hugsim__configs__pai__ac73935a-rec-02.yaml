@@ -1,0 +1,31 @@
+# ac73935a as recorded, with the recorded traffic in its own reconstructed appearance: the four
+# vehicles queued behind the ego (tracks 3, 2, 1, 7) replayed by UnicyclePlanner on their fitted
+# paths, original timing, using the actor assets pai/export_actors.py bakes from the scene's
+# dynamic_<track>.pth (heights from actors.json). rec-01 is the same with 3DRealCar stand-ins.
+mode: rec_02
+plan_list:
+- [0.0, 0.0, -1.005, 0.0, 0.0, "/home/netai/jeykang/NetAI-Digital-Twin/Lakehouse/Iceberg/evaluation/hugsim/data/scenes/pai/ac73935a/actors/track_3", UnicyclePlanner, {uc_id: 3, speed: 1.0}]
+- [0.0, 0.0, -1.112, 0.0, 0.0, "/home/netai/jeykang/NetAI-Digital-Twin/Lakehouse/Iceberg/evaluation/hugsim/data/scenes/pai/ac73935a/actors/track_2", UnicyclePlanner, {uc_id: 2, speed: 1.0}]
+- [0.0, 0.0, -1.395, 0.0, 0.0, "/home/netai/jeykang/NetAI-Digital-Twin/Lakehouse/Iceberg/evaluation/hugsim/data/scenes/pai/ac73935a/actors/track_1", UnicyclePlanner, {uc_id: 1, speed: 1.0}]
+- [0.0, 0.0, -1.752, 0.0, 0.0, "/home/netai/jeykang/NetAI-Digital-Twin/Lakehouse/Iceberg/evaluation/hugsim/data/scenes/pai/ac73935a/actors/track_7", UnicyclePlanner, {uc_id: 7, speed: 1.0}]
+iteration: 30000
+sh_degree: 3
+load_HD_map: false
+white_background: false
+data_device: cpu
+data_type: nuscenes
+start_euler:
+- 0.0
+- 0.0
+- 0.0
+start_ab:
+- 0.0
+- 0.0
+start_velo: 0
+start_steer: 0
+target: 60
+scene_name: ac73935a
+affine: false
+quiet: false
+ignore_dynamic: false
+unicycle: false

@@ -1,9 +1,0 @@
-# Wall build deps (run in demo_wall/.venv on the server).
-#   extract_assets.py : opencv-python-headless DracoPy pyarrow numpy (+ ultralytics for --yolo)
-#   build_media.py    : pyarrow imageio-ffmpeg (a static ffmpeg with x264/dav1d; no system ffmpeg needed)
-# export_scores.py runs inside the spark-iceberg container, export_triage.py in evaluation/.skip_venv.
-opencv-python-headless
-DracoPy
-pyarrow
-numpy
-imageio-ffmpeg
