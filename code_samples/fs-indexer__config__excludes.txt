@@ -1,0 +1,63 @@
+# System directories
+/proc/**
+/sys/**
+/run/**
+/dev/**
+/tmp/**
+/var/tmp/**
+
+# Container runtimes
+/var/lib/docker/**
+/var/lib/containers/**
+/var/lib/containerd/**
+/var/lib/lxc/**
+/var/lib/lxd/**
+
+# Package managers
+/var/cache/apt/**
+/var/cache/yum/**
+/var/cache/dnf/**
+/var/cache/pacman/**
+
+# Development artifacts
+**/.git/**
+**/.svn/**
+**/.hg/**
+**/node_modules/**
+**/__pycache__/**
+**/.pytest_cache/**
+**/.venv/**
+**/vendor/**
+**/.cache/**
+**/.gradle/**
+**/.m2/**
+
+# Build directories
+**/build/**
+**/dist/**
+**/target/**
+**/out/**
+**/bin/**
+**/obj/**
+
+# Large binary files
+**/*.iso
+**/*.qcow2
+**/*.vmdk
+**/*.vdi
+**/*.img
+**/*.bin
+**/*.dump
+**/*.core
+
+# Backup files
+**/*.bak
+**/*.backup
+**/*.old
+**/*.orig
+**/*.swp
+**/*~
+
+# Log files (optional)
+# **/*.log
+# **/logs/**
