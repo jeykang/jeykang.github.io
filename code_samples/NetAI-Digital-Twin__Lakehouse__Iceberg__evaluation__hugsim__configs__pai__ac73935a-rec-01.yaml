@@ -1,0 +1,34 @@
+# ac73935a as recorded, with the recorded traffic: the four vehicles queued behind the ego at the
+# temporary signal (tracks 3, 2, 1, 7 — 12, 21, 27 and 77 m back at t=0) replayed on the unicycle paths
+# HUGSIM fitted to them in training (unicycle_<track>.pth, original timing). Stand-in appearance:
+# 3DRealCar assets — UnicyclePlanner poses an actor by yaw alone in the assets' frame, while our
+# reconstructed dynamic_<track>.pth live in the training box frame (90 deg apart in roll and in yaw),
+# so they would need re-orienting first. Track 0 and 19 are
+# sub-second fragments and are left out. Ego starts at standstill, as in AlpaSim.
+mode: rec_01
+plan_list:
+- [0.0, 0.0, 0.0, 0.0, 0.0, "2024_07_05_10_58_02", UnicyclePlanner, {uc_id: 3, speed: 1.0}]
+- [0.0, 0.0, 0.0, 0.0, 0.0, "2024_07_05_16_10_02", UnicyclePlanner, {uc_id: 2, speed: 1.0}]
+- [0.0, 0.0, 0.0, 0.0, 0.0, "2024_07_05_10_58_02", UnicyclePlanner, {uc_id: 1, speed: 1.0}]
+- [0.0, 0.0, 0.0, 0.0, 0.0, "2024_07_05_16_10_02", UnicyclePlanner, {uc_id: 7, speed: 1.0}]
+iteration: 30000
+sh_degree: 3
+load_HD_map: false
+white_background: false
+data_device: cpu
+data_type: nuscenes
+start_euler:
+- 0.0
+- 0.0
+- 0.0
+start_ab:
+- 0.0
+- 0.0
+start_velo: 0
+start_steer: 0
+target: 60
+scene_name: ac73935a
+affine: false
+quiet: false
+ignore_dynamic: false
+unicycle: false
