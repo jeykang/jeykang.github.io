@@ -1,0 +1,5 @@
+ I am developing a post-processing pipeline for a mobile surveillance robot ("MobileX Poles"). The robot is equipped with a ring of 6x wide-angle global shutter cameras (e-Con AR0234CS, 105° HFOV) connected to NVIDIA Jetson hardware.
+
+Because data from the surveillance robot is not available yet, I am using the CSE dataset (under data/) for training, which contains point clouds, depth & RGB images, camera poses and intrinsics.
+
+Goal: I need to convert the recorded video feeds into a high-fidelity, watertight 3D point cloud for surveillance coverage analysis. The focus should be on creating a dense point cloud, and then performing error correction on the point cloud (think something like Difix3D+, but for point clouds and not Gaussian splats). I have attached a survey on SOTA in related fields. The current state of the project is a start, but definitely not anywhere close to finished nor even a minimum working prototype- first, create a comprehensive structure and design for the project, then proceed with implementation.
